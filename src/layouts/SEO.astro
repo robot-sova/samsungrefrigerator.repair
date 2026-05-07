@@ -1,15 +1,46 @@
 ---
-const title = 'LF Dryer Repair Services | 424-407-1019';
-const description = 'Samsung Fridge Repair Experts in Los Angeles County | Orange County | Ventura County';
-const ogImage = 'https://lgdryer.repair/img/samsung-refrigerator-repair-services.webp';
+import { BUSINESS } from '~/data/business';
+import BusinessSchema from '~/components/BusinessSchema.astro';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  canonicalURL?: string;
+  ogImage?: string;
+}
+
+const defaultTitle = `${BUSINESS.name} | ${BUSINESS.phoneDisplay}`;
+const defaultDescription = `${BUSINESS.serviceType} for Samsung refrigerators across ${BUSINESS.areasServed.join(', ')}. Same-day service. Call ${BUSINESS.phoneDisplay}.`;
+const defaultOgImage = '/images/samsung-refrigerator-repair-services.webp';
+
+const {
+  title = defaultTitle,
+  description = defaultDescription,
+  canonicalURL,
+  ogImage = defaultOgImage,
+} = Astro.props;
+
+const resolvedCanonical =
+  canonicalURL ?? new URL(Astro.url.pathname, BUSINESS.siteUrl).toString();
+const resolvedOgImage = ogImage.startsWith('http')
+  ? ogImage
+  : new URL(ogImage, BUSINESS.siteUrl).toString();
 ---
 
-<meta name="og:site_name" property="og:site_name" content="LG Dryer Repair" />
-<meta name="og:type" property="og:type" content="website" />
-<meta
-  property="og:description"
-  content="LG DRyer Repair Experts in Los Angeles County | Orange County | Ventura County"
-/>
-<meta property="og:title" content={title} />
-<meta property="og:image" content={ogImage} />
+<title>{title}</title>
 <meta name="description" content={description} />
+<link rel="canonical" href={resolvedCanonical} />
+
+<meta property="og:site_name" content={BUSINESS.name} />
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={resolvedOgImage} />
+<meta property="og:url" content={resolvedCanonical} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={resolvedOgImage} />
+
+<BusinessSchema />

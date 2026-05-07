@@ -1,0 +1,47 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import CallCTA from '~/components/CallCTA.astro';
+import RelatedLinks from '~/components/RelatedLinks.astro';
+import { MODELS } from '~/data/models';
+import { BUSINESS } from '~/data/business';
+
+export async function getStaticPaths() {
+  return MODELS.map((m) => ({
+    params: { slug: m.slug },
+    props: { model: m },
+  }));
+}
+
+const { model } = Astro.props;
+const description = `${model.title}: ${model.description.slice(0, 110)} Call ${BUSINESS.phoneDisplay}.`;
+---
+
+<Layout
+  title={`${model.title} | ${BUSINESS.phoneDisplay}`}
+  description={description.slice(0, 160)}
+  pageTitle={model.title}
+>
+  <div class="maintext">
+    <p>{model.description}</p>
+    <CallCTA />
+  </div>
+
+  <div class="maintext">
+    <h2>Issues We See Most on This Platform</h2>
+    <ul>
+      {model.commonIssues.map((issue) => <li>{issue}</li>)}
+    </ul>
+  </div>
+
+  <div class="maintext">
+    <h2>Available Across {BUSINESS.areasServed.length} Counties</h2>
+    <p>
+      {BUSINESS.areasServed.join(', ')} — same-day service when available. Call
+      <a style="color:#fff; font-weight:700;" href={BUSINESS.phoneTel}>{BUSINESS.phoneDisplay}</a>
+      to book.
+    </p>
+    <CallCTA />
+  </div>
+
+  <RelatedLinks />
+</Layout>

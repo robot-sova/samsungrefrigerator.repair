@@ -1,0 +1,28 @@
+---
+import { ERROR_CODES } from '~/data/errorCodes';
+
+export interface Props {
+  heading?: string;
+  limit?: number;
+}
+
+const { heading = 'Samsung Refrigerator Error Codes', limit } = Astro.props;
+const items = limit ? ERROR_CODES.slice(0, limit) : ERROR_CODES;
+---
+
+<div class="maintext">
+  <h2>{heading}</h2>
+  <ul role="list" style="margin-left:30px;">
+    {items.map((code) => (
+      <li>
+        <a style="color:#fff; font-weight:700;" href={`/error-codes/${code.slug}/`}>{code.code}</a>
+        <span style="color:#cfcfcf;"> — {code.title.replace(`Samsung ${code.code} Error — `, '').replace(`Samsung ${code.code} — `, '')}</span>
+      </li>
+    ))}
+  </ul>
+  {limit && (
+    <p style="text-align:center;">
+      <a style="color:#fff; font-weight:700;" href="/error-codes/">See all Samsung error codes →</a>
+    </p>
+  )}
+</div>

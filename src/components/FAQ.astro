@@ -1,0 +1,29 @@
+---
+import FAQSchema from './FAQSchema.astro';
+
+export interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+export interface Props {
+  faqs: FAQItem[];
+  heading?: string;
+}
+
+const { faqs, heading = 'Frequently Asked Questions' } = Astro.props;
+---
+
+<div class="maintext">
+  <h2>{heading}</h2>
+  {faqs.map((f) => (
+    <details style="margin:15px 30px; color:#fff;">
+      <summary style="font-weight:700; font-size:1.15em; cursor:pointer; padding:10px 0;">
+        {f.question}
+      </summary>
+      <p style="margin:5px 0 15px 0;">{f.answer}</p>
+    </details>
+  ))}
+</div>
+
+<FAQSchema faqs={faqs} />

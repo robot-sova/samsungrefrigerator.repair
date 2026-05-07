@@ -1,0 +1,43 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import CallCTA from '~/components/CallCTA.astro';
+import RelatedLinks from '~/components/RelatedLinks.astro';
+import { ERROR_CODES } from '~/data/errorCodes';
+import { BUSINESS } from '~/data/business';
+
+export async function getStaticPaths() {
+  return ERROR_CODES.map((code) => ({
+    params: { slug: code.slug },
+    props: { code },
+  }));
+}
+
+const { code } = Astro.props;
+const description = `${code.title}: ${code.meaning} What to try and when to call a Samsung refrigerator technician. Call ${BUSINESS.phoneDisplay}.`;
+---
+
+<Layout
+  title={`${code.title} | ${BUSINESS.phoneDisplay}`}
+  description={description.slice(0, 160)}
+  pageTitle={code.title}
+>
+  <div class="maintext">
+    <h2>What "{code.code}" Means</h2>
+    <p>{code.meaning}</p>
+  </div>
+
+  <div class="maintext">
+    <h2>What to Try First</h2>
+    <ul>
+      {code.whatToTry.map((step) => <li>{step}</li>)}
+    </ul>
+  </div>
+
+  <div class="maintext">
+    <h2>When to Call a Pro</h2>
+    <p>{code.whenToCallPro}</p>
+    <CallCTA />
+  </div>
+
+  <RelatedLinks excludeErrorCodeSlug={code.slug} />
+</Layout>

@@ -1,0 +1,23 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import ServicesGrid from '~/components/ServicesGrid.astro';
+import CallCTA from '~/components/CallCTA.astro';
+import { BUSINESS } from '~/data/business';
+
+const title = `Samsung Refrigerator Repair Services | ${BUSINESS.phoneDisplay}`;
+const description = `All Samsung refrigerator repair services we offer — not cooling, ice maker, leaks, compressor, control board, error codes. Call ${BUSINESS.phoneDisplay}.`;
+---
+
+<Layout title={title} description={description} pageTitle="Samsung Refrigerator Repair Services">
+  <div class="maintext">
+    <p>
+      Every Samsung refrigerator repair we run falls into one of the categories below. Pick the symptom
+      that matches what you're seeing, or call us at
+      <a style="color:#fff; font-weight:700;" href={BUSINESS.phoneTel}>{BUSINESS.phoneDisplay}</a>
+      and we'll diagnose over the phone before dispatching a tech.
+    </p>
+    <CallCTA />
+  </div>
+
+  <ServicesGrid heading="All Samsung Repair Services" />
+</Layout>

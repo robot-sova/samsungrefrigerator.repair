@@ -1,0 +1,97 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import CallCTA from '~/components/CallCTA.astro';
+import RelatedLinks from '~/components/RelatedLinks.astro';
+import FAQ from '~/components/FAQ.astro';
+import { SERVICES } from '~/data/services';
+import { ERROR_CODES } from '~/data/errorCodes';
+import { COUNTIES } from '~/data/locations';
+import { BUSINESS } from '~/data/business';
+
+export async function getStaticPaths() {
+  return SERVICES.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+
+const relatedCodes = ERROR_CODES.filter((c) => service.relatedErrorCodes.includes(c.code));
+
+const faqs = [
+  {
+    question: `Can you fix this on the first visit?`,
+    answer: `In most cases, yes. We carry the most-failed Samsung parts on the truck for the symptoms listed above. If a special-order part is needed we'll quote it on the diagnostic visit and return as soon as it lands.`,
+  },
+  {
+    question: `Do you service all Samsung refrigerator models?`,
+    answer: `Yes — Family Hub, Bespoke, French Door, 4-Door FlexZone, side-by-side, and top-freezer. If you have the model number ready when you call we can confirm parts availability before dispatch.`,
+  },
+  {
+    question: `Which counties do you cover for this repair?`,
+    answer: `${BUSINESS.areasServed.join(', ')} — same-day service is available across all five counties when calls land before noon.`,
+  },
+];
+---
+
+<Layout
+  title={`${service.title} | ${BUSINESS.phoneDisplay}`}
+  description={service.metaDescription}
+  pageTitle={service.h1}
+>
+  <div class="maintext">
+    <p>{service.shortDescription}</p>
+    <CallCTA />
+  </div>
+
+  <div class="maintext">
+    <h2>Symptoms We Hear Most Often</h2>
+    <ul>
+      {service.symptoms.map((s) => <li>{s}</li>)}
+    </ul>
+  </div>
+
+  <div class="maintext">
+    <h2>Common Samsung-Specific Causes</h2>
+    <ul>
+      {service.commonCauses.map((c) => <li>{c}</li>)}
+    </ul>
+    <p>
+      Each of these has a different repair path. We diagnose first and quote before any work
+      starts — no surprise charges.
+    </p>
+  </div>
+
+  {relatedCodes.length > 0 && (
+    <div class="maintext">
+      <h2>Related Samsung Error Codes</h2>
+      <ul>
+        {relatedCodes.map((code) => (
+          <li>
+            <a style="color:#fff; font-weight:700;" href={`/error-codes/${code.slug}/`}>{code.code}</a>
+            &nbsp;— {code.meaning}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  <div class="maintext">
+    <h2>Available in All Five Counties</h2>
+    <ul>
+      {COUNTIES.map((county) => (
+        <li>
+          <a style="color:#fff; font-weight:700;" href={`/service-area/${county.slug}/`}>
+            {service.title.replace('Samsung ', '').replace(' Repair', '')} in {county.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <CallCTA />
+  </div>
+
+  <FAQ faqs={faqs} />
+
+  <RelatedLinks excludeServiceSlug={service.slug} />
+</Layout>

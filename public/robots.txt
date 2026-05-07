@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://samsungrefrigerator.repair/sitemap-index.xml

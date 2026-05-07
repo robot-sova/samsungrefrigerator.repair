@@ -1,0 +1,16 @@
+---
+import CallCTA from './CallCTA.astro';
+
+export interface Props {
+  title: string;
+  subtitle?: string;
+}
+
+const { title, subtitle } = Astro.props;
+---
+
+<div class="maintext">
+  <h2 style="text-align:center; margin-left:0;">{title}</h2>
+  {subtitle && <p style="text-align:center;">{subtitle}</p>}
+  <CallCTA />
+</div>

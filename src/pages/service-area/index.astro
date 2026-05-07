@@ -1,0 +1,21 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import CountiesGrid from '~/components/CountiesGrid.astro';
+import CallCTA from '~/components/CallCTA.astro';
+import { BUSINESS } from '~/data/business';
+
+const title = `Samsung Refrigerator Repair Service Area | ${BUSINESS.phoneDisplay}`;
+const description = `Samsung refrigerator repair across ${BUSINESS.areasServed.join(', ')}. Pick your county to see cities served. Call ${BUSINESS.phoneDisplay}.`;
+---
+
+<Layout title={title} description={description} pageTitle="Samsung Refrigerator Repair Service Area">
+  <div class="maintext">
+    <p>
+      We run service calls across {BUSINESS.areasServed.length} Southern California counties:
+      {BUSINESS.areasServed.join(', ')}. Pick your county to see the cities we cover and book a same-day visit.
+    </p>
+    <CallCTA />
+  </div>
+
+  <CountiesGrid heading="Choose Your County" />
+</Layout>

@@ -1,0 +1,32 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import CallCTA from '~/components/CallCTA.astro';
+import { MODELS } from '~/data/models';
+import { BUSINESS } from '~/data/business';
+
+const title = `Samsung Refrigerator Models We Repair | ${BUSINESS.phoneDisplay}`;
+const description = `Samsung Family Hub, Bespoke, French Door, 4-Door FlexZone, side-by-side, and top-freezer repair. Call ${BUSINESS.phoneDisplay}.`;
+---
+
+<Layout title={title} description={description} pageTitle="Samsung Refrigerator Models We Repair">
+  <div class="maintext">
+    <p>
+      We service every current Samsung refrigerator line. Pick your model family below for the
+      issues we see most often on that platform.
+    </p>
+    <CallCTA />
+  </div>
+
+  <div class="maintext">
+    <h2>Samsung Refrigerator Lines</h2>
+    <ul role="list">
+      {MODELS.map((m) => (
+        <li>
+          <a style="color:#fff; font-weight:700;" href={`/models/${m.slug}/`}>{m.title}</a>
+          <br />
+          <span style="color:#cfcfcf; font-size:0.95em;">{m.description}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Layout>

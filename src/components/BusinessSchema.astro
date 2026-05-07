@@ -1,0 +1,42 @@
+---
+import { BUSINESS } from '~/data/business';
+
+const areaServed = BUSINESS.areasServed.map((county) => ({
+  '@type': 'AdministrativeArea',
+  name: county,
+  containedInPlace: {
+    '@type': 'State',
+    name: 'California',
+  },
+}));
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': ['LocalBusiness', 'HomeAndConstructionBusiness'],
+  '@id': `${BUSINESS.siteUrl}/#business`,
+  name: BUSINESS.name,
+  legalName: BUSINESS.legalName,
+  url: BUSINESS.siteUrl,
+  telephone: BUSINESS.phoneDisplay,
+  email: BUSINESS.email,
+  foundingDate: BUSINESS.founded,
+  priceRange: BUSINESS.priceRange,
+  description: `${BUSINESS.serviceType} serving ${BUSINESS.areasServed.join(', ')}.`,
+  areaServed,
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: BUSINESS.hoursMachine.dayOfWeek,
+      opens: BUSINESS.hoursMachine.opens,
+      closes: BUSINESS.hoursMachine.closes,
+    },
+  ],
+  serviceType: 'Samsung refrigerator repair',
+  brand: {
+    '@type': 'Brand',
+    name: BUSINESS.brand,
+  },
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

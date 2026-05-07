@@ -1,0 +1,17 @@
+---
+import { BUSINESS } from '~/data/business';
+
+export interface Props {
+  callLabel?: string;
+  bookLabel?: string;
+}
+
+const { callLabel = 'CALL US', bookLabel = 'BOOK US' } = Astro.props;
+---
+
+<p class="bt">
+  <a aria-label="Call Us" href={BUSINESS.phoneTel} class="button-85">&nbsp;&nbsp;{callLabel}&nbsp;&nbsp;</a>
+</p>
+<p class="bt">
+  <a aria-label="Book Us" href="/book" class="button-85">&nbsp;&nbsp;{bookLabel}&nbsp;</a>
+</p>

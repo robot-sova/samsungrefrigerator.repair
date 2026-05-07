@@ -1,0 +1,58 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import CitiesGrid from '~/components/CitiesGrid.astro';
+import ServicesGrid from '~/components/ServicesGrid.astro';
+import CallCTA from '~/components/CallCTA.astro';
+import FAQ from '~/components/FAQ.astro';
+import { COUNTIES } from '~/data/locations';
+import { BUSINESS } from '~/data/business';
+
+export async function getStaticPaths() {
+  return COUNTIES.map((county) => ({
+    params: { county: county.slug },
+    props: { county },
+  }));
+}
+
+const { county } = Astro.props;
+
+const description = `Samsung refrigerator repair in ${county.name}, CA. Same-day service across ${county.cities.length} cities. Call ${BUSINESS.phoneDisplay}.`;
+
+const faqs = [
+  {
+    question: `How fast can you get to me in ${county.name}?`,
+    answer: `Same-day service is available across ${county.name} when calls land before noon. Calls after noon usually book the next morning.`,
+  },
+  {
+    question: `Do you charge a trip fee in ${county.name}?`,
+    answer: `Our diagnostic visit fee covers travel anywhere in ${county.name}. The visit fee is waived if you proceed with the recommended repair.`,
+  },
+  {
+    question: `Which Samsung refrigerator issues do you fix in ${county.name}?`,
+    answer: `Every Samsung refrigerator service we offer — not cooling, ice maker, water leaks, freezer issues, compressor, control board, door seals, error codes — is available in all ${county.cities.length} cities we cover in ${county.name}.`,
+  },
+];
+---
+
+<Layout
+  title={`Samsung Refrigerator Repair in ${county.name}, CA | ${BUSINESS.phoneDisplay}`}
+  description={description}
+  pageTitle={`Samsung Refrigerator Repair in ${county.name}, CA`}
+>
+  <div class="maintext">
+    <p>{county.intro}</p>
+    <p>
+      All {county.cities.length} cities below get the same dispatch priority and the same truck-stocked
+      Samsung parts inventory. Call
+      <a style="color:#fff; font-weight:700;" href={BUSINESS.phoneTel}>{BUSINESS.phoneDisplay}</a>
+      or pick your city below.
+    </p>
+    <CallCTA />
+  </div>
+
+  <CitiesGrid countySlug={county.slug} />
+
+  <ServicesGrid heading="Samsung Repair Services Offered Across This County" />
+
+  <FAQ faqs={faqs} heading={`${county.name} FAQ`} />
+</Layout>

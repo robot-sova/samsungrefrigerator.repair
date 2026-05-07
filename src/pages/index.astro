@@ -1,171 +1,96 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ServicesGrid from '~/components/ServicesGrid.astro';
+import CountiesGrid from '~/components/CountiesGrid.astro';
+import ErrorCodesGrid from '~/components/ErrorCodesGrid.astro';
+import FAQ from '~/components/FAQ.astro';
+import CallCTA from '~/components/CallCTA.astro';
+import { BUSINESS } from '~/data/business';
+
+const title = `Samsung Refrigerator Repair | Same-Day Service | ${BUSINESS.phoneDisplay}`;
+const description = `Same-day Samsung refrigerator repair across ${BUSINESS.areasServed.join(', ')}. Family Hub, Bespoke, French Door, side-by-side. Call ${BUSINESS.phoneDisplay}.`;
+
+const homeFaqs = [
+  {
+    question: 'Do you offer same-day Samsung refrigerator repair?',
+    answer:
+      'Yes — most calls received before noon can be scheduled the same day across our five service counties. Booking is open 24/7 and our service hours are Mon–Sun 8:00 AM – 8:00 PM.',
+  },
+  {
+    question: 'Which Samsung refrigerator models do you service?',
+    answer:
+      'All current Samsung refrigerator lines: Family Hub, Bespoke, French Door, 4-Door FlexZone, side-by-side, and top-freezer models. We also service older Samsung models still under common parts availability.',
+  },
+  {
+    question: 'How much does a Samsung refrigerator repair cost?',
+    answer:
+      'A diagnostic visit covers travel, inspection, and a written quote. Repair pricing depends on the part — common ice-maker and sensor failures fall in a different range than compressor or sealed-system work. We always quote before any repair.',
+  },
+  {
+    question: 'Do you fix Samsung ice makers?',
+    answer:
+      'Yes — Samsung ice makers (especially the French Door ice room) are one of the most common calls we run. We carry the most-failed parts in the truck.',
+  },
+  {
+    question: 'What areas do you cover?',
+    answer: `${BUSINESS.areasServed.join(', ')}. We do not currently serve outside these five counties.`,
+  },
+];
 ---
 
-<Layout title="Refrigerator Repair Repair Experts | 424-407-1019">
-    <div style="max-width:600px; max-height:600px; margin:0 auto 0 auto;">
-        <img class="responsiveimg"  
-        alt="Professional Refrigerator Repair Repair Services"
-        src="images/samsung-refrigerator-repair-services.webp" width="600" height="600"><br>
-    </div>
-    <div class="maintext">
+<Layout title={title} description={description} showHero={true}>
+  <div style="max-width:600px; max-height:600px; margin:0 auto;">
+    <img
+      class="responsiveimg"
+      alt="Professional Samsung Refrigerator Repair Services"
+      src="/images/samsung-refrigerator-repair-services.webp"
+      width="600"
+      height="600"
+    />
+  </div>
 
-     <h2>When to Call a Technician?</h2>
-        <ul>
-            <li> Our team of skilled technicians specializes in Samsung refrigerator repairs. Contact us today to schedule a service appointment and ensure your refrigerator operates at peak performance.</li>
-            <li> Our technicians will fix your Samsung regrigerator on the first visit in 90% of cases.</li>
-            <li> We serve Los Angeles, Orange, and Ventura Counties.</li>
-            <li>If you encounter any of the issues mentioned below, it's advisable to seek the expertise of a qualified Samsung refrigerator technician. Attempting DIY repairs on complex appliances like refrigerators can lead to further damage and void warranties.</li>
-            <li> To repair any other types of appliances book at the
-                <a style="color:#ffffff; font-weight:900;"
-                title="Same Day Appliance Repair Los Angeles"
-                href="https://samedayappliance.repair"
-                target="_blank"> SAME DAY APPLIANCE REPAIR</a>
-            </li>
-        </ul>
-    </div>
-    <div id="issues"></div>
-    <div class="maintext">
-        <h2>Common Issues with Samsung Refrigerators: When to Call a Technician&nbsp;&nbsp;&nbsp;<a aria-label="Learn more about Refrigerator Repair repair" href="#topblock"><img
-                loading="lazy" alt="Go to main menu" src="images/back_to_top.png" width="80" height="79"></a></h2>
-        <br>
-    <p>Samsung refrigerators are known for their innovative features and sleek designs, but like any complex appliance, they can encounter issues that require professional attention. If you're experiencing problems with your Samsung refrigerator, it's essential to identify the signs that indicate the need for a skilled technician.</p>
-
-    <h3>1. **Temperature Fluctuations**</h3>
-    <p>One of the most common issues is inconsistent temperature control. If you notice fluctuations in the refrigerator or freezer compartments, it could be a sign of a malfunctioning thermostat or a problem with the cooling system.</p>
-
-    <h3>2. **Excessive Frost Buildup**</h3>
-    <p>If your freezer is accumulating more frost than usual, it might indicate issues with the defrost system. A technician can diagnose the problem and replace faulty components to prevent excessive frost buildup.</p>
-
-    <h3>3. **Water Leakage Inside or Around the Refrigerator**</h3>
-    <p>Leakage can be caused by a clogged defrost drain or a malfunctioning water inlet valve. A technician can pinpoint the source of the leak and resolve it to prevent further damage to your refrigerator and surrounding areas.</p>
-
-    <h3>4. **Unusual Noises**</h3>
-    <p>If your Samsung refrigerator is making strange sounds like buzzing, clicking, or rattling, it could be indicative of issues with the compressor, condenser fan, or other internal components. A technician can perform a thorough inspection to identify and address the noise source.</p>
-
-    <h3>5. **Faulty Ice Maker**</h3>
-    <p>A malfunctioning ice maker can lead to issues such as no ice production, overproduction, or ice with an unusual taste. A technician can troubleshoot the ice maker, checking for problems with the water supply, inlet valve, or the ice maker itself.</p>
-
-    <h3>6. **Display Panel Malfunctions**</h3>
-    <p>If the digital display on your Samsung refrigerator is malfunctioning or showing error codes, it may indicate electronic control issues. A technician with expertise in Samsung appliances can diagnose and repair electronic components to restore proper functionality.</p>
-
-    <h3>7. **Door Seal Problems**</h3>
-    <p>A damaged or worn-out door seal can compromise the refrigerator's efficiency, leading to temperature inconsistencies and energy wastage. A technician can assess the condition of the door gasket and replace it if necessary.</p>
-
-    <h3>8. **Refrigerator Not Running**</h3>
-    <p>If your refrigerator fails to turn on or experiences frequent power interruptions, it may be due to issues with the compressor, start relay, or other electrical components. A technician can perform diagnostics to identify and rectify the problem.</p>
-<p>Remember, a well-maintained refrigerator is key to preserving the freshness of your food and beverages. Trust the experts to keep your Samsung refrigerator running smoothly!</p>
-        <p class="bt"><a aria-label="Call Us" href="tel:+14244071019" class="button-85">&nbsp;&nbsp;CALL US&nbsp;&nbsp;</a>
-        </p>
-        <p class="bt"><a aria-label="Book Us" href="book.html" class="button-85">&nbsp;&nbsp;BOOK US&nbsp;</a></p>
-    </div>
-    <div id="repair"></div>
-    <hr style="width:85%; margin:0 auto 0 auto;"><br>
-    <div class="maintext">
-        <h2>Samsung Refrigerator Repair Services &nbsp; &nbsp;<a aria-label="Learn more about LG dryer repair"
-             href="#topblock"><img
-                loading="lazy" alt="LG appliance repair services - main menu" src="images/back_to_top.png" width="80"
-                height="79"></a></h2>
-        <div style="max-width:500px; max-height:500px; margin:0 auto 0 auto; padding:20px;"><img loading="lazy"
-                                                                                                 class="responsiveimg"
-                                                                                                 alt="Professional LG Dryer Repair Services"
-                                                                                                 src="images/samsung-fridge-maintenance.webp"
-                                                                                                 width="500"
-                                                                                                 height="500"></div>
-        <p>Is your Samsung refrigerator acting up? Don't let a malfunctioning appliance disrupt your kitchen routine. Our expert technicians are here to provide efficient and reliable Samsung refrigerator repair services. We specialize in diagnosing and fixing a wide range of issues to ensure your refrigerator operates at its best.</p>
-
-    <h3>Why Choose Our Samsung Refrigerator Repair Services?</h3>
+  <div class="maintext">
+    <h2>When to Call a Samsung Refrigerator Technician</h2>
     <ul>
-        <li>**Experienced Technicians:** Our team consists of skilled technicians with extensive experience in repairing Samsung refrigerators.</li>
-        <li>**Prompt Diagnostics:** We use advanced diagnostic tools to quickly identify the root cause of the problem, saving you time and frustration.</li>
-        <li>**Genuine Samsung Parts:** We only use genuine Samsung replacement parts to ensure the quality and longevity of the repairs.</li>
-        <li>**Comprehensive Repairs:** From temperature control issues to faulty ice makers, we address a wide range of problems to restore your refrigerator's functionality.</li>
-        <li>**Transparent Pricing:** Our pricing is transparent with no hidden fees. You'll know the cost of repairs upfront before we begin any work.</li>
-        <li>**Convenient Scheduling:** We offer flexible scheduling options to suit your busy lifestyle. Our goal is to provide convenient and timely service.</li>
+      <li>Our team specializes in Samsung refrigerator repairs across {BUSINESS.areasServed.length} Southern California counties.</li>
+      <li>Most repairs are completed on the first visit thanks to truck-stocked Samsung parts.</li>
+      <li>We serve {BUSINESS.areasServed.join(', ')}.</li>
+      <li>If you spot any of the issues below, stop using the unit and book a technician — DIY work on sealed systems voids most warranties.</li>
     </ul>
+  </div>
 
-    <h3>Common Samsung Refrigerator Issues We Repair:</h3>
-    <ul>
-        <li>**Temperature Fluctuations:** Inconsistent cooling in the refrigerator or freezer compartments.</li>
-        <li>**Ice Maker Problems:** Issues with ice production, overproduction, or unusual taste.</li>
-        <li>**Water Leakage:** Inside or around the refrigerator, indicating a potential issue with the defrost system.</li>
-        <li>**Unusual Noises:** Strange sounds like buzzing, clicking, or rattling.</li>
-        <li>**Display Panel Malfunctions:** Problems with the digital display or error codes.</li>
-        <li>**Door Seal Damage:** Compromised door gasket affecting efficiency.</li>
-        <li>**Refrigerator Not Running:** Failure to turn on or frequent power interruptions.</li>
-    </ul>
+  <div id="issues"></div>
+  <div class="maintext">
+    <h2>Common Samsung Refrigerator Issues</h2>
+    <h3>1. Temperature Fluctuations</h3>
+    <p>Inconsistent temperature in the fridge or freezer often points to a defrost-system fault, a failing evaporator fan, or a damper that has stuck closed.</p>
+    <h3>2. Excessive Frost Buildup</h3>
+    <p>Frost on the freezer wall or around food packaging usually means the defrost heater, defrost thermostat, or main control board is failing to run a complete defrost cycle.</p>
+    <h3>3. Water Leakage</h3>
+    <p>Water inside the produce drawers or on the floor in front of the unit usually traces to a clogged defrost drain or a cracked water inlet valve.</p>
+    <h3>4. Unusual Noises</h3>
+    <p>Buzzing, clicking, grinding, or knocking noises typically come from the compressor, condenser fan, evaporator fan, or ice maker auger.</p>
+    <h3>5. Faulty Ice Maker</h3>
+    <p>Samsung French Door ice makers are the single most-repaired Samsung component. Symptoms range from no ice to freeze-ups to leaks.</p>
+    <h3>6. Display Panel Errors</h3>
+    <p>Codes like 1E, 5E, 21E, 41C, 84C, OF OF, or PC ER indicate a specific subsystem fault. See our <a style="color:#fff; font-weight:700;" href="/error-codes/">error code guide</a> for what each one means.</p>
+    <CallCTA />
+  </div>
 
-    <h3>How Our Repair Process Works:</h3>
-    <ol>
-        <li>**Schedule an Appointment:** Contact us to schedule a convenient appointment for your Samsung refrigerator repair.</li>
-        <li>**Diagnostic Assessment:** Our technicians will perform a thorough diagnostic assessment to pinpoint the issue.</li>
-        <li>**Quotation:** You'll receive a clear and detailed quotation for the repair costs, including parts and labor.</li>
-        <li>**Repairs:** Upon your approval, we'll proceed with the repairs using genuine Samsung replacement parts.</li>
-        <li>**Testing:** After the repairs, we'll test the refrigerator to ensure it's functioning correctly.</li>
-        <li>**Customer Satisfaction:** Your satisfaction is our priority. We'll make sure you're happy with the results before completing the service.</li>
-    </ol>
+  <div id="repair"></div>
+  <ServicesGrid heading="Samsung Refrigerator Repair Services" />
 
-    <h2>Contact Us for Reliable Samsung Refrigerator Repairs</h2>
-    <p>Don't let refrigerator issues disrupt your daily life. Contact our experienced technicians for reliable Samsung refrigerator repair services. We're dedicated to bringing your appliance back to optimal performance, ensuring your kitchen runs smoothly.</p>
+  <div id="maintenance"></div>
+  <div class="maintext">
+    <h2>Samsung Refrigerator Maintenance</h2>
+    <p>Annual maintenance on a Samsung refrigerator means cleaning the condenser coil, verifying the defrost cycle, inspecting the door gaskets, and confirming temperature accuracy across both compartments.</p>
+    <p>Twin Cooling and FlexZone systems benefit most — they have more sensors and more failure points than a basic top-freezer model. A 30-minute maintenance visit catches the small failures before they become a fridge full of warm food.</p>
+    <CallCTA />
+  </div>
 
-    <p>Call us today to schedule your Samsung refrigerator repair appointment. Trust us to keep your refrigerator running efficiently!</p>
+  <ErrorCodesGrid heading="Samsung Refrigerator Error Codes" limit={6} />
 
-        <p class="bt"><a aria-label="Call Us" href="tel:+14244071019" class="button-85">&nbsp;&nbsp;CALL US&nbsp;&nbsp;</a>
-        </p>
-        <p class="bt"><a aria-label="Book Us" href="book.html" class="button-85">&nbsp;&nbsp;BOOK US&nbsp;</a></p>
-    </div>
-    <hr style="width:85%; margin:0 auto 0 auto;"><br>
-    <div id="maintenance"></div>
-    <div class="maintext">
-        <h2>Samsung Maintenance Services &nbsp; &nbsp;<a aria-label="Learn more about LG dryer installation"
-                                                           href="#topblock"><img loading="lazy" alt="Go to main menu"
-                                                                                 src="images/back_to_top.png" width="80"
-                                                                                 height="79"></a></h2>
-        <div style="max-width:500px; max-height:500px; margin:0 auto 0 auto; padding:20px;"><img loading="lazy"
-                                                                                                 class="responsiveimg"
-                                                                                                 alt="Professional LG Dryer Repair Services"
-                                                                                                 src="images/samsung-fridge-repair-los-angeles-orange-county-ventura-county.webp"
-                                                                                                 width="500"
-                                                                                                 height="500"></div>
-           <p>Keep your Samsung appliances running smoothly with our comprehensive maintenance services. Regular maintenance not only extends the life of your Samsung products but also ensures optimal performance, energy efficiency, and the prevention of potential issues. Trust our skilled technicians to provide expert care for your Samsung appliances.</p>
+  <CountiesGrid heading="Counties We Serve" />
 
-    <h3>Why Choose Our Samsung Maintenance Services?</h3>
-    <ul>
-        <li>**Preventive Care:** Our maintenance services focus on identifying and addressing potential issues before they become major problems.</li>
-        <li>**Experienced Technicians:** Our team consists of experienced technicians with in-depth knowledge of Samsung appliances.</li>
-        <li>**Genuine Samsung Parts:** We use only genuine Samsung replacement parts to maintain the integrity and performance of your appliances.</li>
-        <li>**Flexible Scheduling:** We offer flexible scheduling options to make maintenance convenient for you, minimizing disruption to your daily routine.</li>
-        <li>**Comprehensive Check-ups:** Our maintenance check-ups cover all essential components to ensure the overall health of your Samsung appliances.</li>
-        <li>**Timely Inspections:** Regular inspections help catch issues early, preventing costly repairs and enhancing the longevity of your appliances.</li>
-    </ul>
-
-    <h2>Our Samsung Maintenance Services Cover:</h2>
-    <ul>
-        <li>**Refrigerators:** Comprehensive checks on temperature control, defrost systems, door seals, and ice maker functionality.</li>
-        <li>**Washers and Dryers:** Inspection of drum functionality, water inlet valves, belts, and vent systems for optimal performance.</li>
-        <li>**Ovens and Ranges:** Calibration of temperature settings, checking burners, and ensuring proper ignition for consistent cooking results.</li>
-        <li>**Dishwashers:** Examination of spray arms, filters, drainage systems, and water inlet valves for efficient cleaning.</li>
-        <li>**Microwaves:** Inspection of door seals, turntables, and magnetron functionality to ensure safe and effective operation.</li>
-        <li>**Televisions:** Software updates, screen checks, and audio system inspections to maintain optimal viewing and listening experiences.</li>
-    </ul>
-
-    <h3>Benefits of Regular Samsung Appliance Maintenance:</h3>
-    <ul>
-        <li>**Extended Lifespan:** Regular maintenance can significantly extend the lifespan of your Samsung appliances.</li>
-        <li>**Energy Efficiency:** Well-maintained appliances operate more efficiently, reducing energy consumption and lowering utility bills.</li>
-        <li>**Prevention of Breakdowns:** Identifying and addressing potential issues early helps prevent unexpected breakdowns and costly repairs.</li>
-        <li>**Enhanced Performance:** Appliances that receive regular maintenance perform at their best, providing optimal results.</li>
-    </ul>
-
-    <h2>Contact Us for Professional Samsung Maintenance Services</h2>
-    <p>Ensure the longevity and performance of your Samsung appliances with our expert maintenance services. Contact us today to schedule a maintenance check-up tailored to your specific needs. Trust us to keep your Samsung appliances running smoothly!</p>
-
-    <p>Call us now to prioritize the health of your Samsung appliances and enjoy worry-free usage for years to come.</p>
-<p class="bt"><a aria-label="Call Us" href="tel:+14244071019" class="button-85">&nbsp;&nbsp;CALL US&nbsp;&nbsp;</a>
-        </p>
-        <p class="bt"><a aria-label="Book Us" href="book.html" class="button-85">&nbsp;&nbsp;BOOK US&nbsp;</a></p>
-    </div>
-</div>
-    </footer>
-  </main>
+  <FAQ faqs={homeFaqs} heading="Frequently Asked Questions" />
 </Layout>
