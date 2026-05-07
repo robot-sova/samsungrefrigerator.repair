@@ -251,6 +251,162 @@ export const CITY_CONTENT: Record<string, CityContent> = {
     nearbySlugs: ['redlands', 'colton', 'san-bernardino', 'yucaipa'],
   },
 
+  // -- Los Angeles County --
+  'los-angeles-county/los-angeles': {
+    titleTag: 'Samsung Refrigerator Repair Los Angeles, CA',
+    metaDescription:
+      'Samsung refrigerator repair across Los Angeles, CA. Hollywood, Mid-Wilshire, Silver Lake, K-Town — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "Los Angeles is our highest-volume Samsung repair city, and the call patterns vary by neighborhood as much as by Samsung model. The hillside neighborhoods — Hollywood Hills, Silver Lake, Mt. Washington, Beverly Glen — see mostly Family Hub and Bespoke calls with the standard Samsung ice maker freeze-up dominant. The flatter neighborhoods like Mid-Wilshire, K-Town, Mid-City, and the Eastside have a wider Samsung age range and see more defrost-system, gasket, and compressor-mount work.",
+      "Across the city, the single most common Samsung call is the French Door ice maker freeze-up — the duct seal lets warm humid air migrate into the ice room, the assembly frosts solid, and the redesigned ice maker is the single-visit fix. We run multiples of these every week from Echo Park to Westwood and from Highland Park to the Westside.",
+      "Los Angeles dispatch reaches every neighborhood we cover within the city limits and into adjacent areas. Same-day Samsung service is generally available for any call landing before noon. Booking is open 24/7 through the form online.",
+    ],
+    nearbySlugs: ['santa-monica', 'beverly-hills', 'glendale', 'pasadena'],
+  },
+  'los-angeles-county/long-beach': {
+    titleTag: 'Samsung Refrigerator Repair Long Beach, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Long Beach, CA. Belmont Shore, Naples, El Dorado, downtown — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Long Beach Samsung calls split along the coastal-vs-inland divide that runs the length of the city. The coastal neighborhoods — Belmont Shore, Naples, the Peninsula, downtown — see slightly more gasket and control-board work because of the salt air, alongside the universal Samsung ice maker freeze-up. The inland neighborhoods like El Dorado, Bixby Knolls, and Park Estates have a more standard Samsung repair mix.",
+      "The coastal humidity in Long Beach makes the Samsung ice maker duct seal failure show up earlier than in inland cities. The warm humid air migration that frosts the ice room is faster when the ambient air is more humid. Same redesigned ice maker is the fix — it just needs to happen sooner in the unit's life on coastal Long Beach homes.",
+      "Coverage in Long Beach extends to Lakewood, Signal Hill, and the LA / Orange County edge. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['torrance', 'los-angeles', 'beverly-hills', 'santa-monica'],
+  },
+  'los-angeles-county/glendale': {
+    titleTag: 'Samsung Refrigerator Repair Glendale, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Glendale, CA. Adams Hill, Verdugo, Brand Blvd — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Glendale Samsung calls come in heaviest from the hillside neighborhoods — Adams Hill, Verdugo, Whiting Woods, the area up toward La Cañada Flintridge — and from the central Glendale residential blocks east of Brand Boulevard. The Samsung mix runs across French Door, 4-Door FlexZone, and Family Hub, with the standard ice maker freeze-up leading the call list and defrost-system faults a close second.",
+      "The summer heat in Glendale gets close to Inland Empire intensity in the foothills — afternoon temperatures regularly hit 100°F+ in late summer. That puts more load on the Samsung condenser system than in coastal LA, and a clogged condenser coil eventually thermal-shuts-down the compressor on a hot afternoon. Annual coil cleaning is the single most-skipped Samsung maintenance task.",
+      "Glendale shares dispatch with Pasadena, Burbank, La Cañada, and the Eagle Rock / Highland Park edge of LA proper. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['burbank', 'pasadena', 'los-angeles', 'sherman-oaks'],
+  },
+  'los-angeles-county/santa-monica': {
+    titleTag: 'Samsung Refrigerator Repair Santa Monica, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Santa Monica, CA. North of Montana, Sunset Park, downtown — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Santa Monica is a coastal city and that shapes the Samsung repair patterns we see here. The North of Montana neighborhoods, Sunset Park, the area around the pier and downtown — all of them see more gasket replacement work than the inland cities because the marine humidity is hard on the magnetic seals. We also see slightly accelerated control-board aging on units 8+ years old; salt air corrodes the rear PCB housing over time.",
+      "On the cooling side, the standard Samsung patterns hold — French Door ice maker freeze-ups (often slightly earlier in the unit's life on coastal homes), defrost-system faults, and the occasional inverter board failure. The redesigned Samsung ice maker is the fix for the freeze-up issue and is a single-visit job on most affected models.",
+      "Santa Monica coverage extends to Pacific Palisades, Brentwood, Mar Vista, and Venice. Same-day Samsung service for most calls before noon.",
+    ],
+    nearbySlugs: ['malibu', 'beverly-hills', 'west-hollywood', 'los-angeles'],
+  },
+  'los-angeles-county/burbank': {
+    titleTag: 'Samsung Refrigerator Repair Burbank, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Burbank, CA. Media District, Magnolia Park, the hillside — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Burbank summers run hot — the San Fernando Valley side of the city pushes 100°F+ regularly through late summer — and that's tough on Samsung condensers. The most common preventive Samsung call we get in Burbank is from owners whose units are running constantly without keeping up. A condenser coil cleaning and a verified condenser fan motor often resolves it without parts.",
+      "Cooling-failure-wise, the Samsung patterns we see in Burbank are the standard ones: French Door ice maker freeze-ups across Magnolia Park, the Media District, and the hillside neighborhoods, plus defrost-system faults that cause the fridge to warm up while the freezer stays cold. Single-visit fixes on both.",
+      "Burbank shares dispatch with Glendale, North Hollywood, Toluca Lake, and the Studio City edge of Sherman Oaks. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['glendale', 'sherman-oaks', 'pasadena', 'los-angeles'],
+  },
+  'los-angeles-county/pasadena': {
+    titleTag: 'Samsung Refrigerator Repair Pasadena, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Pasadena, CA. Bungalow Heaven, Old Pasadena, Hastings Ranch — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Pasadena Samsung repairs span the full housing-age range — historic Bungalow Heaven and the older Caltech-area neighborhoods sit alongside newer Hastings Ranch and East Pasadena subdivisions. The older homes see more defrost-system and gasket repairs on Samsung units that have been in place 8+ years. The newer homes see the universal French Door ice maker freeze-up call.",
+      "The summer heat in Pasadena reaches Inland Empire intensity by late summer, and the Samsung condenser thermal-shutdown calls come in routinely from August through September. Pulling the unit out, cleaning the condenser coil, and verifying the condenser fan motor is often the entire fix.",
+      "Pasadena coverage extends to South Pasadena, San Marino, Altadena, and La Cañada. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['glendale', 'burbank', 'los-angeles', 'santa-clarita'],
+  },
+  'los-angeles-county/torrance': {
+    titleTag: 'Samsung Refrigerator Repair Torrance, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Torrance, CA. Old Torrance, Hollywood Riviera, West Torrance — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "Torrance Samsung calls are a coastal-leaning mix — the city sits close enough to the ocean that the coastal humidity factor is real, especially in West Torrance and Hollywood Riviera. We see slightly more gasket work and slightly earlier ice maker freeze-up failures here than in the inland LA neighborhoods. The Old Torrance area inland sees a more standard Samsung repair mix.",
+      "On the cooling side, the standard Samsung patterns hold — French Door ice maker freeze-ups, defrost-system faults, dispenser leaks, and the occasional inverter board issue on older units. The redesigned Samsung ice maker is the single-visit fix for the freeze-up issue.",
+      "Torrance shares dispatch with Redondo Beach, Manhattan Beach, Palos Verdes, and the South Bay edge of LA. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['long-beach', 'los-angeles', 'santa-monica', 'beverly-hills'],
+  },
+  'los-angeles-county/beverly-hills': {
+    titleTag: 'Samsung Refrigerator Repair Beverly Hills, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Beverly Hills, CA. Trousdale, the Flats, Beverlywood — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Beverly Hills homes lean heavily on Samsung Family Hub, Bespoke, and 4-Door FlexZone units — particularly in Trousdale, Beverlywood, and the Flats north of Sunset. The smart-panel features on these higher-end units fail independently of the cooling system, so a frozen Family Hub touchscreen or a dead camera module doesn't mean a dead fridge. We can replace just the failed component without disturbing cooling.",
+      "On the cooling side, the universal Samsung ice maker freeze-up is the dominant call across all model tiers. Bespoke and Family Hub units suffer the same duct-seal failure as the standard French Door, and the redesigned ice maker assembly is the same single-visit fix.",
+      "Beverly Hills coverage extends to West Hollywood, Bel Air, Westwood, and Brentwood. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['west-hollywood', 'santa-monica', 'los-angeles', 'sherman-oaks'],
+  },
+  'los-angeles-county/west-hollywood': {
+    titleTag: 'Samsung Refrigerator Repair West Hollywood, CA',
+    metaDescription:
+      'Samsung refrigerator repair in West Hollywood, CA. Sunset Strip, Melrose, Beverly Center area — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "West Hollywood Samsung calls come heaviest from the high-rise condos along Sunset and the residential blocks south of Santa Monica Boulevard toward Beverly Center. The condo-installed Samsung mix tends to be French Door and 4-Door FlexZone with the standard freeze-up issue dominant. The single-family homes see a wider mix including some older Samsung side-by-side units that come in for door switch and dispenser work.",
+      "Apartment and condo Samsung repairs in WeHo have one specific quirk — kitchen ventilation is sometimes worse than in single-family homes, which means more humidity reaches the rear of the refrigerator and slightly accelerates the rear control board aging. Worth keeping the area behind the unit dust-free and verifying the condenser coil annually.",
+      "Coverage extends to Beverly Hills, Hollywood, Mid-Wilshire, and Hancock Park. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['beverly-hills', 'los-angeles', 'santa-monica', 'sherman-oaks'],
+  },
+  'los-angeles-county/sherman-oaks': {
+    titleTag: 'Samsung Refrigerator Repair Sherman Oaks, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Sherman Oaks, CA. Hills, the flats, Ventura Blvd — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Sherman Oaks Samsung repairs are split between the hills (south of Ventura Boulevard) and the flats (north of Ventura). The hillside neighborhoods are heavily Samsung Family Hub and Bespoke; the flats lean French Door and 4-Door FlexZone. Across both, the universal Samsung ice maker freeze-up is the most common single repair.",
+      "San Fernando Valley summers push Sherman Oaks into Inland-Empire-like temperatures by late afternoon, and the Samsung condenser thermal-shutdown calls follow every August. A clean condenser coil and a verified condenser fan motor is usually the entire fix when the unit is otherwise sound. Annual maintenance prevents most of these.",
+      "Sherman Oaks shares dispatch with Encino, Studio City, Van Nuys, and the rest of the SFV. Same-day Samsung service for most calls before noon.",
+    ],
+    nearbySlugs: ['woodland-hills', 'burbank', 'calabasas', 'beverly-hills'],
+  },
+  'los-angeles-county/woodland-hills': {
+    titleTag: 'Samsung Refrigerator Repair Woodland Hills, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Woodland Hills, CA. Warner Center, the hillside, Topanga Canyon — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "Woodland Hills sees some of the hottest summer temperatures in our entire coverage area — the western SFV regularly tops 105°F in late summer — and that drives a large fraction of the Samsung calls we run here. Condenser thermal shutdowns, 84C inverter-board failures, and the occasional compressor mount call from heat-cycled grommets are all elevated relative to coastal cities.",
+      "On the cooling-side issues, Woodland Hills Samsungs see the standard patterns: French Door ice maker freeze-ups, defrost-system faults, and dispenser leaks. The redesigned ice maker assembly is the standard fix for the freeze-up issue and is a single-visit job.",
+      "Woodland Hills coverage extends to Calabasas, Tarzana, Reseda, and the Topanga Canyon side. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['calabasas', 'sherman-oaks', 'malibu', 'santa-clarita'],
+  },
+  'los-angeles-county/calabasas': {
+    titleTag: 'Samsung Refrigerator Repair Calabasas, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Calabasas, CA. The Oaks, Mountain View Estates, Calabasas Park — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "Calabasas Samsung calls lean heavily Family Hub and Bespoke — the city's neighborhoods, particularly The Oaks, Mountain View Estates, and the gated Calabasas Park communities, are dense with high-end Samsung installations. The smart-panel issues we see here are independent of cooling: dead Family Hub touchscreens, frozen camera modules, Wi-Fi drops. All of those can be repaired by replacing just the failed component without touching the cooling side.",
+      "Summer heat in Calabasas mirrors Woodland Hills — late-summer afternoon temperatures push 105°F in the canyon-influenced microclimates. Samsung condenser thermal shutdowns are routine in August. Annual coil cleaning is the simplest preventive measure and we do it on every service visit when time allows.",
+      "Calabasas shares dispatch with Hidden Hills, Agoura Hills, Woodland Hills, and Malibu. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['malibu', 'woodland-hills', 'sherman-oaks', 'santa-clarita'],
+  },
+  'los-angeles-county/malibu': {
+    titleTag: 'Samsung Refrigerator Repair Malibu, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Malibu, CA. PCH homes, Point Dume, Malibu Park — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Malibu is the most coastal city in our entire coverage area and the salt-air factor on Samsung repairs is real. We see accelerated rear control-board aging on units 6+ years old, slightly elevated gasket replacement frequency from the marine humidity, and earlier ice-maker freeze-up failures (the warm humid air migration that drives the duct-seal failure happens faster when ambient humidity is high).",
+      "On the standard Samsung patterns — ice maker freeze-ups, defrost-system faults, dispenser leaks — the repair paths are the same as inland, just with a tighter calendar on when each failure shows up. Replacing the redesigned ice maker, the duct seal, and any visibly corroded harness component is routine on Malibu service visits.",
+      "Coverage runs the length of PCH from Topanga Canyon to the LA / Ventura county line, plus the Point Dume and Malibu Park hillside neighborhoods. Same-day Samsung service for most calls received before noon. Booking is open 24/7.",
+    ],
+    nearbySlugs: ['santa-monica', 'calabasas', 'woodland-hills', 'beverly-hills'],
+  },
+  'los-angeles-county/santa-clarita': {
+    titleTag: 'Samsung Refrigerator Repair Santa Clarita, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Santa Clarita, CA. Valencia, Saugus, Newhall, Canyon Country — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "Santa Clarita is the northernmost city in our LA County coverage and represents the largest single-city Samsung repair volume in the SCV. Valencia neighborhoods like Westridge, Stevenson Ranch, and Tesoro are heavy on French Door and Family Hub units with the universal Samsung ice maker freeze-up dominant. Saugus, Newhall, and Canyon Country see a wider age mix and more defrost-system and gasket repairs.",
+      "Summer heat in Santa Clarita is the Inland Empire pattern — 100°F+ for weeks at a time — and the Samsung condenser thermal shutdown calls roll in every August. Annual condenser coil cleaning is the prevention that most owners skip and the most-effective single Samsung maintenance task.",
+      "Santa Clarita coverage extends across all neighborhoods within city limits and to nearby Stevenson Ranch and Castaic. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['woodland-hills', 'calabasas', 'sherman-oaks', 'burbank'],
+  },
+
   // -- Orange County --
   'orange-county/anaheim': {
     titleTag: 'Samsung Refrigerator Repair Anaheim, CA',
