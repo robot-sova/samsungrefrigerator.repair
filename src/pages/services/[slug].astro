@@ -18,21 +18,7 @@ export async function getStaticPaths() {
 const { service } = Astro.props;
 
 const relatedCodes = ERROR_CODES.filter((c) => service.relatedErrorCodes.includes(c.code));
-
-const faqs = [
-  {
-    question: `Can you fix this on the first visit?`,
-    answer: `In most cases, yes. We carry the most-failed Samsung parts on the truck for the symptoms listed above. If a special-order part is needed we'll quote it on the diagnostic visit and return as soon as it lands.`,
-  },
-  {
-    question: `Do you service all Samsung refrigerator models?`,
-    answer: `Yes — Family Hub, Bespoke, French Door, 4-Door FlexZone, side-by-side, and top-freezer. If you have the model number ready when you call we can confirm parts availability before dispatch.`,
-  },
-  {
-    question: `Which counties do you cover for this repair?`,
-    answer: `${BUSINESS.areasServed.join(', ')} — same-day service is available across all five counties when calls land before noon.`,
-  },
-];
+const introParagraphs = service.longIntro.split('\n\n');
 ---
 
 <Layout
@@ -42,6 +28,10 @@ const faqs = [
   heroSubtitle={service.shortDescription}
 >
   <div class="maintext">
+    {introParagraphs.map((p) => <p>{p}</p>)}
+  </div>
+
+  <div class="maintext">
     <h2>Symptoms We Hear Most Often</h2>
     <ul>
       {service.symptoms.map((s) => <li>{s}</li>)}
@@ -49,14 +39,21 @@ const faqs = [
   </div>
 
   <div class="maintext">
-    <h2>Common Samsung-Specific Causes</h2>
+    <h2>Common Causes on Samsung Refrigerators</h2>
     <ul>
-      {service.commonCauses.map((c) => <li>{c}</li>)}
+      {service.causes.map((c) => (
+        <li>
+          <strong style="color:#fff;">{c.title}.</strong> {c.explanation}
+        </li>
+      ))}
     </ul>
-    <p>
-      Each of these has a different repair path. We diagnose first and quote before any work
-      starts — no surprise charges.
-    </p>
+  </div>
+
+  <div class="maintext">
+    <h2>How We Diagnose &amp; Repair</h2>
+    <ol style="margin-left:50px;">
+      {service.repairSteps.map((step) => <li style="margin:0 0 0 0; padding:10px 5px 10px 5px; color:#fff; font-size:1.1em;">{step}</li>)}
+    </ol>
   </div>
 
   {relatedCodes.length > 0 && (
@@ -74,6 +71,11 @@ const faqs = [
   )}
 
   <div class="maintext">
+    <h2>When You Should Call vs DIY</h2>
+    <p>{service.diyVsCall}</p>
+  </div>
+
+  <div class="maintext">
     <h2>Available in All Five Counties</h2>
     <ul>
       {COUNTIES.map((county) => (
@@ -84,10 +86,13 @@ const faqs = [
         </li>
       ))}
     </ul>
-    <CallCTA />
   </div>
 
-  <FAQ faqs={faqs} />
+  <FAQ faqs={service.faq.map((f) => ({ question: f.q, answer: f.a }))} />
 
   <RelatedLinks excludeServiceSlug={service.slug} />
+
+  <div class="maintext">
+    <CallCTA />
+  </div>
 </Layout>

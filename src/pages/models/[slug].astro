@@ -2,6 +2,7 @@
 import Layout from '~/layouts/Layout.astro';
 import CallCTA from '~/components/CallCTA.astro';
 import RelatedLinks from '~/components/RelatedLinks.astro';
+import FAQ from '~/components/FAQ.astro';
 import { MODELS } from '~/data/models';
 import { BUSINESS } from '~/data/business';
 
@@ -13,22 +14,31 @@ export async function getStaticPaths() {
 }
 
 const { model } = Astro.props;
-const description = `${model.title}: ${model.description.slice(0, 110)} Call ${BUSINESS.phoneDisplay}.`;
+const description = `${model.description} Samsung repair across ${BUSINESS.areasServed.length} counties. Call ${BUSINESS.phoneDisplay}.`;
+const introParagraphs = model.longIntro.split('\n\n');
 ---
 
 <Layout
   title={`${model.title} | ${BUSINESS.phoneDisplay}`}
   description={description.slice(0, 160)}
   heroTitle={model.title}
+  heroSubtitle={model.description}
 >
   <div class="maintext">
-    <p>{model.description}</p>
+    {introParagraphs.map((p) => <p>{p}</p>)}
   </div>
 
   <div class="maintext">
-    <h2>Issues We See Most on This Platform</h2>
+    <h2>Common Issues on This Model</h2>
     <ul>
       {model.commonIssues.map((issue) => <li>{issue}</li>)}
+    </ul>
+  </div>
+
+  <div class="maintext">
+    <h2>Typical Repairs We Perform</h2>
+    <ul>
+      {model.typicalRepairs.map((r) => <li>{r}</li>)}
     </ul>
   </div>
 
@@ -39,8 +49,13 @@ const description = `${model.title}: ${model.description.slice(0, 110)} Call ${B
       <a style="color:#fff; font-weight:700;" href={BUSINESS.phoneTel}>{BUSINESS.phoneDisplay}</a>
       to book.
     </p>
-    <CallCTA />
   </div>
 
+  <FAQ faqs={model.faq.map((f) => ({ question: f.q, answer: f.a }))} />
+
   <RelatedLinks />
+
+  <div class="maintext">
+    <CallCTA />
+  </div>
 </Layout>
