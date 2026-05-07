@@ -10,7 +10,8 @@ export interface Props {
   canonicalURL?: string;
   ogImage?: string;
   showHero?: boolean;
-  pageTitle?: string;
+  heroTitle?: string;
+  heroSubtitle?: string;
 }
 
 const {
@@ -19,8 +20,11 @@ const {
   canonicalURL,
   ogImage,
   showHero = false,
-  pageTitle,
+  heroTitle,
+  heroSubtitle,
 } = Astro.props;
+
+const isHomepage = !heroTitle;
 ---
 
 <!DOCTYPE html>
@@ -66,12 +70,24 @@ const {
   <body>
     <div class="tiledBackground">
       <div id="topblock"></div>
-      <h1 style="text-align:center;">
-        <a class="lg" href="/">{BUSINESS.name.toUpperCase()}</a>
-      </h1>
-      <p style="font-size:1.3em;font-weight:900; max-width:590px; margin:0 auto 0 auto; padding:10px 30px 30px 0; text-align: center;">
-        {BUSINESS.areasServed.join(' • ')}
-      </p>
+
+      {isHomepage ? (
+        <>
+          <h1 style="text-align:center;">
+            <a class="lg" href="/">{BUSINESS.name.toUpperCase()}</a>
+          </h1>
+          <p style="font-size:1.3em;font-weight:900; max-width:590px; margin:0 auto; padding:10px 30px 30px 0; text-align:center; text-wrap:balance;">
+            {BUSINESS.areasServed.join(' • ')}
+          </p>
+        </>
+      ) : (
+        <>
+          <a class="brand-link" href="/">{BUSINESS.name.toUpperCase()}</a>
+          <h1 class="hero-title">{heroTitle}</h1>
+          {heroSubtitle && <p class="hero-subtitle">{heroSubtitle}</p>}
+        </>
+      )}
+
       <p style="color:#ffffff; font-weight:900;font-family:'Ubuntu', sans-serif; font-size:2em; text-align:center;text-shadow: #5d0394 2px 0 20px;">
         <a class="phone" style="color:#ffffff;" href={BUSINESS.phoneTel}>{BUSINESS.phoneDisplay}</a>
       </p>
@@ -136,13 +152,7 @@ const {
       )}
 
       <main>
-        {pageTitle && (
-          <article class="region prose wrapper">
-            <h2 style="text-align:center;">{pageTitle}</h2>
-          </article>
-        )}
         <slot />
-
         <Footer />
       </main>
     </div>
