@@ -47,7 +47,6 @@ const faqs = [
       <a style="color:#fff; font-weight:700;" href={BUSINESS.phoneTel}>{BUSINESS.phoneDisplay}</a>
       or pick your city below.
     </p>
-    <CallCTA />
   </div>
 
   <CitiesGrid countySlug={county.slug} />
@@ -55,4 +54,8 @@ const faqs = [
   <ServicesGrid heading="Samsung Repair Services Offered Across This County" />
 
   <FAQ faqs={faqs} heading={`${county.name} FAQ`} />
+
+  <div class="maintext">
+    <CallCTA />
+  </div>
 </Layout>
