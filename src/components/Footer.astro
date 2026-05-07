@@ -2,51 +2,77 @@
 import { BUSINESS } from '~/data/business';
 import { SERVICES } from '~/data/services';
 import { COUNTIES } from '~/data/locations';
+import Brand from './Brand.astro';
+import Icon from './Icon.astro';
+
+const year = new Date().getFullYear();
 ---
 
-<footer class="maintext" style="margin-top:40px;">
-  <h2>{BUSINESS.name}</h2>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <Brand />
+        <div class="footer-nap">
+          <p>
+            <strong>Phone:</strong>
+            <a href={BUSINESS.phoneTel}>{BUSINESS.phoneDisplay}</a>
+          </p>
+          <p>
+            <strong>Email:</strong>
+            <a href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a>
+          </p>
+          <p><strong>Hours:</strong> {BUSINESS.hoursDisplay}</p>
+          <p><strong>Booking:</strong> {BUSINESS.bookingNote}</p>
+          <p style="font-style: italic; opacity: 0.8;">Mobile service — no storefront. Founded {BUSINESS.founded}.</p>
+        </div>
+        <div class="footer-social" aria-label="Social profiles">
+          <a href="#" aria-label="Google Business profile"><Icon name="globe" size={18} /></a>
+          <a href="#" aria-label="Yelp profile"><Icon name="star" size={18} /></a>
+          <a href="#" aria-label="Facebook"><Icon name="facebook" size={18} /></a>
+          <a href="#" aria-label="YouTube"><Icon name="youtube" size={18} /></a>
+        </div>
+      </div>
 
-  <p style="font-style:italic; opacity:0.85;">Mobile service — no storefront. We come to you.</p>
+      <div class="footer-col">
+        <h3>Services</h3>
+        <ul>
+          {SERVICES.map((s) => (
+            <li>
+              <a href={`/services/${s.slug}/`}>{s.title.replace('Samsung ', '').replace(' Repair', '')}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-  <p>
-    <strong>Phone:</strong>
-    <a style="color:#fff;" href={BUSINESS.phoneTel}>{BUSINESS.phoneDisplay}</a>
-  </p>
-  <p>
-    <strong>Email:</strong>
-    <a style="color:#fff;" href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a>
-  </p>
-  <p><strong>Hours:</strong> {BUSINESS.hoursDisplay}</p>
-  <p><strong>Booking:</strong> {BUSINESS.bookingNote}</p>
-  <p><strong>Founded:</strong> {BUSINESS.founded}</p>
+      <div class="footer-col">
+        <h3>Service Area</h3>
+        <ul>
+          {COUNTIES.map((county) => (
+            <li>
+              <a href={`/service-area/${county.slug}/`}>{county.name}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-  <h3>Repair Services</h3>
-  <ul role="list" style="margin-left:30px;">
-    {SERVICES.map((s) => (
-      <li>
-        <a style="color:#fff;" href={`/services/${s.slug}/`}>{s.title}</a>
-      </li>
-    ))}
-  </ul>
+      <div class="footer-col">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="/error-codes/">Error Codes</a></li>
+          <li><a href="/models/">Samsung Models</a></li>
+          <li><a href="/book">Book Online</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/sitemap-index.xml">Sitemap</a></li>
+        </ul>
+      </div>
+    </div>
 
-  <h3>Service Areas</h3>
-  <ul role="list" style="margin-left:30px;">
-    {COUNTIES.map((county) => (
-      <li>
-        <a style="color:#fff;" href={`/service-area/${county.slug}/`}>{county.name}</a>
-      </li>
-    ))}
-  </ul>
-
-  <h3>Quick Links</h3>
-  <p style="margin-top:10px;">
-    <a style="color:#fff;" href="/">Home</a> &nbsp;|&nbsp;
-    <a style="color:#fff;" href="/services/">All Services</a> &nbsp;|&nbsp;
-    <a style="color:#fff;" href="/error-codes/">Error Codes</a> &nbsp;|&nbsp;
-    <a style="color:#fff;" href="/models/">Samsung Models</a> &nbsp;|&nbsp;
-    <a style="color:#fff;" href="/service-area/">Service Area</a> &nbsp;|&nbsp;
-    <a style="color:#fff;" href="/book">Book Online</a> &nbsp;|&nbsp;
-    <a style="color:#fff;" href="/sitemap-index.xml">Sitemap</a>
-  </p>
+    <div class="footer-bottom">
+      <div>© {year} {BUSINESS.name}. Mobile Samsung refrigerator repair across Southern California.</div>
+      <div class="footer-bottom__links">
+        <a href="/sitemap-index.xml">Sitemap</a>
+      </div>
+    </div>
+  </div>
 </footer>

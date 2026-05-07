@@ -1,7 +1,10 @@
 ---
 import '~/styles/styles.css';
 import SEO from './SEO.astro';
+import TopBar from '~/components/TopBar.astro';
+import Header from '~/components/Header.astro';
 import Footer from '~/components/Footer.astro';
+import Hero from '~/components/Hero.astro';
 import { BUSINESS } from '~/data/business';
 
 export interface Props {
@@ -9,9 +12,12 @@ export interface Props {
   description?: string;
   canonicalURL?: string;
   ogImage?: string;
-  showHero?: boolean;
+  // Backwards-compatible: pages still pass heroTitle / heroSubtitle.
+  // When set, Layout auto-renders the inner-page Hero so pages don't have to.
   heroTitle?: string;
   heroSubtitle?: string;
+  // New: pages can disable the auto-hero (e.g., the homepage which renders its own).
+  noHero?: boolean;
 }
 
 const {
@@ -19,22 +25,22 @@ const {
   description,
   canonicalURL,
   ogImage,
-  showHero = false,
   heroTitle,
   heroSubtitle,
+  noHero = false,
 } = Astro.props;
 
-const isHomepage = !heroTitle;
+const shouldRenderHero = !noHero && Boolean(heroTitle);
 ---
 
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/images/icon.ico" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#9EA3FA" />
+    <meta name="theme-color" content="#facc15" />
     <meta name="google-site-verification" content="az0vfIYzdWThop57VbZ6qfZ085oMnRRZUsz7JSchKsU" />
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4DNFF1D67L"></script>
@@ -51,110 +57,21 @@ const isHomepage = !heroTitle;
       canonicalURL={canonicalURL}
       ogImage={ogImage}
     />
-
-    <link
-      rel="preload"
-      href="/fonts/SilkSerif-ExtraLight.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin=""
-    />
-    <link
-      rel="preload"
-      href="/fonts/SilkSerif-Light.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin=""
-    />
   </head>
   <body>
-    <div class="tiledBackground">
-      <div id="topblock"></div>
+    <a href="#main" class="skip-link">Skip to content</a>
 
-      {isHomepage ? (
-        <>
-          <h1 style="text-align:center;">
-            <a class="lg" href="/">{BUSINESS.name.toUpperCase()}</a>
-          </h1>
-          <p style="font-size:1.3em;font-weight:900; max-width:590px; margin:0 auto; padding:10px 30px 30px 0; text-align:center; text-wrap:balance;">
-            {BUSINESS.areasServed.join(' • ')}
-          </p>
-        </>
-      ) : (
-        <>
-          <a class="brand-link" href="/">{BUSINESS.name.toUpperCase()}</a>
-          <h1 class="hero-title">{heroTitle}</h1>
-          {heroSubtitle && <p class="hero-subtitle">{heroSubtitle}</p>}
-        </>
-      )}
+    <TopBar />
+    <Header />
 
-      <p style="color:#ffffff; font-weight:900;font-family:'Ubuntu', sans-serif; font-size:2em; text-align:center;text-shadow: #5d0394 2px 0 20px;">
-        <a class="phone" style="color:#ffffff;" href={BUSINESS.phoneTel}>{BUSINESS.phoneDisplay}</a>
-      </p>
-      <p class="bt"><a aria-label="Call Us" href={BUSINESS.phoneTel} class="button-85">&nbsp;CALL US&nbsp;</a></p>
-      <p class="bt"><a aria-label="Book Us" href="/book" class="button-85">&nbsp;BOOK US</a></p>
-      <br />
+    {shouldRenderHero && (
+      <Hero variant="inner" title={heroTitle!} subtitle={heroSubtitle} />
+    )}
 
-      {showHero ? (
-        <div class="menu">
-          <a style="--clr: #7808d0" class="button" href="/#issues">
-            <span class="button__icon-wrapper">
-              <svg width="10" class="button__icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 15">
-                <path fill="currentColor" d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"></path>
-              </svg>
-              <svg class="button__icon-svg button__icon-svg--copy" xmlns="http://www.w3.org/2000/svg" width="10" fill="none" viewBox="0 0 14 15">
-                <path fill="currentColor" d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"></path>
-              </svg>
-            </span>
-            Main Issues
-          </a>
-          <a style="--clr: #7808d0" class="button" href="/#repair">
-            <span class="button__icon-wrapper">
-              <svg width="10" class="button__icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 15">
-                <path fill="currentColor" d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"></path>
-              </svg>
-              <svg class="button__icon-svg button__icon-svg--copy" xmlns="http://www.w3.org/2000/svg" width="10" fill="none" viewBox="0 0 14 15">
-                <path fill="currentColor" d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"></path>
-              </svg>
-            </span>
-            Repair
-          </a>
-          <a style="--clr: #7808d0" class="button" href="/#maintenance">
-            <span class="button__icon-wrapper">
-              <svg width="10" class="button__icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 15">
-                <path fill="currentColor" d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"></path>
-              </svg>
-              <svg class="button__icon-svg button__icon-svg--copy" xmlns="http://www.w3.org/2000/svg" width="10" fill="none" viewBox="0 0 14 15">
-                <path fill="currentColor" d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"></path>
-              </svg>
-            </span>
-            Maintenance
-          </a>
-          <a style="--clr: #7808d0" class="button" href="/#areas">
-            <span class="button__icon-wrapper">
-              <svg width="10" class="button__icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 15">
-                <path fill="currentColor" d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"></path>
-              </svg>
-              <svg class="button__icon-svg button__icon-svg--copy" xmlns="http://www.w3.org/2000/svg" width="10" fill="none" viewBox="0 0 14 15">
-                <path fill="currentColor" d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"></path>
-              </svg>
-            </span>
-            Service Areas
-          </a>
-        </div>
-      ) : (
-        <div class="menu">
-          <a style="--clr: #7808d0" class="button" href="/services/">Services</a>
-          <a style="--clr: #7808d0" class="button" href="/error-codes/">Error Codes</a>
-          <a style="--clr: #7808d0" class="button" href="/models/">Models</a>
-          <a style="--clr: #7808d0" class="button" href="/service-area/">Service Areas</a>
-        </div>
-      )}
+    <main id="main">
+      <slot />
+    </main>
 
-      <main>
-        <slot />
-        <Footer />
-      </main>
-    </div>
+    <Footer />
   </body>
 </html>

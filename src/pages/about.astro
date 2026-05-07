@@ -1,0 +1,73 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import { BUSINESS } from '~/data/business';
+
+const title = `About | ${BUSINESS.name} | ${BUSINESS.phoneDisplay}`;
+const description = `Mobile Samsung refrigerator repair specialists serving ${BUSINESS.areasServed.join(', ')} since ${BUSINESS.founded}.`;
+---
+
+<Layout
+  title={title}
+  description={description}
+  heroTitle="About Samsung Refrigerator Repair"
+  heroSubtitle="Mobile Samsung refrigerator service across Southern California, since 2010."
+>
+  <div class="container section">
+    <div class="page-grid">
+      <div class="page-main">
+        <div class="prose-block">
+          <h2>What we do</h2>
+          <p>
+            We're a mobile appliance repair service specializing exclusively in Samsung refrigerators
+            — Family Hub, Bespoke, French Door, 4-Door FlexZone, side-by-side, and top-freezer
+            models. No retail counter, no storefront. Every job is on-site at the customer's home,
+            usually same-day.
+          </p>
+          <p>
+            Working only on one brand means we know the quirks. The famous Samsung French Door ice
+            maker freeze-up, the Twin Cooling defrost-system fault that warms the fridge while the
+            freezer stays cold, the inverter board that throws an 84C code and looks like a dead
+            compressor — these are the calls we run every day. Our trucks carry the Samsung-specific
+            parts that fail most often, so most repairs finish on the first visit.
+          </p>
+        </div>
+
+        <div class="prose-block">
+          <h2>Where we work</h2>
+          <p>
+            Same-day Samsung service across {BUSINESS.areasServed.length} Southern California counties:
+            {BUSINESS.areasServed.join(', ')}. Calls received before noon usually receive same-day
+            scheduling.
+          </p>
+        </div>
+
+        <div class="prose-block">
+          <h2>How we charge</h2>
+          <p>
+            A diagnostic visit covers travel, inspection, and a written quote. Repair pricing is
+            presented before any work starts — no surprise charges, no upsells you didn't ask for.
+            The diagnostic fee is waived if you proceed with the recommended repair. Founded {BUSINESS.founded}.
+          </p>
+        </div>
+
+        <div class="prose-block">
+          <h2>How to reach us</h2>
+          <p>
+            Call <a href={BUSINESS.phoneTel}><strong>{BUSINESS.phoneDisplay}</strong></a> during
+            service hours ({BUSINESS.hoursDisplay}) or email
+            <a href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a>. Online booking is open 24/7.
+          </p>
+        </div>
+      </div>
+
+      <aside class="page-sidebar">
+        <div class="cta-card">
+          <h3>Get Samsung service today</h3>
+          <a class="cta-card__phone" href={BUSINESS.phoneTel}>{BUSINESS.phoneDisplay}</a>
+          <a class="btn btn-primary cta-card__btn" href="/book">Book Online</a>
+          <p style="margin-top: 12px; font-size: 0.85rem;">{BUSINESS.hoursDisplay}</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</Layout>

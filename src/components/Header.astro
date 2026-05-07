@@ -1,0 +1,48 @@
+---
+import { BUSINESS } from '~/data/business';
+import Brand from './Brand.astro';
+import MegaMenu from './MegaMenu.astro';
+import Icon from './Icon.astro';
+---
+
+<header class="site-header">
+  <div class="container">
+    <div class="site-header__row">
+      <button
+        class="hamburger"
+        type="button"
+        aria-label="Open menu"
+        aria-controls="mobile-drawer"
+        aria-expanded="false"
+        data-hamburger
+      >
+        <Icon name="menu" size={22} />
+      </button>
+
+      <Brand />
+
+      <MegaMenu />
+
+      <div class="header-cta">
+        <a class="header-cta__phone" href={BUSINESS.phoneTel} aria-label={`Call ${BUSINESS.phoneDisplay}`}>
+          <Icon name="phone" size={18} />
+          {BUSINESS.phoneDisplay}
+        </a>
+        <a class="btn btn-primary btn-sm" href="/book" style="display: none;" data-show-on-desktop>
+          Book Online
+        </a>
+        <a class="header-cta__icon-button" href={BUSINESS.phoneTel} aria-label={`Call ${BUSINESS.phoneDisplay}`}>
+          <Icon name="phone" size={20} />
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  @media (min-width: 1024px) {
+    [data-show-on-desktop] {
+      display: inline-flex !important;
+    }
+  }
+</style>

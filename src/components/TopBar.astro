@@ -1,0 +1,16 @@
+---
+import { BUSINESS } from '~/data/business';
+---
+
+<div class="topbar">
+  <div class="container">
+    <div class="topbar__row">
+      <div>Mon–Sun 8 AM – 8 PM · Booking 24/7</div>
+      <div class="topbar__right">
+        <a href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a>
+        <span class="topbar__sep">·</span>
+        <span>Serving LA, OC, Riverside, San Bernardino, Ventura</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,17 +1,24 @@
 ---
 import { BUSINESS } from '~/data/business';
+import Icon from './Icon.astro';
 
 export interface Props {
   callLabel?: string;
   bookLabel?: string;
+  align?: 'left' | 'center';
 }
 
-const { callLabel = 'CALL US', bookLabel = 'BOOK US' } = Astro.props;
+const {
+  callLabel = `Call ${BUSINESS.phoneDisplay}`,
+  bookLabel = 'Book Online',
+  align = 'left',
+} = Astro.props;
 ---
 
-<p class="bt">
-  <a aria-label="Call Us" href={BUSINESS.phoneTel} class="button-85">&nbsp;&nbsp;{callLabel}&nbsp;&nbsp;</a>
-</p>
-<p class="bt">
-  <a aria-label="Book Us" href="/book" class="button-85">&nbsp;&nbsp;{bookLabel}&nbsp;</a>
-</p>
+<div style={`display:flex; gap:12px; flex-wrap:wrap; margin: 16px 0; ${align === 'center' ? 'justify-content:center;' : ''}`}>
+  <a class="btn btn-primary" href={BUSINESS.phoneTel}>
+    <Icon name="phone" size={18} />
+    {callLabel}
+  </a>
+  <a class="btn btn-secondary" href="/book">{bookLabel}</a>
+</div>

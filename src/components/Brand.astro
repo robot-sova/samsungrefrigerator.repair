@@ -1,0 +1,13 @@
+---
+export interface Props {
+  href?: string;
+  className?: string;
+}
+const { href = '/', className = '' } = Astro.props;
+---
+
+<a href={href} class={`brand ${className}`} aria-label="Samsung Refrigerator Repair — home">
+  <span>Samsung</span>
+  <span class="brand__dot" aria-hidden="true"></span>
+  <span class="brand__name-line2">Refrigerator Repair</span>
+</a>

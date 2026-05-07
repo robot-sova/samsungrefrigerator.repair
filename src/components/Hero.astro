@@ -1,16 +1,71 @@
 ---
-import CallCTA from './CallCTA.astro';
+import { BUSINESS } from '~/data/business';
+import Icon from './Icon.astro';
 
-export interface Props {
-  title: string;
-  subtitle?: string;
+export interface Crumb {
+  label: string;
+  href?: string;
 }
 
-const { title, subtitle } = Astro.props;
+export interface Props {
+  variant?: 'home' | 'inner';
+  kicker?: string;
+  title: string;
+  subtitle?: string;
+  bgImage?: string;
+  showCTAs?: boolean;
+  showTrust?: boolean;
+  breadcrumbs?: Crumb[];
+}
+
+const {
+  variant = 'inner',
+  kicker,
+  title,
+  subtitle,
+  bgImage = '/images/samsung-refrigerator-repair-services.webp',
+  showCTAs = false,
+  showTrust = false,
+  breadcrumbs = [],
+} = Astro.props;
+
+const isHome = variant === 'home';
 ---
 
-<div class="maintext">
-  <h2 style="text-align:center; margin-left:0;">{title}</h2>
-  {subtitle && <p style="text-align:center;">{subtitle}</p>}
-  <CallCTA />
-</div>
+<section class={`hero hero--${variant}`}>
+  {isHome && (
+    <div class="hero__bg" style={`background-image: url('${bgImage}');`} aria-hidden="true"></div>
+  )}
+  <div class="container">
+    <div class="hero__inner">
+      {breadcrumbs.length > 0 && (
+        <nav class="crumbs" aria-label="Breadcrumb">
+          {breadcrumbs.map((c, i) => (
+            <>
+              {c.href ? <a href={c.href}>{c.label}</a> : <span>{c.label}</span>}
+              {i < breadcrumbs.length - 1 && <span class="crumbs__sep">/</span>}
+            </>
+          ))}
+        </nav>
+      )}
+      {kicker && <div class="hero__kicker">{kicker}</div>}
+      <h1 class="hero__title">{title}</h1>
+      {subtitle && <p class="hero__subtitle">{subtitle}</p>}
+      {showCTAs && (
+        <div class="hero__cta-row">
+          <a class="btn btn-primary" href={BUSINESS.phoneTel}>
+            <Icon name="phone" size={18} />
+            Call {BUSINESS.phoneDisplay}
+          </a>
+          <a class="btn btn-secondary" href="/book">Book Online</a>
+        </div>
+      )}
+      {showTrust && (
+        <p class="hero__trust">
+          <span class="stars">★★★★★</span>
+          &nbsp;Trusted since {BUSINESS.founded} · Mobile service · 90-day warranty
+        </p>
+      )}
+    </div>
+  </div>
+</section>
