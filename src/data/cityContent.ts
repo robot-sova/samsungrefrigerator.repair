@@ -117,6 +117,140 @@ export const CITY_CONTENT: Record<string, CityContent> = {
     ],
     nearbySlugs: ['murrieta', 'menifee', 'temecula', 'corona'],
   },
+  // -- San Bernardino County --
+  'san-bernardino-county/san-bernardino': {
+    titleTag: 'Samsung Refrigerator Repair San Bernardino, CA',
+    metaDescription:
+      'Samsung refrigerator repair in San Bernardino, CA. Same-day service for ice maker, defrost, and 84C compressor issues. Call 424-407-1019.',
+    paragraphs: [
+      "San Bernardino summers don't forgive a neglected refrigerator. The valley heat sits at 100°F+ for weeks on end, and a Samsung condenser coil that hasn't been cleaned in three years will eventually thermal-shutdown on a hot afternoon. We see this exact sequence every August across the city — from the neighborhoods near Cal State San Bernardino out to the Verdemont and Del Rosa areas. The fix is usually preventive: pull the unit, clean the coil, verify the condenser fan motor.",
+      "On the cooling-side issues, San Bernardino sees the standard Samsung patterns — French Door ice maker freeze-ups, defrost-system faults causing the fridge to warm while the freezer stays cold, and the occasional inverter board failure. The redesigned Samsung ice maker addresses the freeze-up issue and is a single-visit replacement on most affected models.",
+      "Coverage in San Bernardino reaches Highland, Loma Linda, Colton, and Rialto on the same dispatch. Same-day Samsung service is generally available for any call landing before noon. Booking is open 24/7 through the form online.",
+    ],
+    nearbySlugs: ['colton', 'rialto', 'loma-linda', 'redlands'],
+  },
+  'san-bernardino-county/fontana': {
+    titleTag: 'Samsung Refrigerator Repair Fontana, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Fontana, CA. North Fontana, South Fontana, Sierra Lakes — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Fontana is one of our higher-volume cities for Samsung repairs in San Bernardino County. The mix of newer subdivisions in North Fontana and Sierra Lakes alongside older South Fontana neighborhoods means we see the full range of Samsung failure modes — French Door ice makers freezing up on units 4-7 years old, defrost-system faults on units 6-10 years old, and the occasional compressor or inverter board issue on units pushing 12+ years.",
+      "Inland Empire summers also drive a steady stream of condenser-related calls in Fontana. A clogged condenser coil works fine in February and shuts down in August. We always check the coil during any service visit because it's a 5-minute task that prevents the next call.",
+      "Fontana shares dispatch with Rialto, Rancho Cucamonga, and Ontario. Same-day Samsung service is the goal for any call received before noon. Call to confirm an arrival window in Fontana.",
+    ],
+    nearbySlugs: ['rialto', 'rancho-cucamonga', 'ontario', 'colton'],
+  },
+  'san-bernardino-county/rancho-cucamonga': {
+    titleTag: 'Samsung Refrigerator Repair Rancho Cucamonga, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Rancho Cucamonga, CA. Etiwanda, Alta Loma, Victoria Gardens — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Rancho Cucamonga is a Samsung-heavy city across all three of its main areas — Alta Loma in the north, the central area around Victoria Gardens, and Etiwanda to the east. The local housing stock skews newer than most of San Bernardino County, which means the Samsung mix leans toward French Door and 4-Door FlexZone units. The most common Rancho call we run is the well-known Samsung ice maker freeze-up on those platforms.",
+      "On the higher-end Family Hub units we see in the Etiwanda hillside neighborhoods, the smart-panel issues are independent of the cooling system — a dead Family Hub touchscreen does not affect cooling, and replacing the display assembly is a discrete repair. We service both halves regardless of how the panel is behaving.",
+      "Rancho Cucamonga sits between Upland and Fontana on the I-210 corridor. We routinely combine calls across all three from the same dispatch. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['upland', 'fontana', 'ontario', 'chino-hills'],
+  },
+  'san-bernardino-county/ontario': {
+    titleTag: 'Samsung Refrigerator Repair Ontario, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Ontario, CA. Same-day service in central Ontario, near Ontario Mills, and the airport area. Call 424-407-1019.',
+    paragraphs: [
+      "Ontario homeowners see the same Samsung repair patterns as the rest of the Inland Empire — ice maker freeze-ups on French Door units, defrost-system faults causing fridge-warm-freezer-cold, and condenser issues from summer heat. We cover Ontario from the central neighborhoods through the New Model Colony area and out to the eastern edge near Ontario Mills.",
+      "The Ontario calls that come in most often are split between two patterns. The first is the Samsung ice maker that's frozen solid — universal across French Door models, single-visit fix with a redesigned ice maker. The second is the dispenser leak — usually a cracked water inlet valve, occasionally a kinked supply line behind the unit.",
+      "Coverage in Ontario reaches Chino, Upland, Rancho Cucamonga, and the Fontana side easily. Same-day Samsung service available for most calls. Call before noon for the best chance of a same-day arrival.",
+    ],
+    nearbySlugs: ['chino', 'upland', 'rancho-cucamonga', 'chino-hills'],
+  },
+  'san-bernardino-county/chino': {
+    titleTag: 'Samsung Refrigerator Repair Chino, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Chino, CA. Old Chino, the Preserve, agricultural neighborhoods — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "Chino has a wide age range of housing — from the older neighborhoods around Old Chino to the newer subdivisions in the Preserve — and our Samsung repair calls reflect that. Older units (10+ years) tend to come in for compressor mount, defrost timer, and door gasket work. Newer units (4-7 years) come in almost exclusively for the famous Samsung ice maker freeze-up.",
+      "On the older Samsung units we always check the inverter board before assuming the compressor itself is at fault. The 84C error code that everyone associates with a dead compressor is more often a board issue, and the board is a much cheaper repair. Skipping that diagnostic step is the most expensive mistake people make on Samsung refrigerators.",
+      "Chino sits next to Chino Hills, Ontario, and the Riverside County edge at Eastvale and Norco. We cover all four routinely from the same dispatch. Same-day Samsung service for most calls landing before noon.",
+    ],
+    nearbySlugs: ['chino-hills', 'ontario', 'upland', 'rancho-cucamonga'],
+  },
+  'san-bernardino-county/chino-hills': {
+    titleTag: 'Samsung Refrigerator Repair Chino Hills, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Chino Hills, CA. Hillside neighborhoods, the Shoppes area — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Chino Hills is one of the most Samsung-heavy cities in our entire coverage area. The hillside neighborhoods — Western Hills, Carbon Canyon, the area around the Shoppes — are dense with French Door, 4-Door FlexZone, Bespoke, and Family Hub refrigerators. The most common single Samsung repair we do in Chino Hills is the ice maker freeze-up, and we run multiple of them every week.",
+      "The Family Hub touchscreens we service in Chino Hills tend to fail independently of the cooling system. A frozen or dead screen looks alarming but doesn't affect the underlying refrigerator — cooling continues normally because the main control board on the back of the unit is independent. Replacing the display assembly restores the smart features without touching the cooling side.",
+      "Chino Hills sits between Chino and the Orange County border at Yorba Linda and Brea. We routinely combine Chino Hills calls with stops in Chino, Ontario, and Yorba Linda. Same-day Samsung service for most calls.",
+    ],
+    nearbySlugs: ['chino', 'ontario', 'rancho-cucamonga', 'upland'],
+  },
+  'san-bernardino-county/upland': {
+    titleTag: 'Samsung Refrigerator Repair Upland, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Upland, CA. Mountain Avenue, North Upland, downtown — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Upland sits between Rancho Cucamonga and Claremont on the I-210, and our Samsung repair calls here mirror Rancho's patterns — heavy French Door and 4-Door FlexZone presence, with the Samsung ice maker freeze-up leading the call list. The North Upland neighborhoods up against the foothills tend to have higher-end Family Hub and Bespoke units; the central and southern parts of the city skew toward standard French Door models.",
+      "We see fewer compressor-side calls in Upland than in some other Inland Empire cities, partly because the elevation gives a small but real cooling advantage during summer heat waves. Condenser coils still need annual cleaning — that's universal — but the thermal-shutdown calls are slightly less frequent here.",
+      "Coverage extends naturally into Rancho Cucamonga, Ontario, Claremont (LA County), and Montclair. Same-day Samsung service for any call before noon. Booking online is open 24/7.",
+    ],
+    nearbySlugs: ['rancho-cucamonga', 'ontario', 'chino-hills', 'fontana'],
+  },
+  'san-bernardino-county/redlands': {
+    titleTag: 'Samsung Refrigerator Repair Redlands, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Redlands, CA. University area, downtown, the foothill neighborhoods — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "Redlands is a tenured city — the University of Redlands has been there a long time, the housing stock spans a century, and our Samsung repair calls cover correspondingly old-and-new mixes. The newer eastern Redlands neighborhoods see standard French Door ice maker calls. The older central and downtown areas have an older Samsung mix that runs into more defrost-system, gasket, and compressor-mount issues.",
+      "On the older Samsung units we always check the inverter board first when the panel reports 84C compressor-start failure. The inverter board is roughly an eighth of the cost of a compressor and is the more common failure. Replacing the right part on the first visit is the difference between a $300 repair and a $1,200 one.",
+      "Redlands sits east of San Bernardino with easy reach to Loma Linda, Yucaipa, and Highland. Same dispatch zone, same-day Samsung service usually available. Call before noon.",
+    ],
+    nearbySlugs: ['loma-linda', 'yucaipa', 'san-bernardino', 'colton'],
+  },
+  'san-bernardino-county/rialto': {
+    titleTag: 'Samsung Refrigerator Repair Rialto, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Rialto, CA. North Rialto, Bloomington area, central Rialto — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Rialto sits along the I-210 between San Bernardino and Fontana, and our Samsung calls here are typically a mix of French Door ice maker repairs and condenser-system maintenance. The Inland Empire summer heat takes its toll on Samsung condensers in Rialto same as it does anywhere in San Bernardino County — annual coil cleaning is the single most-skipped maintenance task and the most-effective preventive measure.",
+      "The Samsung ice maker freeze-up issue is universal across French Door models and the most common single repair we run in Rialto. Replacing the duct seal and installing the redesigned ice maker assembly addresses the underlying cause and is a single-visit job.",
+      "Coverage in Rialto extends to Fontana, San Bernardino, Colton, and Bloomington. Same-day Samsung service for most calls. Booking is open 24/7 through the form online.",
+    ],
+    nearbySlugs: ['fontana', 'san-bernardino', 'colton', 'rancho-cucamonga'],
+  },
+  'san-bernardino-county/colton': {
+    titleTag: 'Samsung Refrigerator Repair Colton, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Colton, CA. Same-day Samsung service across Colton, Bloomington, and the Hub City area. Call 424-407-1019.',
+    paragraphs: [
+      "Colton — the Hub City — sits at the junction of the 215 and 10 freeways, and our Samsung repair calls here come in from across the city. The mix runs the full range: ice maker freeze-ups on French Door units in the newer neighborhoods, defrost-system and gasket repairs on older Samsung units, and the occasional compressor or inverter board on units pushing 10-15 years.",
+      "On the higher-end Samsung Family Hub and Bespoke units that we see in Colton, the smart-panel issues are completely independent of the cooling system. A dead Family Hub screen doesn't mean a dead fridge — cooling continues normally. We can replace just the display assembly when that's the actual failure.",
+      "Colton shares dispatch with San Bernardino, Loma Linda, Rialto, and Fontana. Same-day Samsung service is generally available for calls before noon. Call to book.",
+    ],
+    nearbySlugs: ['san-bernardino', 'loma-linda', 'rialto', 'redlands'],
+  },
+  'san-bernardino-county/yucaipa': {
+    titleTag: 'Samsung Refrigerator Repair Yucaipa, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Yucaipa, CA. Foothill community, Oak Glen area — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Yucaipa is a foothill community east of Redlands on the way up toward Oak Glen and the San Bernardino Mountains. The slightly higher elevation gives a small cooling break in summer compared to the valley floor, but Samsung refrigerators here still run into the standard problems: ice maker freeze-ups on French Door units, defrost-system faults, and the occasional door gasket failure causing forced compressor cycling.",
+      "The most common single Samsung repair in Yucaipa is the redesigned ice maker installation on French Door units that have hit the freeze-up issue. We carry the part on the truck for the most-affected model series and the swap takes about an hour.",
+      "Coverage in Yucaipa reaches Redlands, Calimesa, and the Beaumont edge of Riverside County. Same-day Samsung service for most calls received before noon. Booking is open online 24/7.",
+    ],
+    nearbySlugs: ['redlands', 'loma-linda', 'san-bernardino', 'colton'],
+  },
+  'san-bernardino-county/loma-linda': {
+    titleTag: 'Samsung Refrigerator Repair Loma Linda, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Loma Linda, CA. Same-day Samsung service near the university and medical center. Call 424-407-1019.',
+    paragraphs: [
+      "Loma Linda is small in footprint but Samsung-heavy in the residential neighborhoods around the university and medical center. The most common Samsung repair we run in Loma Linda is the ice maker freeze-up on French Door models — universal across that platform, single-visit fix with the redesigned assembly. We also see a steady stream of dispenser leaks and water filter housing issues.",
+      "The Inland Empire summer heat affects Loma Linda condensers same as it does the rest of the area. A clean condenser coil and a verified condenser fan motor is the difference between a fridge that runs through August without issue and one that thermal-shuts-down on the hottest afternoon. Annual maintenance is worth the visit.",
+      "Loma Linda sits between San Bernardino, Redlands, and Colton — same dispatch zone, same-day Samsung service usually available for calls received before noon. Call to confirm an arrival window.",
+    ],
+    nearbySlugs: ['redlands', 'colton', 'san-bernardino', 'yucaipa'],
+  },
+
   'riverside-county/norco': {
     titleTag: 'Samsung Refrigerator Repair Norco, CA',
     metaDescription:
