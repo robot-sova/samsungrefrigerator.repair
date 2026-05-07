@@ -58,6 +58,43 @@ npm run preview
 
 ### ...or use the template directly ➡️ "Use this template" > "Create a new repository"
 
+## Booking form — environment variables
+
+The booking form on `/book/` posts to a Cloudflare Pages Function at
+`functions/api/submit-form.ts`. The function notifies Telegram and Resend
+in parallel. Four environment variables are required:
+
+| Variable | Purpose |
+| --- | --- |
+| `TELEGRAM_BOT_TOKEN` | Telegram bot token issued by @BotFather. |
+| `TELEGRAM_CHAT_ID` | Chat ID (or channel ID) the bot posts new bookings into. |
+| `RESEND_API_KEY` | Resend API key (`re_...`). |
+| `BUSINESS_EMAIL` | Address that receives booking emails. Defaults to `info@samsungrefrigerator.repair`. |
+
+### Local development
+
+For local testing under `wrangler pages dev`, copy `.dev.vars.example` to
+`.dev.vars` (or create `.dev.vars` directly) at the project root and fill in
+the values. `.dev.vars` is gitignored.
+
+```
+TELEGRAM_BOT_TOKEN=...
+TELEGRAM_CHAT_ID=...
+RESEND_API_KEY=...
+BUSINESS_EMAIL=info@samsungrefrigerator.repair
+```
+
+### Production (Cloudflare Pages)
+
+Set the same four variables in **Cloudflare Pages → Settings → Environment
+Variables** for both the **Production** and **Preview** environments.
+
+If the Function build complains about Node-style APIs, enable
+`nodejs_compat` under **Cloudflare Pages → Settings → Functions →
+Compatibility flags** for both environments. (Our handler uses only Web
+fetch + JSON, so this should not be required, but the flag is harmless and
+documented here in case Cloudflare changes runtime defaults.)
+
 ## contributions are welcome! 👋
 
 it's great if this kit can be helpful to some folks out there, i'm open to feedback and greatly appreciate contributions, feel free to chip in for fixes, suggestions, or features! let me know if you have improvement ideas.
