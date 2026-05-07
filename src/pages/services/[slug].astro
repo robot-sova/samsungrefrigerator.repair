@@ -17,7 +17,10 @@ export async function getStaticPaths() {
 
 const { service } = Astro.props;
 
-const relatedCodes = ERROR_CODES.filter((c) => service.relatedErrorCodes.includes(c.code));
+const explicitlyRelated = ERROR_CODES.filter((c) => service.relatedErrorCodes.includes(c.code));
+const fallbackCodes = ERROR_CODES.filter((c) => !service.relatedErrorCodes.includes(c.code)).slice(0, 4);
+const relatedCodes =
+  explicitlyRelated.length >= 3 ? explicitlyRelated : [...explicitlyRelated, ...fallbackCodes].slice(0, 4);
 const introParagraphs = service.longIntro.split('\n\n');
 ---
 

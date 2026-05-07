@@ -6,6 +6,9 @@ import { COUNTIES } from '~/data/locations';
 
 <footer class="maintext" style="margin-top:40px;">
   <h2>{BUSINESS.name}</h2>
+
+  <p style="font-style:italic; opacity:0.85;">Mobile service — no storefront. We come to you.</p>
+
   <p>
     <strong>Phone:</strong>
     <a style="color:#fff;" href={BUSINESS.phoneTel}>{BUSINESS.phoneDisplay}</a>
@@ -15,16 +18,8 @@ import { COUNTIES } from '~/data/locations';
     <a style="color:#fff;" href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a>
   </p>
   <p><strong>Hours:</strong> {BUSINESS.hoursDisplay}</p>
-  <p>{BUSINESS.bookingNote}</p>
-
-  <h3>Service Areas</h3>
-  <ul role="list" style="margin-left:30px;">
-    {COUNTIES.map((county) => (
-      <li>
-        <a style="color:#fff;" href={`/service-area/${county.slug}/`}>{county.name}</a>
-      </li>
-    ))}
-  </ul>
+  <p><strong>Booking:</strong> {BUSINESS.bookingNote}</p>
+  <p><strong>Founded:</strong> {BUSINESS.founded}</p>
 
   <h3>Repair Services</h3>
   <ul role="list" style="margin-left:30px;">
@@ -35,11 +30,21 @@ import { COUNTIES } from '~/data/locations';
     ))}
   </ul>
 
-  <p style="margin-top:20px;">
+  <h3>Service Areas</h3>
+  <ul role="list" style="margin-left:30px;">
+    {COUNTIES.map((county) => (
+      <li>
+        <a style="color:#fff;" href={`/service-area/${county.slug}/`}>{county.name}</a>
+      </li>
+    ))}
+  </ul>
+
+  <h3>Quick Links</h3>
+  <p style="margin-top:10px;">
     <a style="color:#fff;" href="/">Home</a> &nbsp;|&nbsp;
-    <a style="color:#fff;" href="/services/">Services</a> &nbsp;|&nbsp;
+    <a style="color:#fff;" href="/services/">All Services</a> &nbsp;|&nbsp;
     <a style="color:#fff;" href="/error-codes/">Error Codes</a> &nbsp;|&nbsp;
-    <a style="color:#fff;" href="/models/">Models</a> &nbsp;|&nbsp;
+    <a style="color:#fff;" href="/models/">Samsung Models</a> &nbsp;|&nbsp;
     <a style="color:#fff;" href="/service-area/">Service Area</a> &nbsp;|&nbsp;
     <a style="color:#fff;" href="/book">Book Online</a> &nbsp;|&nbsp;
     <a style="color:#fff;" href="/sitemap-index.xml">Sitemap</a>
