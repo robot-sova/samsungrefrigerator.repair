@@ -251,6 +251,129 @@ export const CITY_CONTENT: Record<string, CityContent> = {
     nearbySlugs: ['redlands', 'colton', 'san-bernardino', 'yucaipa'],
   },
 
+  // -- Orange County --
+  'orange-county/anaheim': {
+    titleTag: 'Samsung Refrigerator Repair Anaheim, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Anaheim, CA. Anaheim Hills, Platinum Triangle, downtown — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Anaheim covers a wide footprint and our Samsung repair calls reflect that variety. The Anaheim Hills neighborhoods up against the eastern edge of the city see mostly higher-end French Door, 4-Door FlexZone, and Family Hub units, with the Samsung ice maker freeze-up leading the call list. The flatland neighborhoods west of the 57 freeway have an older Samsung mix that runs into more defrost-system, gasket, and dispenser-leak repairs.",
+      "Anaheim's coastal-influenced summer humidity is slightly higher than the Inland Empire, which actually makes the Samsung ice maker duct seal failure a little more aggressive — warm, humid air migrates into the ice room faster, frosts the assembly faster, and locks it up sooner. Replacing the duct seal and the redesigned ice maker is a single-visit job and the most common call we run in Anaheim.",
+      "Coverage in Anaheim reaches Garden Grove, Fullerton, Yorba Linda, and Orange. Same-day Samsung service for most calls received before noon. Call to confirm an arrival window.",
+    ],
+    nearbySlugs: ['fullerton', 'garden-grove', 'yorba-linda', 'santa-ana'],
+  },
+  'orange-county/irvine': {
+    titleTag: 'Samsung Refrigerator Repair Irvine, CA — Same Day',
+    metaDescription:
+      'Samsung refrigerator repair in Irvine, CA. Woodbridge, Northwood, Quail Hill, UCI area — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Irvine is the most Samsung-heavy city in our Orange County coverage area. The newer master-planned villages — Woodbridge, Northwood, Quail Hill, Turtle Rock, Portola Springs — are dense with French Door, 4-Door FlexZone, Bespoke, and Family Hub units. The Samsung ice maker freeze-up is the most common single repair we run in Irvine, often three or four calls a week during peak season.",
+      "The Family Hub units we service near UCI and the Spectrum area tend to fail in panel-only ways — frozen touchscreen, dead camera modules, Wi-Fi drops — without affecting cooling. Those are independent subsystems on Family Hub, and we can replace just the failed component (display assembly, camera module, Wi-Fi board) without touching the cooling side.",
+      "Irvine sits at the heart of central Orange County with easy reach to Tustin, Lake Forest, Newport Beach, and Costa Mesa. Same-day Samsung service is the norm for calls received before noon.",
+    ],
+    nearbySlugs: ['costa-mesa', 'newport-beach', 'mission-viejo', 'santa-ana'],
+  },
+  'orange-county/santa-ana': {
+    titleTag: 'Samsung Refrigerator Repair Santa Ana, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Santa Ana, CA. Floral Park, French Park, downtown — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Santa Ana spans more housing eras than almost any other Orange County city, and our Samsung repair calls reflect that. The historic neighborhoods like Floral Park and French Park have an older Samsung mix that sees more defrost-system, gasket, and compressor-mount repairs. The newer subdivisions on the east side and toward Tustin have French Door units running into the universal Samsung ice maker freeze-up.",
+      "On older Samsung units (8+ years) we always test the inverter board first when the panel reports 84C. The board is roughly an eighth of the cost of a compressor and is the more common failure. Replacing the right part on the first visit is the difference between a manageable repair and a major one.",
+      "Santa Ana shares dispatch with Garden Grove, Anaheim, and Costa Mesa. Same-day Samsung service for most calls. Booking is open 24/7 through the form online.",
+    ],
+    nearbySlugs: ['garden-grove', 'anaheim', 'costa-mesa', 'irvine'],
+  },
+  'orange-county/huntington-beach': {
+    titleTag: 'Samsung Refrigerator Repair Huntington Beach, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Huntington Beach, CA. Pacific City, Main Street, Edinger area — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "Coastal humidity in Huntington Beach adds a wrinkle to Samsung repairs that we don't see in the inland cities. Salt air corrosion can age the rear control board and the ice-maker harness slightly faster than in inland neighborhoods, and the higher ambient humidity makes the famous Samsung ice maker duct seal failure show up earlier. We see the freeze-up issue more often in HB than in the Inland Empire even though the underlying problem is the same Samsung design issue.",
+      "On the cooling side, Huntington Beach Samsungs see the standard patterns: French Door ice maker freeze-ups, defrost-system faults causing fridge-warm-freezer-cold, and the occasional dispenser leak. Coastal homeowners are also more likely to call about gasket mold (humidity), and we replace door gaskets on HB units more often than on inland ones.",
+      "Coverage extends to Costa Mesa, Newport Beach, Westminster, and Fountain Valley. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['costa-mesa', 'newport-beach', 'garden-grove', 'fullerton'],
+  },
+  'orange-county/newport-beach': {
+    titleTag: 'Samsung Refrigerator Repair Newport Beach, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Newport Beach, CA. Newport Coast, Balboa, Corona del Mar, Lido — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "Newport Beach is dense with high-end Samsung Family Hub, Bespoke, and 4-Door FlexZone units, particularly in Newport Coast and the Balboa Island and Lido neighborhoods. The smart-panel features on these units fail independently of the cooling system — a frozen Family Hub touchscreen or a dead internal camera does not affect cooling. We can replace just the display assembly or the failed camera module without disturbing the cooling side.",
+      "The classic Samsung ice maker freeze-up is just as common in Newport Beach as it is everywhere else, regardless of model tier. Bespoke and Family Hub units suffer the same duct-seal failure as the standard French Door, and the redesigned ice maker assembly is the same single-visit fix.",
+      "Newport Beach coverage extends naturally to Costa Mesa, Corona del Mar, Irvine, and the Newport Coast hillside. Same-day Samsung service for most calls.",
+    ],
+    nearbySlugs: ['costa-mesa', 'irvine', 'huntington-beach', 'laguna-beach'],
+  },
+  'orange-county/costa-mesa': {
+    titleTag: 'Samsung Refrigerator Repair Costa Mesa, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Costa Mesa, CA. South Coast Plaza area, Mesa Verde, Eastside — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "We get more Samsung ice maker calls in Costa Mesa than almost any other Orange County city its size. The mix of Mesa Verde, the Eastside, and the South Coast Metro neighborhoods is heavily French Door, and the universal Samsung freeze-up issue affects nearly every unit at the 4-7 year mark. Replacing the duct seal and installing the redesigned ice maker is a single-visit job.",
+      "The other common Costa Mesa call is a dispenser leak — usually a cracked water inlet valve, occasionally a kinked supply line behind the unit when the fridge has been pushed back against the wall. Both are quick fixes once located. If you've got water on the floor in front of the unit, the inlet valve is the first thing to check.",
+      "Costa Mesa shares dispatch with Newport Beach, Irvine, Huntington Beach, and Santa Ana. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['newport-beach', 'irvine', 'huntington-beach', 'santa-ana'],
+  },
+  'orange-county/laguna-beach': {
+    titleTag: 'Samsung Refrigerator Repair Laguna Beach, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Laguna Beach, CA. North Laguna, downtown, Top of the World — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Laguna Beach Samsung repairs are split between the older homes near downtown and Main Beach and the newer hillside properties up in Top of the World and around Aliso Viejo. The older homes have a mix of side-by-side and French Door Samsungs that see varied repair calls — door gasket failures (coastal humidity), dispenser leaks, and the occasional defrost-system fault. The newer hillside homes lean French Door and Family Hub with the well-known ice maker freeze-up dominant.",
+      "Laguna's coastal humidity does push gasket replacement work higher than the inland cities. Salt air also slightly accelerates control-board aging on units 8+ years old. We always check the rear control board housing for moisture corrosion when servicing Laguna units that age.",
+      "Coverage extends along the coast from Laguna Beach to Newport Coast and Dana Point, and inland to Aliso Viejo and Mission Viejo. Same-day Samsung service available for most calls.",
+    ],
+    nearbySlugs: ['mission-viejo', 'newport-beach', 'costa-mesa', 'irvine'],
+  },
+  'orange-county/mission-viejo': {
+    titleTag: 'Samsung Refrigerator Repair Mission Viejo, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Mission Viejo, CA. Lake Mission Viejo, Costeau, the canyon — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "Mission Viejo is one of the most Samsung-heavy cities in southern Orange County. The neighborhoods around Lake Mission Viejo, the Costeau Park area, and the canyon-side homes are dense with French Door, 4-Door FlexZone, and Family Hub units. The most common single Samsung repair we do in Mission Viejo is — predictably — the ice maker freeze-up that affects every French Door model.",
+      "The second-most-common Mission Viejo call is the fridge-warm-freezer-cold defrost-system issue. Diagnosed by pulling the rear freezer panel and looking for ice on the evaporator coil — almost always present when this symptom shows up. Replacing the defrost heater, sensor, or main board (whichever has failed) is a single-visit job.",
+      "Mission Viejo shares dispatch with Lake Forest, Aliso Viejo, Laguna Hills, and Rancho Santa Margarita. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['laguna-beach', 'irvine', 'costa-mesa', 'newport-beach'],
+  },
+  'orange-county/fullerton': {
+    titleTag: 'Samsung Refrigerator Repair Fullerton, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Fullerton, CA. Cal State Fullerton area, downtown, Sunny Hills — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "Fullerton's housing stock spans the full age range — from the older neighborhoods near downtown and Cal State Fullerton out to the newer Sunny Hills and Raymond Hills areas — and our Samsung calls reflect that. Older units come in for defrost-system, gasket, and compressor-mount work. Newer units come in for the ice maker freeze-up that defines almost every Samsung French Door call we run.",
+      "On older Samsung units we always check the inverter board before assuming the compressor is dead. The 84C error code that everyone associates with a dead compressor is more often a board issue. Skipping that diagnostic step is the most expensive mistake on Samsung repairs.",
+      "Fullerton sits in north Orange County with easy reach to Anaheim, Brea, La Habra, and Yorba Linda. Same-day Samsung service for most calls.",
+    ],
+    nearbySlugs: ['anaheim', 'yorba-linda', 'garden-grove', 'santa-ana'],
+  },
+  'orange-county/garden-grove': {
+    titleTag: 'Samsung Refrigerator Repair Garden Grove, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Garden Grove, CA. Main Street, Korean District, west GG — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Garden Grove sees a Samsung repair mix that leans toward the standard French Door issues — ice maker freeze-ups, defrost-system faults, dispenser leaks. The Main Street and Korean District neighborhoods have a slightly older Samsung installed base that runs into more gasket and door-switch repair work alongside the universal French Door issues.",
+      "The Samsung ice maker freeze-up is the single most common repair we run in Garden Grove and across all of central Orange County. Replacing the duct seal and installing the redesigned ice maker assembly is a single-visit job. We carry the parts on the truck for the most-affected models.",
+      "Coverage extends to Westminster, Anaheim, Santa Ana, and Huntington Beach. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['anaheim', 'santa-ana', 'huntington-beach', 'fullerton'],
+  },
+  'orange-county/yorba-linda': {
+    titleTag: 'Samsung Refrigerator Repair Yorba Linda, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Yorba Linda, CA. Hillside neighborhoods, Vista del Verde — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Yorba Linda is a newer-housing-dominant city, and our Samsung repair calls here lean toward French Door, 4-Door FlexZone, and Family Hub units. The hillside neighborhoods up against the Brea border and the Vista del Verde area are particularly Samsung-heavy. The most common single Samsung call we run in Yorba Linda is — again — the universal French Door ice maker freeze-up.",
+      "On the higher-end Family Hub and Bespoke units we service in Yorba Linda, the smart-panel issues are independent of cooling. A dead Family Hub touchscreen does not mean a dead fridge — cooling continues normally because the main control board is independent. We can replace just the display assembly when that's the actual failure.",
+      "Yorba Linda shares dispatch with Anaheim Hills, Brea, Placentia, and Fullerton. Same-day Samsung service for most calls received before noon. Call to confirm an arrival window.",
+    ],
+    nearbySlugs: ['fullerton', 'anaheim', 'santa-ana', 'garden-grove'],
+  },
+
   'riverside-county/norco': {
     titleTag: 'Samsung Refrigerator Repair Norco, CA',
     metaDescription:
