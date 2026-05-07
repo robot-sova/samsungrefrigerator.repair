@@ -5,6 +5,7 @@ import RelatedLinks from '~/components/RelatedLinks.astro';
 import FAQ from '~/components/FAQ.astro';
 import { COUNTIES } from '~/data/locations';
 import { SERVICES } from '~/data/services';
+import { CITY_CONTENT } from '~/data/cityContent';
 import { BUSINESS } from '~/data/business';
 
 export async function getStaticPaths() {
@@ -18,36 +19,37 @@ export async function getStaticPaths() {
 
 const { county, city } = Astro.props;
 
-const openings = [
-  `If your Samsung refrigerator just stopped cooling in ${city.name}, you're not alone — Samsung calls are the single most common service we run in ${county.name}.`,
+const contentKey = `${county.slug}/${city.slug}`;
+const content = CITY_CONTENT[contentKey];
+
+const fallbackParagraphs = [
   `Samsung refrigerator repair in ${city.name} is what we do every day. Most ${city.name} calls book same-day, and we carry the most-failed Samsung parts on the truck.`,
-  `${city.name} homes lean heavily on Samsung French Door and Family Hub refrigerators, and they all share a similar set of failure points — ice maker freeze-ups, defrost faults, and the occasional inverter board.`,
-  `When a Samsung refrigerator fails in ${city.name}, the clock starts on the food inside. Our ${county.name} dispatch covers ${city.name} same-day for calls that land before noon.`,
-  `For ${city.name} households, a dead Samsung refrigerator means a fast trip to the store and a slow trip back. We run Samsung-only service trucks across ${county.name}, so most ${city.name} repairs finish on the first visit.`,
-];
-const middles = [
-  `Most calls fall into a familiar pattern: the freezer is fine but the fridge is warm (defrost or fan issue), the ice maker has frozen itself solid (the well-known Samsung French Door ice room issue), or the compressor will not start (inverter board or compressor itself).`,
   `Common Samsung issues we fix in ${city.name} include warm-fridge / cold-freezer splits, ice makers that build a frost block in the ice room, water leaks tracing back to a clogged defrost drain, and 84C / 41C / PC ER errors on the panel.`,
-  `Across ${city.name} we see a familiar mix of Samsung complaints — ice maker no-ice or freeze-up, fridge section warming while the freezer stays cold, dispenser leaks, and panel error codes that point at sensors or boards.`,
-];
-const closings = [
-  `Same-day service is the goal whenever the schedule allows. Booking is open 24/7, and our service hours run ${BUSINESS.hoursDisplay}.`,
-  `Booking is open 24/7. We confirm a same-day arrival window when the call lands before noon.`,
-  `Our diagnostic visit covers travel and a written quote. Repair pricing is presented before any work starts — no surprise charges.`,
+  `Booking is open 24/7. Service hours run ${BUSINESS.hoursDisplay}.`,
 ];
 
-const hash = (s: string) => s.split('').reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 0);
-const h = hash(`${county.slug}|${city.slug}`);
-const opener = openings[h % openings.length]!;
-const middle = middles[(h >>> 3) % middles.length]!;
-const closer = closings[(h >>> 5) % closings.length]!;
+const paragraphs = content?.paragraphs ?? fallbackParagraphs;
 
 const cityIdx = county.cities.findIndex((c) => c.slug === city.slug);
-const before = county.cities.slice(Math.max(0, cityIdx - 2), cityIdx);
-const after = county.cities.slice(cityIdx + 1, cityIdx + 4);
-const nearby = [...before, ...after].slice(0, 3);
+let nearbyCities = content?.nearbySlugs
+  ? content.nearbySlugs
+      .map((slug) => county.cities.find((c) => c.slug === slug))
+      .filter((c): c is NonNullable<typeof c> => Boolean(c))
+  : [];
 
-const description = `Samsung refrigerator repair in ${city.name}, ${county.name}, CA. Same-day Samsung service. Call ${BUSINESS.phoneDisplay}.`;
+if (nearbyCities.length === 0) {
+  const before = county.cities.slice(Math.max(0, cityIdx - 2), cityIdx);
+  const after = county.cities.slice(cityIdx + 1, cityIdx + 4);
+  nearbyCities = [...before, ...after].slice(0, 4);
+}
+
+const description =
+  content?.metaDescription ??
+  `Samsung refrigerator repair in ${city.name}, ${county.name}, CA. Same-day Samsung service. Call ${BUSINESS.phoneDisplay}.`;
+
+const titleTag =
+  content?.titleTag ??
+  `Samsung Refrigerator Repair in ${city.name}, CA | ${BUSINESS.phoneDisplay}`;
 
 const faqs = [
   {
@@ -90,16 +92,13 @@ const localBusinessSchema = {
 ---
 
 <Layout
-  title={`Samsung Refrigerator Repair in ${city.name}, CA | ${BUSINESS.phoneDisplay}`}
+  title={titleTag}
   description={description}
   heroTitle={`Samsung Refrigerator Repair in ${city.name}, CA`}
   heroSubtitle={`Same-day Samsung service in ${city.name}, ${county.name}`}
 >
   <div class="maintext">
-    <!-- TODO: rewrite with localized content -->
-    <p>{opener}</p>
-    <p>{middle}</p>
-    <p>{closer}</p>
+    {paragraphs.map((p) => <p>{p}</p>)}
   </div>
 
   <div class="maintext">
@@ -124,16 +123,15 @@ const localBusinessSchema = {
       <li>Display board communication errors (41C, PC ER)</li>
       <li>Door gasket failure causing frost buildup</li>
     </ul>
-    <CallCTA />
   </div>
 
   <FAQ faqs={faqs} heading={`Samsung Refrigerator Repair FAQ — ${city.name}`} />
 
-  {nearby.length > 0 && (
+  {nearbyCities.length > 0 && (
     <div class="maintext">
       <h2>Nearby Cities We Also Serve</h2>
       <ul>
-        {nearby.map((nc) => (
+        {nearbyCities.map((nc) => (
           <li>
             <a style="color:#fff; font-weight:700;" href={`/service-area/${county.slug}/${nc.slug}/`}>
               Samsung Refrigerator Repair in {nc.name}
@@ -148,6 +146,10 @@ const localBusinessSchema = {
   )}
 
   <RelatedLinks countySlug={county.slug} citySlug={city.slug} />
+
+  <div class="maintext">
+    <CallCTA />
+  </div>
 
   <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
 </Layout>
