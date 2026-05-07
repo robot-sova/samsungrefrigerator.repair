@@ -4,62 +4,146 @@ import Hero from '~/components/Hero.astro';
 import StickyCTACard from '~/components/StickyCTACard.astro';
 import FinalCTA from '~/components/FinalCTA.astro';
 import { BUSINESS } from '~/data/business';
+import { COUNTIES } from '~/data/locations';
 
-const title = `Book a Samsung Refrigerator Repair | ${BUSINESS.phoneDisplay}`;
-const description = `Book Samsung refrigerator repair online 24/7, or call ${BUSINESS.phoneDisplay} during service hours (${BUSINESS.hoursDisplay}).`;
+const title = `Book Samsung Refrigerator Repair | ${BUSINESS.phoneDisplay}`;
+const description =
+  'Book same-day or next-day Samsung refrigerator repair in LA, Orange, Riverside, San Bernardino, or Ventura county. Reply within minutes during business hours.';
 
 const breadcrumbs = [
   { label: 'Home', href: '/' },
   { label: 'Book Online' },
 ];
+
+// Top 15 cities for the datalist suggestion list — we pick the largest cities
+// across all five counties so the autocomplete is useful.
+const topCities = [
+  'Los Angeles',
+  'Long Beach',
+  'Anaheim',
+  'Santa Ana',
+  'Irvine',
+  'Riverside',
+  'San Bernardino',
+  'Fontana',
+  'Rancho Cucamonga',
+  'Ontario',
+  'Glendale',
+  'Pasadena',
+  'Huntington Beach',
+  'Corona',
+  'Oxnard',
+];
+// Only include cities that actually exist in our service-area data, so the
+// datalist stays in sync if locations.ts changes.
+const knownCityNames = new Set(COUNTIES.flatMap((c) => c.cities.map((ct) => ct.name)));
+const datalistCities = topCities.filter((c) => knownCityNames.has(c));
 ---
 
 <Layout title={title} description={description} noHero={true}>
   <Hero
     variant="inner"
     breadcrumbs={breadcrumbs}
+    kicker="Same-day service available"
     title="Book Samsung Refrigerator Repair"
-    subtitle={`Booking is open 24/7. Service hours run ${BUSINESS.hoursDisplay}.`}
+    subtitle={`Reply within minutes during business hours (${BUSINESS.hoursDisplay}).`}
   />
 
   <div class="container section">
     <div class="page-grid">
       <div class="page-main">
         <div class="prose-block">
-          <p>
-            Use the form below to book a same-day or next-day Samsung refrigerator repair visit.
-            Prefer to talk to someone? Call
+          <p style="margin-bottom: 16px;">
+            Fill out the form and we'll text or call you back within minutes during business hours
+            (Mon–Sun 8 AM – 8 PM). For faster service call
             <a href={BUSINESS.phoneTel}><strong>{BUSINESS.phoneDisplay}</strong></a>
-            during service hours.
+            directly — booking line is open 24/7.
           </p>
-          <iframe
-            id="JotFormIFrame-233135002315136"
-            title="Samsung Refrigerator Repair Booking Form"
-            onload="window.parent.scrollTo(0,0)"
-            allowtransparency="true"
-            allowfullscreen="true"
-            allow="geolocation; microphone; camera"
-            src="https://form.jotform.com/233135002315136"
-            frameborder="0"
-            style="min-width:100%;max-width:100%;height:560px;border:none; border-radius: 10px; margin-top: 16px;"
-            scrolling="no"
-          ></iframe>
-          <script type="text/javascript" set:html={`
-            var ifr = document.getElementById("JotFormIFrame-233135002315136");
-            if (ifr) {
-              var src = ifr.src;
-              var iframeParams = [];
-              if (window.location.href && window.location.href.indexOf("?") > -1) {
-                iframeParams = iframeParams.concat(window.location.href.substr(window.location.href.indexOf("?") + 1).split('&'));
-              }
-              if (src && src.indexOf("?") > -1) {
-                iframeParams = iframeParams.concat(src.substr(src.indexOf("?") + 1).split("&"));
-                src = src.substr(0, src.indexOf("?"));
-              }
-              iframeParams.push("isIframeEmbed=1");
-              ifr.src = src + "?" + iframeParams.join('&');
-            }
-          `}></script>
+
+          <form class="booking-form" id="bookingForm" novalidate>
+            <div class="field">
+              <label for="bf-name">Full name</label>
+              <input
+                type="text"
+                id="bf-name"
+                name="name"
+                autocomplete="name"
+                required
+                minlength="2"
+                maxlength="100"
+              />
+            </div>
+
+            <div class="field">
+              <label for="bf-phone">Phone</label>
+              <input
+                type="tel"
+                id="bf-phone"
+                name="phone"
+                autocomplete="tel"
+                required
+                inputmode="tel"
+                pattern="[\d\s().+\-]{10,}"
+                placeholder="(424) 407-1019"
+              />
+              <span class="form-help">We'll text or call back. US numbers only.</span>
+            </div>
+
+            <div class="field">
+              <label for="bf-city">City</label>
+              <input
+                type="text"
+                id="bf-city"
+                name="city"
+                autocomplete="address-level2"
+                required
+                minlength="2"
+                maxlength="80"
+                list="bf-cities"
+              />
+              <datalist id="bf-cities">
+                {datalistCities.map((c) => <option value={c}></option>)}
+              </datalist>
+              <span class="form-help">
+                We serve LA, Orange, Riverside, San Bernardino, and Ventura counties.
+              </span>
+            </div>
+
+            <div class="field">
+              <label for="bf-description">
+                Describe the problem
+                <span class="label-hint">(model number helps if you have it)</span>
+              </label>
+              <textarea
+                id="bf-description"
+                name="description"
+                rows="5"
+                required
+                minlength="5"
+                maxlength="2000"
+                placeholder="e.g., Family Hub fridge isn't cooling but freezer is fine. Started yesterday. Model RF28R7351."
+              ></textarea>
+            </div>
+
+            {/* Honeypot — visually hidden, named both 'website' and 'honeypot' for safety */}
+            <div class="honeypot" aria-hidden="true">
+              <label for="bf-website">Website</label>
+              <input
+                type="text"
+                id="bf-website"
+                name="website"
+                tabindex="-1"
+                autocomplete="off"
+                value=""
+              />
+            </div>
+
+            <div id="bf-error" class="form-error" hidden></div>
+
+            <button type="submit" class="btn btn-primary" id="bf-submit" style="width:100%;">
+              Send booking request
+            </button>
+          </form>
         </div>
       </div>
 
@@ -69,5 +153,80 @@ const breadcrumbs = [
     </div>
   </div>
 
-  <FinalCTA heading="Faster than the form?" subheading="Call us — we answer the phone 24/7 and book same-day visits when the schedule allows." />
+  <FinalCTA
+    heading="Faster than the form?"
+    subheading="Call us — we answer the phone 24/7 and book same-day visits when the schedule allows."
+  />
+
+  <script type="text/javascript" set:html={`
+    (function () {
+      var form = document.getElementById('bookingForm');
+      if (!form) return;
+      var btn = document.getElementById('bf-submit');
+      var errorBox = document.getElementById('bf-error');
+
+      function showError(msg) {
+        if (!errorBox) return;
+        errorBox.textContent = msg;
+        errorBox.hidden = false;
+      }
+      function clearError() {
+        if (!errorBox) return;
+        errorBox.textContent = '';
+        errorBox.hidden = true;
+      }
+
+      function showSuccess() {
+        var html =
+          '<div class="prose-block booking-success">' +
+            '<span class="icon-circle">' +
+              '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>' +
+            '</span>' +
+            '<h2>Thanks — we got it.</h2>' +
+            "<p>We'll be in touch within minutes during business hours. For urgent service, call ${BUSINESS.phoneDisplay}.</p>" +
+            '<a class="btn btn-secondary" href="/">Back to home</a>' +
+          '</div>';
+        var container = form.parentElement;
+        if (container) container.innerHTML = html;
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearError();
+        if (!btn) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+
+        var data = {
+          name: form.name && form.name.value,
+          phone: form.phone && form.phone.value,
+          city: form.city && form.city.value,
+          description: form.description && form.description.value,
+          website: form.website && form.website.value,
+          source: window.location.pathname || '/book/'
+        };
+
+        fetch('/api/submit-form', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(data)
+        })
+          .then(function (res) { return res.json().catch(function () { return { success: false }; }); })
+          .then(function (json) {
+            if (json && json.success) {
+              showSuccess();
+            } else {
+              showError("Couldn't send your request. Please call ${BUSINESS.phoneDisplay} or email ${BUSINESS.email}.");
+              btn.disabled = false;
+              btn.textContent = 'Send booking request';
+            }
+          })
+          .catch(function () {
+            showError("Couldn't send your request. Please call ${BUSINESS.phoneDisplay} or email ${BUSINESS.email}.");
+            btn.disabled = false;
+            btn.textContent = 'Send booking request';
+          });
+      });
+    })();
+  `}></script>
 </Layout>
