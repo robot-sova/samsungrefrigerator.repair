@@ -4,7 +4,6 @@ import Hero from '~/components/Hero.astro';
 import StickyCTACard from '~/components/StickyCTACard.astro';
 import FinalCTA from '~/components/FinalCTA.astro';
 import { BUSINESS } from '~/data/business';
-import { COUNTIES } from '~/data/locations';
 
 const title = `Book Samsung Refrigerator Repair | ${BUSINESS.phoneDisplay}`;
 const description =
@@ -15,29 +14,32 @@ const breadcrumbs = [
   { label: 'Book Online' },
 ];
 
-// Top 15 cities for the datalist suggestion list — we pick the largest cities
-// across all five counties so the autocomplete is useful.
-const topCities = [
-  'Los Angeles',
-  'Long Beach',
-  'Anaheim',
-  'Santa Ana',
-  'Irvine',
-  'Riverside',
-  'San Bernardino',
-  'Fontana',
-  'Rancho Cucamonga',
-  'Ontario',
-  'Glendale',
-  'Pasadena',
-  'Huntington Beach',
-  'Corona',
-  'Oxnard',
+// Compute today + max date in PT at build time. Client-side JS recomputes
+// these on form load so a cached page doesn't surface a stale "today".
+const ptToday = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'America/Los_Angeles',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+}).format(new Date());
+const addDays = (ymd: string, n: number): string => {
+  const [y, m, d] = ymd.split('-').map((s) => parseInt(s, 10));
+  const dt = new Date(Date.UTC(y!, (m! - 1), d!));
+  dt.setUTCDate(dt.getUTCDate() + n);
+  return dt.toISOString().slice(0, 10);
+};
+const maxDate = addDays(ptToday, 7);
+
+// Keep these in sync with functions/api/submit-form.ts (TIME_SLOTS).
+// The dash is U+2013 EN DASH.
+const TIME_SLOTS: { label: string; startHour: number }[] = [
+  { label: '8 AM – 10 AM', startHour: 8 },
+  { label: '10 AM – 12 PM', startHour: 10 },
+  { label: '12 PM – 2 PM', startHour: 12 },
+  { label: '2 PM – 4 PM', startHour: 14 },
+  { label: '4 PM – 6 PM', startHour: 16 },
+  { label: '6 PM – 8 PM', startHour: 18 },
 ];
-// Only include cities that actually exist in our service-area data, so the
-// datalist stays in sync if locations.ts changes.
-const knownCityNames = new Set(COUNTIES.flatMap((c) => c.cities.map((ct) => ct.name)));
-const datalistCities = topCities.filter((c) => knownCityNames.has(c));
 ---
 
 <Layout title={title} description={description} noHero={true}>
@@ -89,24 +91,32 @@ const datalistCities = topCities.filter((c) => knownCityNames.has(c));
               <span class="form-help">We'll text or call back. US numbers only.</span>
             </div>
 
-            <div class="field">
-              <label for="bf-city">City</label>
-              <input
-                type="text"
-                id="bf-city"
-                name="city"
-                autocomplete="address-level2"
-                required
-                minlength="2"
-                maxlength="80"
-                list="bf-cities"
-              />
-              <datalist id="bf-cities">
-                {datalistCities.map((c) => <option value={c}></option>)}
-              </datalist>
-              <span class="form-help">
-                We serve LA, Orange, Riverside, San Bernardino, and Ventura counties.
-              </span>
+            <div class="field-row">
+              <div class="field">
+                <label for="bf-date">Preferred date</label>
+                <input
+                  type="date"
+                  id="bf-date"
+                  name="preferredDate"
+                  required
+                  min={ptToday}
+                  max={maxDate}
+                  data-build-min={ptToday}
+                />
+              </div>
+
+              <div class="field">
+                <label for="bf-time">Preferred time</label>
+                <select id="bf-time" name="preferredTime" required>
+                  <option value="" disabled selected>Select a time slot</option>
+                  {TIME_SLOTS.map((s) => (
+                    <option value={s.label} data-start-hour={s.startHour}>{s.label}</option>
+                  ))}
+                </select>
+                <span class="form-help">
+                  We'll confirm the exact arrival window when we call you back.
+                </span>
+              </div>
             </div>
 
             <div class="field">
@@ -160,6 +170,83 @@ const datalistCities = topCities.filter((c) => knownCityNames.has(c));
 
   <script type="text/javascript" set:html={`
     (function () {
+      // ---- Date + time-slot helpers ----------------------------------------
+      function todayPT() {
+        return new Intl.DateTimeFormat('en-CA', {
+          timeZone: 'America/Los_Angeles',
+          year: 'numeric', month: '2-digit', day: '2-digit'
+        }).format(new Date());
+      }
+      function addDays(ymd, n) {
+        var parts = ymd.split('-').map(function (s) { return parseInt(s, 10); });
+        var dt = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]));
+        dt.setUTCDate(dt.getUTCDate() + n);
+        return dt.toISOString().slice(0, 10);
+      }
+      function currentMinutesPT() {
+        var fmt = new Intl.DateTimeFormat('en-US', {
+          timeZone: 'America/Los_Angeles',
+          hour: '2-digit', minute: '2-digit', hour12: false
+        });
+        var parts = fmt.formatToParts(new Date()).reduce(function (acc, p) {
+          if (p.type !== 'literal') acc[p.type] = p.value;
+          return acc;
+        }, {});
+        var hh = parseInt(parts.hour, 10);
+        if (hh === 24) hh = 0; // some Intl builds emit '24' for midnight
+        return hh * 60 + parseInt(parts.minute, 10);
+      }
+
+      // Recompute date min/max on load to handle stale-cached pages.
+      var dateInput = document.getElementById('bf-date');
+      var timeSelect = document.getElementById('bf-time');
+      if (dateInput) {
+        var today = todayPT();
+        dateInput.setAttribute('min', today);
+        dateInput.setAttribute('max', addDays(today, 7));
+        // Clear any stale value below today.
+        if (dateInput.value && dateInput.value < today) dateInput.value = '';
+      }
+
+      function refreshTimeSlots() {
+        if (!dateInput || !timeSelect) return;
+        var today = todayPT();
+        var isToday = dateInput.value === today;
+        var nowMins = currentMinutesPT();
+        var threshold = nowMins + 60; // disable slots starting within 60 min
+        var anyAvailable = false;
+        var options = timeSelect.querySelectorAll('option[data-start-hour]');
+        for (var i = 0; i < options.length; i++) {
+          var opt = options[i];
+          var startMins = parseInt(opt.getAttribute('data-start-hour'), 10) * 60;
+          var label = opt.getAttribute('data-base-label') || opt.value;
+          opt.setAttribute('data-base-label', label);
+          if (isToday && startMins <= threshold) {
+            opt.disabled = true;
+            opt.textContent = label + ' (unavailable)';
+          } else {
+            opt.disabled = false;
+            opt.textContent = label;
+            anyAvailable = true;
+          }
+        }
+        // If the chosen slot is now disabled, reset to placeholder.
+        var selected = timeSelect.options[timeSelect.selectedIndex];
+        if (selected && selected.disabled) {
+          timeSelect.selectedIndex = 0;
+        }
+        // If today has zero availability left, nudge users by leaving placeholder.
+        if (!anyAvailable && isToday) {
+          timeSelect.selectedIndex = 0;
+        }
+      }
+
+      if (dateInput) {
+        dateInput.addEventListener('change', refreshTimeSlots);
+        refreshTimeSlots();
+      }
+
+      // ---- Submit handler --------------------------------------------------
       var form = document.getElementById('bookingForm');
       if (!form) return;
       var btn = document.getElementById('bf-submit');
@@ -198,9 +285,11 @@ const datalistCities = topCities.filter((c) => knownCityNames.has(c));
         btn.textContent = 'Sending…';
 
         var data = {
+          type: 'booking',
           name: form.name && form.name.value,
           phone: form.phone && form.phone.value,
-          city: form.city && form.city.value,
+          preferredDate: form.preferredDate && form.preferredDate.value,
+          preferredTime: form.preferredTime && form.preferredTime.value,
           description: form.description && form.description.value,
           website: form.website && form.website.value,
           source: window.location.pathname || '/book/'
@@ -216,7 +305,11 @@ const datalistCities = topCities.filter((c) => knownCityNames.has(c));
             if (json && json.success) {
               showSuccess();
             } else {
-              showError("Couldn't send your request. Please call ${BUSINESS.phoneDisplay} or email ${BUSINESS.email}.");
+              showError(
+                (json && json.error)
+                  ? json.error
+                  : "Couldn't send your request. Please call ${BUSINESS.phoneDisplay} or email ${BUSINESS.email}."
+              );
               btn.disabled = false;
               btn.textContent = 'Send booking request';
             }
