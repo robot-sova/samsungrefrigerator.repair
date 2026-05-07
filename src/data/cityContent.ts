@@ -530,6 +530,85 @@ export const CITY_CONTENT: Record<string, CityContent> = {
     nearbySlugs: ['fullerton', 'anaheim', 'santa-ana', 'garden-grove'],
   },
 
+  // -- Ventura County --
+  'ventura-county/ventura': {
+    titleTag: 'Samsung Refrigerator Repair Ventura, CA — Same Day',
+    metaDescription:
+      'Samsung refrigerator repair in Ventura, CA. Pierpont, downtown, Saticoy — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Ventura is a coastal city and the marine humidity factor shows up in the Samsung repairs we run here. The Pierpont and beach-side neighborhoods see slightly more gasket replacement work and slightly accelerated rear control-board aging on units 8+ years old. The downtown and inland Ventura neighborhoods see a more standard Samsung repair mix — French Door ice maker freeze-ups, defrost-system faults, and dispenser leaks.",
+      "The Samsung ice maker freeze-up — the famous duct seal failure that lets warm humid air migrate into the ice room — is the dominant call here just like it is across our other coastal cities. Coastal humidity makes it show up earlier in the unit's life, but the redesigned ice maker assembly is the same single-visit fix.",
+      "Ventura coverage extends to Saticoy, the eastern edge of the city, and across to Oxnard. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['oxnard', 'camarillo', 'ojai', 'thousand-oaks'],
+  },
+  'ventura-county/oxnard': {
+    titleTag: 'Samsung Refrigerator Repair Oxnard, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Oxnard, CA. Channel Islands, downtown, Mandalay Bay — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Oxnard Samsung calls are weighted toward the coastal influence — the city sits between the Channel Islands harbor area and downtown, and most of the residential neighborhoods sit close enough to the ocean that marine humidity is a real factor. We see slightly elevated gasket and control-board aging on Samsung units here. The Riverpark and the inland-side neighborhoods see slightly less of that, but the coastal influence reaches most of the city.",
+      "On the standard Samsung patterns, Oxnard sees the same dominant call as the rest of our coverage area: French Door ice maker freeze-up, fixed by replacing the duct seal and installing the redesigned ice maker assembly. Single-visit job on most affected models.",
+      "Oxnard shares dispatch with Ventura, Camarillo, and the Port Hueneme edge. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['ventura', 'camarillo', 'thousand-oaks', 'ojai'],
+  },
+  'ventura-county/thousand-oaks': {
+    titleTag: 'Samsung Refrigerator Repair Thousand Oaks, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Thousand Oaks, CA. Westlake, Newbury Park, Lynn Ranch — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "Thousand Oaks Samsung repairs are a more inland-flavored mix than the rest of Ventura County — the city is far enough from the coast that marine humidity is less of a factor and summer heat is slightly more pronounced. The Westlake Village neighborhoods (the part within Thousand Oaks city limits) and the Lynn Ranch area are dense with Samsung Family Hub, Bespoke, and 4-Door FlexZone units.",
+      "On the higher-end Samsung units we see in Thousand Oaks, the smart-panel issues are independent of cooling. A frozen Family Hub touchscreen, a dead camera module, or Wi-Fi drops can all be repaired by replacing just the failed component without disturbing the cooling side.",
+      "Thousand Oaks coverage extends to Newbury Park, Westlake Village, Agoura Hills (LA County), and Camarillo. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['simi-valley', 'moorpark', 'camarillo', 'oxnard'],
+  },
+  'ventura-county/simi-valley': {
+    titleTag: 'Samsung Refrigerator Repair Simi Valley, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Simi Valley, CA. Wood Ranch, Big Sky, the Reagan Library area — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "Simi Valley summers run hot — the inland valley regularly hits 100°F+ in late summer — and that's the dominant factor in the Samsung calls we run here. Condenser thermal shutdowns, 84C inverter-board failures, and compressor mounts that have heat-cycled past their life are all elevated in Simi compared to coastal Ventura cities. Annual condenser cleaning is the simplest preventive measure.",
+      "On the cooling-side issues, Simi Valley Samsungs see the standard patterns — French Door ice maker freeze-ups across the Wood Ranch, Big Sky, and central Simi neighborhoods, plus defrost-system faults and the occasional gasket failure. Single-visit fixes on most.",
+      "Simi Valley shares dispatch with Moorpark, Thousand Oaks, and the LA County edge at Chatsworth and Northridge. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['moorpark', 'thousand-oaks', 'camarillo', 'ventura'],
+  },
+  'ventura-county/camarillo': {
+    titleTag: 'Samsung Refrigerator Repair Camarillo, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Camarillo, CA. Mission Oaks, Old Town Camarillo, Las Posas — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "Camarillo sits between Oxnard and Thousand Oaks and pulls a mixed coastal-inland Samsung repair pattern. The Mission Oaks and the Old Town Camarillo neighborhoods see the typical French Door ice maker freeze-up call leading the list. The hillside neighborhoods up toward Las Posas have a higher concentration of Family Hub and Bespoke units with the corresponding smart-panel issue mix alongside the cooling-side calls.",
+      "Camarillo's morning-fog / afternoon-clear weather is gentler on Samsung condensers than Simi Valley's pure inland heat, and we see fewer summer thermal-shutdown calls here. Annual coil cleaning is still recommended — universal preventive measure across all our cities.",
+      "Camarillo shares dispatch with Oxnard, Ventura, and Thousand Oaks. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['oxnard', 'thousand-oaks', 'ventura', 'moorpark'],
+  },
+  'ventura-county/moorpark': {
+    titleTag: 'Samsung Refrigerator Repair Moorpark, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Moorpark, CA. Mountain Meadows, Tierra Rejada, Country Club Estates — same-day service. Call 424-407-1019.',
+    paragraphs: [
+      "Moorpark is one of the smaller Ventura County cities we serve, but Samsung-heavy across the residential neighborhoods. Mountain Meadows, Tierra Rejada, and the Country Club Estates area are dense with French Door and 4-Door FlexZone units. The dominant Samsung call we run in Moorpark is the universal ice maker freeze-up — same fix as everywhere, single-visit job with the redesigned ice maker.",
+      "Moorpark summers reach into 100°F territory by August, and the Samsung condenser thermal-shutdown calls follow. We always inspect and clean the condenser coil during any service visit when time allows — it's the most-effective preventive Samsung maintenance task and the most often skipped.",
+      "Moorpark shares dispatch with Simi Valley, Thousand Oaks, and Camarillo. Same-day Samsung service for most calls received before noon.",
+    ],
+    nearbySlugs: ['simi-valley', 'thousand-oaks', 'camarillo', 'ventura'],
+  },
+  'ventura-county/ojai': {
+    titleTag: 'Samsung Refrigerator Repair Ojai, CA',
+    metaDescription:
+      'Samsung refrigerator repair in Ojai, CA. Downtown Ojai, East End, Meiners Oaks — same-day Samsung service. Call 424-407-1019.',
+    paragraphs: [
+      "Ojai is a small valley town and our Samsung repair calls here are weighted toward the older homes near downtown and the East End — fewer big-box French Door installations than in the larger Ventura County cities, more side-by-side and a few older top-freezer Samsungs. The repair mix runs more toward defrost-system, gasket, and compressor-mount work than to the universal French Door ice maker call we see in the rest of the county.",
+      "The Ojai Valley microclimate is a little drier than the coastal Ventura County cities, which is gentler on Samsung gaskets and rear control boards. Summer afternoons can still hit 100°F in the East End, so condenser maintenance is worth the visit on any unit pushing 5+ years old.",
+      "Ojai is the easternmost city we cover in Ventura County. Coverage extends back through Meiners Oaks, Mira Monte, and into Ventura proper. Same-day Samsung service is generally available for any call received before noon.",
+    ],
+    nearbySlugs: ['ventura', 'oxnard', 'camarillo', 'thousand-oaks'],
+  },
+
   'riverside-county/norco': {
     titleTag: 'Samsung Refrigerator Repair Norco, CA',
     metaDescription:
