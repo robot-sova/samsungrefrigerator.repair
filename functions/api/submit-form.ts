@@ -41,6 +41,13 @@ const TIME_SLOTS = [
   '6 PM – 8 PM',
 ] as const;
 
+const CALLBACK_WINDOWS = [
+  'Anytime',
+  'Morning (8 AM – 12 PM)',
+  'Afternoon (12 PM – 4 PM)',
+  'Evening (4 PM – 8 PM)',
+] as const;
+
 interface BookingData {
   type: 'booking';
   name: string;
@@ -49,6 +56,15 @@ interface BookingData {
   preferredDate: string; // YYYY-MM-DD
   preferredTime: string;
   description: string;
+  source: string;
+}
+
+interface CallbackData {
+  type: 'callback';
+  name: string;
+  phone: string;
+  phoneRaw: string;
+  bestTimeToCall: string;
   source: string;
 }
 
@@ -196,6 +212,39 @@ const validateBooking = (
   };
 };
 
+const validateCallback = (
+  payload: FormPayload
+): { ok: true; data: CallbackData } | { ok: false; error: string } => {
+  const name = cleanString(payload.name, 100);
+  if (name.length < 2) return { ok: false, error: 'Name must be 2–100 characters.' };
+
+  const phone = validatePhone(payload.phone);
+  if (!phone.ok) return phone;
+
+  const bestRaw = cleanString(payload.bestTimeToCall, 80);
+  let bestTimeToCall = 'Anytime';
+  if (bestRaw.length > 0) {
+    if (!(CALLBACK_WINDOWS as readonly string[]).includes(bestRaw)) {
+      return { ok: false, error: 'Pick one of the listed callback windows.' };
+    }
+    bestTimeToCall = bestRaw;
+  }
+
+  const source = cleanString(payload.source, 200) || '/book/';
+
+  return {
+    ok: true,
+    data: {
+      type: 'callback',
+      name,
+      phone: phone.display,
+      phoneRaw: phone.digits,
+      bestTimeToCall,
+      source,
+    },
+  };
+};
+
 const escapeHtml = (s: string): string =>
   s
     .replace(/&/g, '&amp;')
@@ -306,6 +355,125 @@ const sendResendBooking = async (
   }
 };
 
+const sendTelegramCallback = async (
+  env: Env,
+  data: CallbackData,
+  timestamp: string
+): Promise<void> => {
+  if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) {
+    throw new Error('Telegram credentials missing');
+  }
+  const text = [
+    '📞 *Callback request — Samsung Refrigerator Repair*',
+    '',
+    `👤 *Name:* ${escapeMarkdown(data.name)}`,
+    `📞 *Phone:* ${escapeMarkdown(data.phone)}`,
+    `⏰ *Best time to call:* ${escapeMarkdown(data.bestTimeToCall)}`,
+    '',
+    `🌐 *Source:* ${escapeMarkdown(data.source)}`,
+    `🕐 *Received:* ${escapeMarkdown(timestamp)}`,
+  ].join('\n');
+
+  const res = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: env.TELEGRAM_CHAT_ID,
+      parse_mode: 'Markdown',
+      text,
+      disable_web_page_preview: true,
+    }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`Telegram ${res.status}: ${body.slice(0, 200)}`);
+  }
+};
+
+const sendResendCallback = async (
+  env: Env,
+  data: CallbackData,
+  timestamp: string
+): Promise<void> => {
+  if (!env.RESEND_API_KEY || !env.BUSINESS_EMAIL) {
+    throw new Error('Resend credentials missing');
+  }
+
+  const html = `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Callback request</title></head>
+<body style="font-family: -apple-system, Segoe UI, Roboto, sans-serif; color:#0a0a0a; line-height:1.5;">
+  <h2 style="margin:0 0 16px 0;">Samsung Refrigerator Repair — Callback request</h2>
+  <dl style="margin:0;">
+    <dt style="font-weight:700; margin-top:12px;">Name</dt>
+    <dd style="margin:4px 0 0 0;">${escapeHtml(data.name)}</dd>
+    <dt style="font-weight:700; margin-top:12px;">Phone</dt>
+    <dd style="margin:4px 0 0 0;"><a href="tel:+${escapeHtml(data.phoneRaw)}" style="color:#0a0a0a;">${escapeHtml(data.phone)}</a></dd>
+    <dt style="font-weight:700; margin-top:12px;">Best time to call</dt>
+    <dd style="margin:4px 0 0 0;">${escapeHtml(data.bestTimeToCall)}</dd>
+  </dl>
+  <p style="color:#8a8a8a; font-size:0.85rem; margin-top:24px;">
+    Source: ${escapeHtml(data.source)}<br>
+    Received: ${escapeHtml(timestamp)}
+  </p>
+</body>
+</html>`;
+
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      authorization: `Bearer ${env.RESEND_API_KEY}`,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: 'Samsung Refrigerator Repair <info@samsungrefrigerator.repair>',
+      to: [env.BUSINESS_EMAIL],
+      subject: `📞 Callback request — ${data.name}`,
+      html,
+      reply_to: env.BUSINESS_EMAIL,
+    }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`Resend ${res.status}: ${body.slice(0, 200)}`);
+  }
+};
+
+const dispatchCallback = async (env: Env, data: CallbackData): Promise<Response> => {
+  const timestamp = formatPTTimestamp(new Date());
+
+  const [telegramResult, resendResult] = await Promise.all([
+    (async () => {
+      try {
+        await sendTelegramCallback(env, data, timestamp);
+        return { ok: true as const };
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.error('Telegram failure:', msg);
+        return { ok: false as const, error: msg };
+      }
+    })(),
+    (async () => {
+      try {
+        await sendResendCallback(env, data, timestamp);
+        return { ok: true as const };
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.error('Resend failure:', msg);
+        return { ok: false as const, error: msg };
+      }
+    })(),
+  ]);
+
+  if (!telegramResult.ok && !resendResult.ok) {
+    return json({ success: false, error: 'Could not deliver your request.' });
+  }
+
+  return json({ success: true });
+};
+
 const dispatchBooking = async (env: Env, data: BookingData): Promise<Response> => {
   const timestamp = formatPTTimestamp(new Date());
 
@@ -365,6 +533,12 @@ export const onRequestPost = async (ctx: Context): Promise<Response> => {
     const result = validateBooking(payload);
     if (!result.ok) return json({ success: false, error: result.error }, 400);
     return dispatchBooking(ctx.env, result.data);
+  }
+
+  if (type === 'callback') {
+    const result = validateCallback(payload);
+    if (!result.ok) return json({ success: false, error: result.error }, 400);
+    return dispatchCallback(ctx.env, result.data);
   }
 
   return json({ success: false, error: 'Unsupported form type.' }, 400);

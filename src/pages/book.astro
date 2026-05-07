@@ -40,6 +40,13 @@ const TIME_SLOTS: { label: string; startHour: number }[] = [
   { label: '4 PM – 6 PM', startHour: 16 },
   { label: '6 PM – 8 PM', startHour: 18 },
 ];
+
+// Keep in sync with CALLBACK_WINDOWS in functions/api/submit-form.ts.
+const CALLBACK_WINDOWS = [
+  'Morning (8 AM – 12 PM)',
+  'Afternoon (12 PM – 4 PM)',
+  'Evening (4 PM – 8 PM)',
+];
 ---
 
 <Layout title={title} description={description} noHero={true}>
@@ -54,7 +61,7 @@ const TIME_SLOTS: { label: string; startHour: number }[] = [
   <div class="container section">
     <div class="page-grid">
       <div class="page-main">
-        <div class="prose-block">
+        <div class="prose-block" id="bookingFormContainer">
           <p style="margin-bottom: 16px;">
             Fill out the form and we'll text or call you back within minutes during business hours
             (Mon–Sun 8 AM – 8 PM). For faster service call
@@ -155,6 +162,77 @@ const TIME_SLOTS: { label: string; startHour: number }[] = [
             </button>
           </form>
         </div>
+
+        <section class="callback-block" id="callbackBlock">
+          <h3>Prefer a callback instead?</h3>
+          <p class="callback-sub">
+            Just leave your name and number — we'll call you back. Usually within 15 minutes during
+            business hours.
+          </p>
+          <button type="button" class="btn btn-secondary" id="callback-toggle" aria-expanded="false" aria-controls="callbackForm">
+            Request a callback
+          </button>
+
+          <div class="callback-form-wrapper" id="callback-wrapper" hidden>
+            <form class="booking-form" id="callbackForm" novalidate style="margin-top: 16px;">
+              <div class="field">
+                <label for="cb-name">Full name</label>
+                <input
+                  type="text"
+                  id="cb-name"
+                  name="name"
+                  autocomplete="name"
+                  required
+                  minlength="2"
+                  maxlength="100"
+                />
+              </div>
+
+              <div class="field">
+                <label for="cb-phone">Phone</label>
+                <input
+                  type="tel"
+                  id="cb-phone"
+                  name="phone"
+                  autocomplete="tel"
+                  required
+                  inputmode="tel"
+                  pattern="[\d\s().+\-]{10,}"
+                  placeholder="(424) 407-1019"
+                />
+              </div>
+
+              <div class="field">
+                <label for="cb-best">Best time to call</label>
+                <select id="cb-best" name="bestTimeToCall">
+                  <option value="" selected>Anytime</option>
+                  {CALLBACK_WINDOWS.map((w) => (
+                    <option value={w}>{w}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Honeypot — visually hidden, named both 'website' and 'honeypot' for safety */}
+              <div class="honeypot" aria-hidden="true">
+                <label for="cb-website">Website</label>
+                <input
+                  type="text"
+                  id="cb-website"
+                  name="website"
+                  tabindex="-1"
+                  autocomplete="off"
+                  value=""
+                />
+              </div>
+
+              <div id="cb-error" class="form-error" hidden></div>
+
+              <button type="submit" class="btn btn-primary" id="cb-submit" style="width:100%;">
+                Request callback
+              </button>
+            </form>
+          </div>
+        </section>
       </div>
 
       <aside class="page-sidebar">
@@ -246,80 +324,121 @@ const TIME_SLOTS: { label: string; startHour: number }[] = [
         refreshTimeSlots();
       }
 
-      // ---- Submit handler --------------------------------------------------
-      var form = document.getElementById('bookingForm');
-      if (!form) return;
-      var btn = document.getElementById('bf-submit');
-      var errorBox = document.getElementById('bf-error');
+      // ---- Shared submit handler ------------------------------------------
+      var fallbackError =
+        "Couldn't send your request. Please call ${BUSINESS.phoneDisplay} or email ${BUSINESS.email}.";
 
-      function showError(msg) {
-        if (!errorBox) return;
-        errorBox.textContent = msg;
-        errorBox.hidden = false;
-      }
-      function clearError() {
-        if (!errorBox) return;
-        errorBox.textContent = '';
-        errorBox.hidden = true;
-      }
+      function bindForm(opts) {
+        var form = document.getElementById(opts.formId);
+        if (!form) return;
+        var btn = document.getElementById(opts.btnId);
+        var errorBox = document.getElementById(opts.errorId);
 
-      function showSuccess() {
-        var html =
-          '<div class="prose-block booking-success">' +
-            '<span class="icon-circle">' +
-              '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>' +
-            '</span>' +
-            '<h2>Thanks — we got it.</h2>' +
-            "<p>We'll be in touch within minutes during business hours. For urgent service, call ${BUSINESS.phoneDisplay}.</p>" +
-            '<a class="btn btn-secondary" href="/">Back to home</a>' +
-          '</div>';
-        var container = form.parentElement;
-        if (container) container.innerHTML = html;
-      }
+        function showError(msg) {
+          if (!errorBox) return;
+          errorBox.textContent = msg;
+          errorBox.hidden = false;
+        }
+        function clearError() {
+          if (!errorBox) return;
+          errorBox.textContent = '';
+          errorBox.hidden = true;
+        }
 
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        clearError();
-        if (!btn) return;
-        btn.disabled = true;
-        btn.textContent = 'Sending…';
+        function showSuccess() {
+          var container = document.getElementById(opts.containerId);
+          if (!container) return;
+          var html =
+            '<div class="prose-block booking-success">' +
+              '<span class="icon-circle">' +
+                '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>' +
+              '</span>' +
+              '<h2>' + opts.successHeading + '</h2>' +
+              '<p>' + opts.successBody + '</p>' +
+              '<a class="btn btn-secondary" href="/">Back to home</a>' +
+            '</div>';
+          container.innerHTML = html;
+        }
 
-        var data = {
-          type: 'booking',
-          name: form.name && form.name.value,
-          phone: form.phone && form.phone.value,
-          preferredDate: form.preferredDate && form.preferredDate.value,
-          preferredTime: form.preferredTime && form.preferredTime.value,
-          description: form.description && form.description.value,
-          website: form.website && form.website.value,
-          source: window.location.pathname || '/book/'
-        };
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          clearError();
+          if (!btn) return;
+          btn.disabled = true;
+          btn.textContent = 'Sending…';
 
-        fetch('/api/submit-form', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify(data)
-        })
-          .then(function (res) { return res.json().catch(function () { return { success: false }; }); })
-          .then(function (json) {
-            if (json && json.success) {
-              showSuccess();
-            } else {
-              showError(
-                (json && json.error)
-                  ? json.error
-                  : "Couldn't send your request. Please call ${BUSINESS.phoneDisplay} or email ${BUSINESS.email}."
-              );
-              btn.disabled = false;
-              btn.textContent = 'Send booking request';
-            }
+          var data = { type: opts.type, source: window.location.pathname || '/book/' };
+          var els = form.elements;
+          for (var i = 0; i < els.length; i++) {
+            var el = els[i];
+            if (!el.name) continue;
+            data[el.name] = el.value;
+          }
+
+          fetch('/api/submit-form', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(data)
           })
-          .catch(function () {
-            showError("Couldn't send your request. Please call ${BUSINESS.phoneDisplay} or email ${BUSINESS.email}.");
-            btn.disabled = false;
-            btn.textContent = 'Send booking request';
-          });
+            .then(function (res) { return res.json().catch(function () { return { success: false }; }); })
+            .then(function (json) {
+              if (json && json.success) {
+                showSuccess();
+              } else {
+                showError((json && json.error) ? json.error : fallbackError);
+                btn.disabled = false;
+                btn.textContent = opts.submitLabel;
+              }
+            })
+            .catch(function () {
+              showError(fallbackError);
+              btn.disabled = false;
+              btn.textContent = opts.submitLabel;
+            });
+        });
+      }
+
+      bindForm({
+        formId: 'bookingForm',
+        btnId: 'bf-submit',
+        errorId: 'bf-error',
+        containerId: 'bookingFormContainer',
+        type: 'booking',
+        submitLabel: 'Send booking request',
+        successHeading: 'Thanks — we got it.',
+        successBody: "We'll be in touch within minutes during business hours. For urgent service, call ${BUSINESS.phoneDisplay}."
       });
+
+      bindForm({
+        formId: 'callbackForm',
+        btnId: 'cb-submit',
+        errorId: 'cb-error',
+        containerId: 'callbackBlock',
+        type: 'callback',
+        submitLabel: 'Request callback',
+        successHeading: "Thanks — we'll call you back shortly.",
+        successBody: "We'll be in touch within 15 minutes during business hours. For urgent service, call ${BUSINESS.phoneDisplay}."
+      });
+
+      // ---- Callback toggle -------------------------------------------------
+      var toggleBtn = document.getElementById('callback-toggle');
+      var wrapper = document.getElementById('callback-wrapper');
+      if (toggleBtn && wrapper) {
+        toggleBtn.addEventListener('click', function () {
+          var willOpen = wrapper.hasAttribute('hidden');
+          if (willOpen) {
+            wrapper.removeAttribute('hidden');
+            toggleBtn.setAttribute('aria-expanded', 'true');
+            toggleBtn.textContent = 'Hide callback form';
+            var nameInput = document.getElementById('cb-name');
+            if (nameInput) nameInput.focus();
+          } else {
+            wrapper.setAttribute('hidden', '');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            toggleBtn.textContent = 'Request a callback';
+          }
+        });
+      }
     })();
   `}></script>
 </Layout>
