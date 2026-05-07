@@ -2,10 +2,11 @@
 import { BUSINESS } from '~/data/business';
 import Brand from './Brand.astro';
 import MegaMenu from './MegaMenu.astro';
+import MobileDrawer from './MobileDrawer.astro';
 import Icon from './Icon.astro';
 ---
 
-<header class="site-header">
+<header class="site-header" data-site-header>
   <div class="container">
     <div class="site-header__row">
       <button
@@ -39,6 +40,8 @@ import Icon from './Icon.astro';
   </div>
 </header>
 
+<MobileDrawer />
+
 <style>
   @media (min-width: 1024px) {
     [data-show-on-desktop] {
@@ -46,3 +49,70 @@ import Icon from './Icon.astro';
     }
   }
 </style>
+
+<script>
+  // Mobile drawer toggle, sticky-header scrolled state, and mega-menu aria-expanded sync.
+  (function () {
+    const hamburger = document.querySelector('[data-hamburger]') as HTMLButtonElement | null;
+    const drawer = document.getElementById('mobile-drawer');
+    const drawerCloseButtons = document.querySelectorAll('[data-drawer-close]');
+    const drawerLinks = document.querySelectorAll('[data-drawer-link]');
+    const header = document.querySelector('[data-site-header]') as HTMLElement | null;
+
+    if (hamburger && drawer) {
+      const openDrawer = () => {
+        drawer.classList.add('is-open');
+        drawer.setAttribute('aria-hidden', 'false');
+        hamburger.setAttribute('aria-expanded', 'true');
+        document.body.classList.add('no-scroll');
+        const closeBtn = drawer.querySelector<HTMLButtonElement>('[data-drawer-close]');
+        if (closeBtn) closeBtn.focus();
+      };
+      const closeDrawer = () => {
+        drawer.classList.remove('is-open');
+        drawer.setAttribute('aria-hidden', 'true');
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('no-scroll');
+        hamburger.focus();
+      };
+      hamburger.addEventListener('click', openDrawer);
+      drawerCloseButtons.forEach((b) => b.addEventListener('click', closeDrawer));
+      drawerLinks.forEach((l) => l.addEventListener('click', () => {
+        drawer.classList.remove('is-open');
+        drawer.setAttribute('aria-hidden', 'true');
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('no-scroll');
+      }));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && drawer.classList.contains('is-open')) closeDrawer();
+      });
+    }
+
+    if (header) {
+      const onScroll = () => {
+        if (window.scrollY > 4) {
+          header.setAttribute('data-scrolled', 'true');
+        } else {
+          header.removeAttribute('data-scrolled');
+        }
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+
+    // Sync aria-expanded on mega-menu triggers when their panel becomes visible
+    // (CSS controls visibility via :hover / :focus-within; we mirror it for AT users).
+    document.querySelectorAll<HTMLElement>('.nav-primary__item').forEach((item) => {
+      const trigger = item.querySelector<HTMLAnchorElement>('.nav-primary__link[aria-haspopup="true"]');
+      if (!trigger) return;
+      const setExpanded = (open: boolean) => trigger.setAttribute('aria-expanded', String(open));
+      item.addEventListener('mouseenter', () => setExpanded(true));
+      item.addEventListener('mouseleave', () => setExpanded(false));
+      item.addEventListener('focusin', () => setExpanded(true));
+      item.addEventListener('focusout', (e) => {
+        const next = (e as FocusEvent).relatedTarget as Node | null;
+        if (!next || !item.contains(next)) setExpanded(false);
+      });
+    });
+  })();
+</script>

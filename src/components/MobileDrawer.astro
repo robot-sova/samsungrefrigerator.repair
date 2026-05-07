@@ -1,0 +1,77 @@
+---
+import { BUSINESS } from '~/data/business';
+import { SERVICES } from '~/data/services';
+import { ERROR_CODES } from '~/data/errorCodes';
+import { MODELS } from '~/data/models';
+import { COUNTIES } from '~/data/locations';
+import Brand from './Brand.astro';
+import Icon from './Icon.astro';
+---
+
+<nav class="drawer" id="mobile-drawer" aria-hidden="true" aria-label="Mobile navigation">
+  <div class="drawer__head">
+    <Brand />
+    <button class="drawer__close" type="button" aria-label="Close menu" data-drawer-close>
+      <Icon name="x" size={22} />
+    </button>
+  </div>
+
+  <ul class="drawer__list" role="list">
+    <li>
+      <details class="drawer__group">
+        <summary>Services</summary>
+        <ul class="drawer__sublist" role="list">
+          {SERVICES.map((s) => (
+            <li><a href={`/services/${s.slug}/`} data-drawer-link>{s.title.replace('Samsung ', '').replace(' Repair', '')}</a></li>
+          ))}
+          <li><a href="/services/" data-drawer-link><strong>View all services →</strong></a></li>
+        </ul>
+      </details>
+    </li>
+    <li>
+      <details class="drawer__group">
+        <summary>Models</summary>
+        <ul class="drawer__sublist" role="list">
+          {MODELS.map((m) => (
+            <li><a href={`/models/${m.slug}/`} data-drawer-link>{m.title.replace('Samsung ', '').replace(' Refrigerator Repair', '').replace(' Repair', '')}</a></li>
+          ))}
+          <li><a href="/models/" data-drawer-link><strong>View all models →</strong></a></li>
+        </ul>
+      </details>
+    </li>
+    <li>
+      <details class="drawer__group">
+        <summary>Error Codes</summary>
+        <ul class="drawer__sublist" role="list">
+          {ERROR_CODES.map((c) => (
+            <li><a href={`/error-codes/${c.slug}/`} data-drawer-link><strong>{c.code}</strong></a></li>
+          ))}
+          <li><a href="/error-codes/" data-drawer-link><strong>View all error codes →</strong></a></li>
+        </ul>
+      </details>
+    </li>
+    <li>
+      <details class="drawer__group">
+        <summary>Service Area</summary>
+        <ul class="drawer__sublist" role="list">
+          {COUNTIES.map((c) => (
+            <li><a href={`/service-area/${c.slug}/`} data-drawer-link>{c.name}</a></li>
+          ))}
+          <li><a href="/service-area/" data-drawer-link><strong>View full service area →</strong></a></li>
+        </ul>
+      </details>
+    </li>
+    <li><a class="drawer__top-link" href="/about/" data-drawer-link>About</a></li>
+    <li><a class="drawer__top-link" href="/book" data-drawer-link>Book Online</a></li>
+  </ul>
+
+  <div class="drawer__cta">
+    <a class="btn btn-primary" href={BUSINESS.phoneTel} style="width:100%;">
+      <Icon name="phone" size={18} />
+      Call {BUSINESS.phoneDisplay}
+    </a>
+    <p style="margin-top: 12px; font-size: 0.85rem; color: var(--color-ink-mute); text-align: center;">
+      {BUSINESS.hoursDisplay}
+    </p>
+  </div>
+</nav>
