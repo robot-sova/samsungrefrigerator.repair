@@ -1,24 +1,46 @@
 ---
 import { SERVICES } from '~/data/services';
+import Icon from './Icon.astro';
 
 export interface Props {
   heading?: string;
+  intro?: string;
   excludeSlug?: string;
 }
 
-const { heading = 'Samsung Refrigerator Repair Services', excludeSlug } = Astro.props;
+const { heading = 'What we fix', intro, excludeSlug } = Astro.props;
 const items = excludeSlug ? SERVICES.filter((s) => s.slug !== excludeSlug) : SERVICES;
+
+const ICONS: Record<string, Parameters<typeof Icon>[0]['name']> = {
+  'not-cooling': 'thermometer',
+  'ice-maker-repair': 'snowflake',
+  'water-leak': 'droplet',
+  'freezer-not-freezing': 'snowflake',
+  'compressor-repair': 'cpu',
+  'control-board-repair': 'cpu',
+  'door-seal-repair': 'door-open',
+  'noisy-refrigerator': 'volume-2',
+  'error-code-repair': 'alert-triangle',
+};
 ---
 
-<div class="maintext">
-  <h2>{heading}</h2>
-  <ul role="list" style="margin-left:30px;">
-    {items.map((s) => (
-      <li>
-        <a style="color:#fff; font-weight:700;" href={`/services/${s.slug}/`}>{s.title}</a>
-        <br />
-        <span style="color:#cfcfcf; font-size:0.95em;">{s.shortDescription}</span>
-      </li>
-    ))}
-  </ul>
-</div>
+<section class="section">
+  <div class="container">
+    {heading && (
+      <div class="section-head">
+        <h2>{heading}</h2>
+        {intro && <p>{intro}</p>}
+      </div>
+    )}
+    <div class="services-grid">
+      {items.map((s) => (
+        <a class="card service-card card-link" href={`/services/${s.slug}/`}>
+          <span class="icon-circle"><Icon name={ICONS[s.slug] ?? 'wrench'} /></span>
+          <h3>{s.title.replace('Samsung ', '').replace(' Repair', '')}</h3>
+          <p>{s.shortDescription}</p>
+          <span class="btn-ghost">Learn more →</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

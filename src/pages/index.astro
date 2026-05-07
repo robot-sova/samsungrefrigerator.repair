@@ -1,10 +1,14 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '~/layouts/Layout.astro';
+import Hero from '~/components/Hero.astro';
+import TrustStrip from '~/components/TrustStrip.astro';
 import ServicesGrid from '~/components/ServicesGrid.astro';
-import CountiesGrid from '~/components/CountiesGrid.astro';
-import ErrorCodesGrid from '~/components/ErrorCodesGrid.astro';
+import ServiceAreaSection from '~/components/ServiceAreaSection.astro';
+import ErrorCodesPreview from '~/components/ErrorCodesPreview.astro';
+import WhyChooseUs from '~/components/WhyChooseUs.astro';
+import Reviews from '~/components/Reviews.astro';
 import FAQ from '~/components/FAQ.astro';
-import CallCTA from '~/components/CallCTA.astro';
+import FinalCTA from '~/components/FinalCTA.astro';
 import { BUSINESS } from '~/data/business';
 
 const title = `Samsung Refrigerator Repair | Same-Day Service | ${BUSINESS.phoneDisplay}`;
@@ -29,91 +33,75 @@ const homeFaqs = [
   {
     question: 'Do you fix Samsung ice makers?',
     answer:
-      'Yes — Samsung ice makers (especially the French Door ice room) are one of the most common calls we run. We carry the most-failed parts in the truck.',
+      'Yes — Samsung ice makers (especially the French Door ice room) are one of the most common calls we run. We carry the most-failed parts on the truck.',
   },
   {
     question: 'What areas do you cover?',
     answer: `${BUSINESS.areasServed.join(', ')}. We do not currently serve outside these five counties.`,
   },
+  {
+    question: 'Are you Samsung-certified?',
+    answer:
+      'We work exclusively on Samsung refrigerators, install genuine OEM parts, and follow Samsung-published service procedures. Our techs are factory-trained on the platforms we service.',
+  },
 ];
 ---
 
-<Layout title={title} description={description} showHero={true}>
-  <div style="max-width:600px; max-height:600px; margin:0 auto;">
-    <img
-      class="responsiveimg"
-      alt="Professional Samsung Refrigerator Repair Services"
-      src="/images/samsung-refrigerator-repair-services.webp"
-      width="600"
-      height="600"
-    />
-  </div>
+<Layout title={title} description={description} noHero={true}>
+  <Hero
+    variant="home"
+    kicker="Samsung-certified specialists"
+    title="Samsung Refrigerator Repair Across Southern California"
+    subtitle="Same-day service in Los Angeles, Orange, Riverside, San Bernardino, and Ventura counties. Factory-trained techs, OEM parts, honest pricing."
+    showCTAs={true}
+    showTrust={true}
+  />
 
-  <div class="maintext">
-    <h2>Samsung Refrigerator Specialists Since 2010</h2>
-    <p>
-      We're a mobile Samsung refrigerator repair service running same-day calls across five Southern
-      California counties — Los Angeles, Orange, Riverside, San Bernardino, and Ventura. Samsung is
-      our specialty, not a side line. Our trucks carry the parts that fail most on Samsung French
-      Door, 4-Door FlexZone, Family Hub, Bespoke, side-by-side, and top-freezer models, so most
-      repairs finish on the first visit.
-    </p>
-    <p>
-      Samsung refrigerators have well-documented failure modes — the French Door ice maker freeze-up,
-      the defrost-system fault that warms the fridge while the freezer stays cold, the inverter board
-      that throws an 84C code and looks like a dead compressor. Knowing those patterns is the
-      difference between a single-visit fix and a misdiagnosis. We've spent years working only on
-      Samsung, and we won't replace a $400 main board when the actual failure is a $40 sensor.
-    </p>
-    <p>
-      Booking is open 24/7. Service hours run Mon–Sun 8:00 AM – 8:00 PM. Calls received before noon
-      generally get a same-day arrival window. Diagnostics include a written quote, and no work
-      starts until you approve the price.
-    </p>
-  </div>
+  <TrustStrip />
 
-  <div class="maintext">
-    <h2>When to Call a Samsung Refrigerator Technician</h2>
-    <ul>
-      <li>Our team specializes in Samsung refrigerator repairs across {BUSINESS.areasServed.length} Southern California counties.</li>
-      <li>Most repairs are completed on the first visit thanks to truck-stocked Samsung parts.</li>
-      <li>We serve {BUSINESS.areasServed.join(', ')}.</li>
-      <li>If you spot any of the issues below, stop using the unit and book a technician — DIY work on sealed systems voids most warranties.</li>
-    </ul>
-  </div>
+  <ServicesGrid
+    heading="What we fix"
+    intro="From ice maker freeze-ups to compressor failures — we handle every Samsung refrigerator problem."
+  />
 
-  <div id="issues"></div>
-  <div class="maintext">
-    <h2>Common Samsung Refrigerator Issues</h2>
-    <h3>1. Temperature Fluctuations</h3>
-    <p>Inconsistent temperature in the fridge or freezer often points to a defrost-system fault, a failing evaporator fan, or a damper that has stuck closed.</p>
-    <h3>2. Excessive Frost Buildup</h3>
-    <p>Frost on the freezer wall or around food packaging usually means the defrost heater, defrost thermostat, or main control board is failing to run a complete defrost cycle.</p>
-    <h3>3. Water Leakage</h3>
-    <p>Water inside the produce drawers or on the floor in front of the unit usually traces to a clogged defrost drain or a cracked water inlet valve.</p>
-    <h3>4. Unusual Noises</h3>
-    <p>Buzzing, clicking, grinding, or knocking noises typically come from the compressor, condenser fan, evaporator fan, or ice maker auger.</p>
-    <h3>5. Faulty Ice Maker</h3>
-    <p>Samsung French Door ice makers are the single most-repaired Samsung component. Symptoms range from no ice to freeze-ups to leaks.</p>
-    <h3>6. Display Panel Errors</h3>
-    <p>Codes like 1E, 5E, 21E, 41C, 84C, OF OF, or PC ER indicate a specific subsystem fault. See our <a style="color:#fff; font-weight:700;" href="/error-codes/">error code guide</a> for what each one means.</p>
-    <CallCTA />
-  </div>
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head">
+        <h2>Samsung specialists since 2010</h2>
+      </div>
+      <div style="max-width: 760px; margin: 0 auto;">
+        <p style="font-size: 1.05rem; margin-bottom: 12px;">
+          We're a mobile Samsung refrigerator repair service running same-day calls across five
+          Southern California counties — Los Angeles, Orange, Riverside, San Bernardino, and Ventura.
+          Samsung is our specialty, not a side line. Our trucks carry the parts that fail most on
+          Samsung French Door, 4-Door FlexZone, Family Hub, Bespoke, side-by-side, and top-freezer
+          models, so most repairs finish on the first visit.
+        </p>
+        <p style="font-size: 1.05rem; margin-bottom: 12px;">
+          Samsung refrigerators have well-documented failure modes — the French Door ice maker
+          freeze-up, the defrost-system fault that warms the fridge while the freezer stays cold,
+          the inverter board that throws an 84C code and looks like a dead compressor. Knowing
+          those patterns is the difference between a single-visit fix and a misdiagnosis. We won't
+          replace a $400 main board when the actual failure is a $40 sensor.
+        </p>
+        <p style="font-size: 1.05rem;">
+          Booking is open 24/7. Service hours run Mon–Sun 8:00 AM – 8:00 PM. Calls received before
+          noon generally get a same-day arrival window. Diagnostics include a written quote, and
+          no work starts until you approve the price.
+        </p>
+      </div>
+    </div>
+  </section>
 
-  <div id="repair"></div>
-  <ServicesGrid heading="Samsung Refrigerator Repair Services" />
+  <ServiceAreaSection />
 
-  <div id="maintenance"></div>
-  <div class="maintext">
-    <h2>Samsung Refrigerator Maintenance</h2>
-    <p>Annual maintenance on a Samsung refrigerator means cleaning the condenser coil, verifying the defrost cycle, inspecting the door gaskets, and confirming temperature accuracy across both compartments.</p>
-    <p>Twin Cooling and FlexZone systems benefit most — they have more sensors and more failure points than a basic top-freezer model. A 30-minute maintenance visit catches the small failures before they become a fridge full of warm food.</p>
-    <CallCTA />
-  </div>
+  <ErrorCodesPreview />
 
-  <ErrorCodesGrid heading="Samsung Refrigerator Error Codes" limit={6} />
+  <WhyChooseUs />
 
-  <CountiesGrid heading="Counties We Serve" />
+  <Reviews />
 
-  <FAQ faqs={homeFaqs} heading="Frequently Asked Questions" />
+  <FAQ faqs={homeFaqs} asSection={true} />
+
+  <FinalCTA />
 </Layout>

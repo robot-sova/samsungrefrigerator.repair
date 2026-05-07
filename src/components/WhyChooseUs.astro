@@ -1,0 +1,38 @@
+---
+import Icon from './Icon.astro';
+
+const items = [
+  {
+    title: 'Factory-trained on Samsung',
+    body: 'We work on one brand only. That means we know the Samsung quirks — the ice maker freeze-up, the Twin Cooling defrost fault, the inverter board failures — by heart.',
+    icon: 'shield' as const,
+  },
+  {
+    title: 'OEM parts only',
+    body: 'We install genuine Samsung replacement parts, including the redesigned ice maker assembly that addresses the original design issue. No aftermarket shortcuts.',
+    icon: 'check-circle' as const,
+  },
+  {
+    title: 'Honest, upfront pricing',
+    body: 'Every repair gets a written quote before any work starts. The diagnostic visit fee is waived if you proceed with the recommended repair.',
+    icon: 'tag' as const,
+  },
+];
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Why homeowners across SoCal choose us</h2>
+    </div>
+    <div class="why-grid">
+      {items.map((item) => (
+        <div class="why-item">
+          <span class="icon-circle"><Icon name={item.icon} /></span>
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

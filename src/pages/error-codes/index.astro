@@ -1,30 +1,46 @@
 ---
 import Layout from '~/layouts/Layout.astro';
-import ErrorCodesGrid from '~/components/ErrorCodesGrid.astro';
-import CallCTA from '~/components/CallCTA.astro';
+import Hero from '~/components/Hero.astro';
+import FinalCTA from '~/components/FinalCTA.astro';
+import { ERROR_CODES } from '~/data/errorCodes';
 import { BUSINESS } from '~/data/business';
 
 const title = `Samsung Refrigerator Error Codes | ${BUSINESS.phoneDisplay}`;
 const description = `Samsung refrigerator error code reference: 1E, 5E, 8E, 21E, 22E, 41C, 84C, OF OF, PC ER. What each means and when to call. ${BUSINESS.phoneDisplay}.`;
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Error Codes' },
+];
+
+const shortMeaning = (full: string): string => {
+  const firstSentence = full.split('.')[0];
+  if (!firstSentence) return full;
+  return firstSentence.length > 130 ? firstSentence.slice(0, 130) + '…' : firstSentence + '.';
+};
 ---
 
-<Layout
-  title={title}
-  description={description}
-  heroTitle="Samsung Refrigerator Error Codes"
-  heroSubtitle="What each Samsung error code means and when to call a tech"
->
-  <div class="maintext">
-    <p>
-      Samsung refrigerator panels report faults as short alphanumeric codes. The list below covers
-      the codes we see most often on service calls — what each one means, what you can safely try,
-      and when to stop and call a tech.
-    </p>
-  </div>
+<Layout title={title} description={description} noHero={true}>
+  <Hero
+    variant="inner"
+    breadcrumbs={breadcrumbs}
+    title="Samsung Refrigerator Error Codes"
+    subtitle="What each Samsung refrigerator error code means, what's safe to try, and when to call a tech."
+  />
 
-  <ErrorCodesGrid heading="All Samsung Refrigerator Error Codes" />
+  <section class="section">
+    <div class="container">
+      <div class="codes-grid">
+        {ERROR_CODES.map((c) => (
+          <a class="card card-link" href={`/error-codes/${c.slug}/`}>
+            <div class="code-card__code">{c.code}</div>
+            <p class="code-card__meaning">{shortMeaning(c.meaning)}</p>
+            <span class="btn-ghost">Read more →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
 
-  <div class="maintext">
-    <CallCTA />
-  </div>
+  <FinalCTA />
 </Layout>

@@ -1,8 +1,9 @@
 ---
 import Layout from '~/layouts/Layout.astro';
-import CallCTA from '~/components/CallCTA.astro';
-import RelatedLinks from '~/components/RelatedLinks.astro';
+import Hero from '~/components/Hero.astro';
+import StickyCTACard from '~/components/StickyCTACard.astro';
 import FAQ from '~/components/FAQ.astro';
+import FinalCTA from '~/components/FinalCTA.astro';
 import { ERROR_CODES } from '~/data/errorCodes';
 import { SERVICES } from '~/data/services';
 import { COUNTIES } from '~/data/locations';
@@ -20,73 +21,103 @@ const description = `Samsung ${code.code} error: what it means, what to try, and
 const relatedService = code.relatedServiceSlug
   ? SERVICES.find((s) => s.slug === code.relatedServiceSlug)
   : undefined;
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Error Codes', href: '/error-codes/' },
+  { label: code.code },
+];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.label,
+    ...(c.href ? { item: new URL(c.href, BUSINESS.siteUrl).toString() } : {}),
+  })),
+};
 ---
 
 <Layout
   title={`${code.title} | ${BUSINESS.phoneDisplay}`}
   description={description.slice(0, 160)}
-  heroTitle={code.title}
-  heroSubtitle={`Samsung ${code.code} error — diagnosis, what to try, and when to call`}
+  noHero={true}
 >
-  <div class="maintext">
-    <h2>What "{code.code}" Means</h2>
-    <p>{code.meaning}</p>
-  </div>
+  <Hero
+    variant="inner"
+    breadcrumbs={breadcrumbs}
+    title={code.title}
+    subtitle={`Samsung ${code.code} — diagnosis, what to try, and when to call.`}
+  />
 
-  <div class="maintext">
-    <h2>Common Root Causes</h2>
-    <ul>
-      {code.rootCauses.map((c) => <li>{c}</li>)}
-    </ul>
-  </div>
+  <div class="container section">
+    <div class="page-grid">
+      <div class="page-main">
+        <div class="prose-block">
+          <h2>What "{code.code}" means</h2>
+          <p>{code.meaning}</p>
+        </div>
 
-  <div class="maintext">
-    <h2>What You Can Try First</h2>
-    <ul>
-      {code.whatToTry.map((step) => <li>{step}</li>)}
-    </ul>
-  </div>
+        <div class="prose-block">
+          <h2>Common root causes</h2>
+          <ul>
+            {code.rootCauses.map((c) => <li>{c}</li>)}
+          </ul>
+        </div>
 
-  <div class="maintext">
-    <h2>When to Call a Pro</h2>
-    <p>{code.whenToCallPro}</p>
-  </div>
+        <div class="prose-block">
+          <h2>What you can try first</h2>
+          <ul>
+            {code.whatToTry.map((step) => <li>{step}</li>)}
+          </ul>
+        </div>
 
-  <div class="maintext">
-    <h2>How We Fix It</h2>
-    <p>{code.howWeFix}</p>
-  </div>
+        <div class="prose-block">
+          <h2>When to call a pro</h2>
+          <p>{code.whenToCallPro}</p>
+        </div>
 
-  {relatedService && (
-    <div class="maintext">
-      <h2>Related Repair Service</h2>
-      <p>
-        <a style="color:#fff; font-weight:700;" href={`/services/${relatedService.slug}/`}>
-          {relatedService.title}
-        </a>
-        &nbsp;— {relatedService.shortDescription}
-      </p>
+        <div class="prose-block">
+          <h2>How we fix it</h2>
+          <p>{code.howWeFix}</p>
+        </div>
+
+        {relatedService && (
+          <div class="prose-block">
+            <h2>Related repair service</h2>
+            <p>
+              <a href={`/services/${relatedService.slug}/`}><strong>{relatedService.title}</strong></a>
+              &nbsp;— {relatedService.shortDescription}
+            </p>
+          </div>
+        )}
+
+        <div class="prose-block">
+          <h2>Available across all 5 counties</h2>
+          <ul>
+            {COUNTIES.map((county) => (
+              <li>
+                <a href={`/service-area/${county.slug}/`}>
+                  Samsung {code.code} repair in {county.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="prose-block">
+          <FAQ faqs={code.faq.map((f) => ({ question: f.q, answer: f.a }))} heading="Frequently asked questions" />
+        </div>
+      </div>
+
+      <aside class="page-sidebar">
+        <StickyCTACard context={`Stuck on ${code.code}? Call now for same-day diagnosis.`} />
+      </aside>
     </div>
-  )}
-
-  <div class="maintext">
-    <h2>Available in All Five Counties</h2>
-    <ul>
-      {COUNTIES.map((county) => (
-        <li>
-          <a style="color:#fff; font-weight:700;" href={`/service-area/${county.slug}/`}>
-            Samsung {code.code} repair in {county.name}
-          </a>
-        </li>
-      ))}
-    </ul>
   </div>
 
-  <FAQ faqs={code.faq.map((f) => ({ question: f.q, answer: f.a }))} />
-
-  <RelatedLinks excludeErrorCodeSlug={code.slug} />
-
-  <div class="maintext">
-    <CallCTA />
-  </div>
+  <FinalCTA />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 </Layout>

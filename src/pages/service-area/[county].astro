@@ -1,9 +1,10 @@
 ---
 import Layout from '~/layouts/Layout.astro';
-import CitiesGrid from '~/components/CitiesGrid.astro';
+import Hero from '~/components/Hero.astro';
+import StickyCTACard from '~/components/StickyCTACard.astro';
 import ServicesGrid from '~/components/ServicesGrid.astro';
-import CallCTA from '~/components/CallCTA.astro';
 import FAQ from '~/components/FAQ.astro';
+import FinalCTA from '~/components/FinalCTA.astro';
 import { COUNTIES } from '~/data/locations';
 import { BUSINESS } from '~/data/business';
 
@@ -17,6 +18,23 @@ export async function getStaticPaths() {
 const { county } = Astro.props;
 
 const description = `Samsung refrigerator repair in ${county.name}, CA. Same-day service across ${county.cities.length} cities. Call ${BUSINESS.phoneDisplay}.`;
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Service Area', href: '/service-area/' },
+  { label: county.name },
+];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.label,
+    ...(c.href ? { item: new URL(c.href, BUSINESS.siteUrl).toString() } : {}),
+  })),
+};
 
 const faqs = [
   {
@@ -37,26 +55,55 @@ const faqs = [
 <Layout
   title={`Samsung Refrigerator Repair in ${county.name}, CA | ${BUSINESS.phoneDisplay}`}
   description={description}
-  heroTitle={`Samsung Refrigerator Repair in ${county.name}, CA`}
-  heroSubtitle={`Same-day service across ${county.cities.length} cities in ${county.name}`}
+  noHero={true}
 >
-  <div class="maintext">
-    <p>{county.intro}</p>
-    <p>
-      All {county.cities.length} cities below get the same dispatch priority and the same truck-stocked
-      Samsung parts inventory. Call
-      <a style="color:#fff; font-weight:700;" href={BUSINESS.phoneTel}>{BUSINESS.phoneDisplay}</a>
-      or pick your city below.
-    </p>
+  <Hero
+    variant="inner"
+    breadcrumbs={breadcrumbs}
+    title={`Samsung Refrigerator Repair in ${county.name}, CA`}
+    subtitle={`Same-day service across ${county.cities.length} cities in ${county.name}.`}
+  />
+
+  <div class="container section">
+    <div class="page-grid">
+      <div class="page-main">
+        <div class="prose-block">
+          <p>{county.intro}</p>
+          <p>
+            All {county.cities.length} cities below get the same dispatch priority and the same
+            truck-stocked Samsung parts inventory.
+          </p>
+        </div>
+
+        <div class="prose-block">
+          <h2>Cities we serve in {county.name}</h2>
+          <ul>
+            {county.cities.map((city) => (
+              <li>
+                <a href={`/service-area/${county.slug}/${city.slug}/`}>
+                  Samsung refrigerator repair in {city.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="prose-block">
+          <FAQ faqs={faqs} heading={`${county.name} FAQ`} />
+        </div>
+      </div>
+
+      <aside class="page-sidebar">
+        <StickyCTACard context={`Same-day Samsung service across ${county.name}.`} />
+      </aside>
+    </div>
   </div>
 
-  <CitiesGrid countySlug={county.slug} />
+  <ServicesGrid
+    heading="Samsung repair services across this county"
+    intro="All 9 services available in every city we cover."
+  />
 
-  <ServicesGrid heading="Samsung Repair Services Offered Across This County" />
-
-  <FAQ faqs={faqs} heading={`${county.name} FAQ`} />
-
-  <div class="maintext">
-    <CallCTA />
-  </div>
+  <FinalCTA />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 </Layout>

@@ -1,29 +1,31 @@
 ---
 import Layout from '~/layouts/Layout.astro';
-import CountiesGrid from '~/components/CountiesGrid.astro';
-import CallCTA from '~/components/CallCTA.astro';
+import Hero from '~/components/Hero.astro';
+import ServiceAreaSection from '~/components/ServiceAreaSection.astro';
+import FinalCTA from '~/components/FinalCTA.astro';
 import { BUSINESS } from '~/data/business';
 
 const title = `Samsung Refrigerator Repair Service Area | ${BUSINESS.phoneDisplay}`;
 const description = `Samsung refrigerator repair across ${BUSINESS.areasServed.join(', ')}. Pick your county to see cities served. Call ${BUSINESS.phoneDisplay}.`;
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Service Area' },
+];
 ---
 
-<Layout
-  title={title}
-  description={description}
-  heroTitle="Samsung Refrigerator Repair Service Area"
-  heroSubtitle="Five Southern California counties — pick yours to see cities served"
->
-  <div class="maintext">
-    <p>
-      We run service calls across {BUSINESS.areasServed.length} Southern California counties:
-      {BUSINESS.areasServed.join(', ')}. Pick your county to see the cities we cover and book a same-day visit.
-    </p>
-  </div>
+<Layout title={title} description={description} noHero={true}>
+  <Hero
+    variant="inner"
+    breadcrumbs={breadcrumbs}
+    title="Samsung Refrigerator Repair Service Area"
+    subtitle="Five Southern California counties — pick yours to see cities served."
+  />
 
-  <CountiesGrid heading="Choose Your County" />
+  <ServiceAreaSection
+    heading="Counties we serve"
+    intro={`We run service calls across ${BUSINESS.areasServed.length} Southern California counties: ${BUSINESS.areasServed.join(', ')}.`}
+  />
 
-  <div class="maintext">
-    <CallCTA />
-  </div>
+  <FinalCTA />
 </Layout>

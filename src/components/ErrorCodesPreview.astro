@@ -1,0 +1,47 @@
+---
+import { ERROR_CODES } from '~/data/errorCodes';
+
+export interface Props {
+  heading?: string;
+  intro?: string;
+  limit?: number;
+  alt?: boolean;
+}
+
+const {
+  heading = 'Common Samsung error codes',
+  intro = 'See what each code means and what to try first.',
+  limit = 6,
+  alt = true,
+} = Astro.props;
+
+const FEATURED = ['1E', '5E', '21E', '84C', 'OF OF', 'PC ER'];
+const items = ERROR_CODES.filter((c) => FEATURED.includes(c.code)).slice(0, limit);
+
+const shortMeaning = (full: string): string => {
+  const firstSentence = full.split('.')[0];
+  if (!firstSentence) return full;
+  return firstSentence.length > 110 ? firstSentence.slice(0, 110) + '…' : firstSentence + '.';
+};
+---
+
+<section class={`section ${alt ? 'section--alt' : ''}`}>
+  <div class="container">
+    <div class="section-head">
+      <h2>{heading}</h2>
+      {intro && <p>{intro}</p>}
+    </div>
+    <div class="codes-grid">
+      {items.map((c) => (
+        <a class="card card-link" href={`/error-codes/${c.slug}/`}>
+          <div class="code-card__code">{c.code}</div>
+          <p class="code-card__meaning">{shortMeaning(c.meaning)}</p>
+          <span class="btn-ghost">Read more →</span>
+        </a>
+      ))}
+    </div>
+    <div style="text-align:center; margin-top:32px;">
+      <a class="btn btn-secondary" href="/error-codes/">View all error codes</a>
+    </div>
+  </div>
+</section>

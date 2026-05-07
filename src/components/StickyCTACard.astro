@@ -1,0 +1,42 @@
+---
+import { BUSINESS } from '~/data/business';
+import Icon from './Icon.astro';
+
+export interface Props {
+  heading?: string;
+  context?: string;
+}
+
+const {
+  heading = 'Get Samsung service today',
+  context,
+} = Astro.props;
+---
+
+<div class="cta-card">
+  <h3>{heading}</h3>
+  {context && <p>{context}</p>}
+  <a class="cta-card__phone" href={BUSINESS.phoneTel}>
+    <Icon name="phone" size={20} />
+    {BUSINESS.phoneDisplay}
+  </a>
+  <a class="btn btn-primary cta-card__btn" href="/book">Book Online</a>
+  <ul class="cta-card__list">
+    <li>
+      <Icon name="check" size={16} />
+      Same-day service available
+    </li>
+    <li>
+      <Icon name="check" size={16} />
+      {BUSINESS.hoursDisplay}
+    </li>
+    <li>
+      <Icon name="check" size={16} />
+      Mobile service — we come to you
+    </li>
+    <li>
+      <Icon name="check" size={16} />
+      Samsung specialists since {BUSINESS.founded}
+    </li>
+  </ul>
+</div>

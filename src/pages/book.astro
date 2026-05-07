@@ -1,48 +1,73 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import CallCTA from '~/components/CallCTA.astro';
+import Layout from '~/layouts/Layout.astro';
+import Hero from '~/components/Hero.astro';
+import StickyCTACard from '~/components/StickyCTACard.astro';
+import FinalCTA from '~/components/FinalCTA.astro';
 import { BUSINESS } from '~/data/business';
 
 const title = `Book a Samsung Refrigerator Repair | ${BUSINESS.phoneDisplay}`;
 const description = `Book Samsung refrigerator repair online 24/7, or call ${BUSINESS.phoneDisplay} during service hours (${BUSINESS.hoursDisplay}).`;
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Book Online' },
+];
 ---
 
-<Layout title={title} description={description}>
-  <div class="maintext">
-    <h2>Book Samsung Refrigerator Repair</h2>
-    <p>
-      Booking is open 24/7 through the form below. Prefer to talk to someone? Call
-      <a style="color:#fff; font-weight:700;" href={BUSINESS.phoneTel}>{BUSINESS.phoneDisplay}</a>
-      during service hours ({BUSINESS.hoursDisplay}).
-    </p>
-    <iframe
-      id="JotFormIFrame-233135002315136"
-      title="Samsung Refrigerator Repair Booking Form"
-      onload="window.parent.scrollTo(0,0)"
-      allowtransparency="true"
-      allowfullscreen="true"
-      allow="geolocation; microphone; camera"
-      src="https://form.jotform.com/233135002315136"
-      frameborder="0"
-      style="min-width:100%;max-width:100%;height:539px;border:none;"
-      scrolling="no"
-    ></iframe>
-    <script type="text/javascript" set:html={`
-      var ifr = document.getElementById("JotFormIFrame-233135002315136");
-      if (ifr) {
-        var src = ifr.src;
-        var iframeParams = [];
-        if (window.location.href && window.location.href.indexOf("?") > -1) {
-          iframeParams = iframeParams.concat(window.location.href.substr(window.location.href.indexOf("?") + 1).split('&'));
-        }
-        if (src && src.indexOf("?") > -1) {
-          iframeParams = iframeParams.concat(src.substr(src.indexOf("?") + 1).split("&"));
-          src = src.substr(0, src.indexOf("?"));
-        }
-        iframeParams.push("isIframeEmbed=1");
-        ifr.src = src + "?" + iframeParams.join('&');
-      }
-    `}></script>
-    <CallCTA />
+<Layout title={title} description={description} noHero={true}>
+  <Hero
+    variant="inner"
+    breadcrumbs={breadcrumbs}
+    title="Book Samsung Refrigerator Repair"
+    subtitle={`Booking is open 24/7. Service hours run ${BUSINESS.hoursDisplay}.`}
+  />
+
+  <div class="container section">
+    <div class="page-grid">
+      <div class="page-main">
+        <div class="prose-block">
+          <p>
+            Use the form below to book a same-day or next-day Samsung refrigerator repair visit.
+            Prefer to talk to someone? Call
+            <a href={BUSINESS.phoneTel}><strong>{BUSINESS.phoneDisplay}</strong></a>
+            during service hours.
+          </p>
+          <iframe
+            id="JotFormIFrame-233135002315136"
+            title="Samsung Refrigerator Repair Booking Form"
+            onload="window.parent.scrollTo(0,0)"
+            allowtransparency="true"
+            allowfullscreen="true"
+            allow="geolocation; microphone; camera"
+            src="https://form.jotform.com/233135002315136"
+            frameborder="0"
+            style="min-width:100%;max-width:100%;height:560px;border:none; border-radius: 10px; margin-top: 16px;"
+            scrolling="no"
+          ></iframe>
+          <script type="text/javascript" set:html={`
+            var ifr = document.getElementById("JotFormIFrame-233135002315136");
+            if (ifr) {
+              var src = ifr.src;
+              var iframeParams = [];
+              if (window.location.href && window.location.href.indexOf("?") > -1) {
+                iframeParams = iframeParams.concat(window.location.href.substr(window.location.href.indexOf("?") + 1).split('&'));
+              }
+              if (src && src.indexOf("?") > -1) {
+                iframeParams = iframeParams.concat(src.substr(src.indexOf("?") + 1).split("&"));
+                src = src.substr(0, src.indexOf("?"));
+              }
+              iframeParams.push("isIframeEmbed=1");
+              ifr.src = src + "?" + iframeParams.join('&');
+            }
+          `}></script>
+        </div>
+      </div>
+
+      <aside class="page-sidebar">
+        <StickyCTACard heading="Prefer to call?" />
+      </aside>
+    </div>
   </div>
+
+  <FinalCTA heading="Faster than the form?" subheading="Call us — we answer the phone 24/7 and book same-day visits when the schedule allows." />
 </Layout>

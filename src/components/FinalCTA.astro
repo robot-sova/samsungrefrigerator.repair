@@ -1,0 +1,28 @@
+---
+import { BUSINESS } from '~/data/business';
+import Icon from './Icon.astro';
+
+export interface Props {
+  heading?: string;
+  subheading?: string;
+}
+
+const {
+  heading = 'Need Samsung refrigerator service today?',
+  subheading = 'We answer the phone 24/7 and book same-day visits across 5 counties.',
+} = Astro.props;
+---
+
+<section class="section section--ink final-cta">
+  <div class="container">
+    <h2>{heading}</h2>
+    <p>{subheading}</p>
+    <div class="final-cta__row">
+      <a class="btn btn-primary" href={BUSINESS.phoneTel}>
+        <Icon name="phone" size={18} />
+        Call {BUSINESS.phoneDisplay}
+      </a>
+      <a class="btn btn-secondary btn-secondary--on-dark" href="/book">Book Online</a>
+    </div>
+  </div>
+</section>

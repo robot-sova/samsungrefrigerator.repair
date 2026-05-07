@@ -1,8 +1,9 @@
 ---
 import Layout from '~/layouts/Layout.astro';
-import CallCTA from '~/components/CallCTA.astro';
-import RelatedLinks from '~/components/RelatedLinks.astro';
+import Hero from '~/components/Hero.astro';
+import StickyCTACard from '~/components/StickyCTACard.astro';
 import FAQ from '~/components/FAQ.astro';
+import FinalCTA from '~/components/FinalCTA.astro';
 import { SERVICES } from '~/data/services';
 import { ERROR_CODES } from '~/data/errorCodes';
 import { COUNTIES } from '~/data/locations';
@@ -21,81 +22,113 @@ const explicitlyRelated = ERROR_CODES.filter((c) => service.relatedErrorCodes.in
 const fallbackCodes = ERROR_CODES.filter((c) => !service.relatedErrorCodes.includes(c.code)).slice(0, 4);
 const relatedCodes =
   explicitlyRelated.length >= 3 ? explicitlyRelated : [...explicitlyRelated, ...fallbackCodes].slice(0, 4);
+
 const introParagraphs = service.longIntro.split('\n\n');
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services/' },
+  { label: service.title.replace('Samsung ', '').replace(' Repair', '') },
+];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.label,
+    ...(c.href ? { item: new URL(c.href, BUSINESS.siteUrl).toString() } : {}),
+  })),
+};
 ---
 
 <Layout
   title={`${service.title} | ${BUSINESS.phoneDisplay}`}
   description={service.metaDescription}
-  heroTitle={service.h1}
-  heroSubtitle={service.shortDescription}
+  noHero={true}
 >
-  <div class="maintext">
-    {introParagraphs.map((p) => <p>{p}</p>)}
-  </div>
+  <Hero
+    variant="inner"
+    breadcrumbs={breadcrumbs}
+    title={service.h1}
+    subtitle={service.shortDescription}
+  />
 
-  <div class="maintext">
-    <h2>Symptoms We Hear Most Often</h2>
-    <ul>
-      {service.symptoms.map((s) => <li>{s}</li>)}
-    </ul>
-  </div>
+  <div class="container section">
+    <div class="page-grid">
+      <div class="page-main">
+        <div class="prose-block">
+          {introParagraphs.map((p) => <p>{p}</p>)}
+        </div>
 
-  <div class="maintext">
-    <h2>Common Causes on Samsung Refrigerators</h2>
-    <ul>
-      {service.causes.map((c) => (
-        <li>
-          <strong style="color:#fff;">{c.title}.</strong> {c.explanation}
-        </li>
-      ))}
-    </ul>
-  </div>
+        <div class="prose-block">
+          <h2>Symptoms we hear most often</h2>
+          <ul>
+            {service.symptoms.map((s) => <li>{s}</li>)}
+          </ul>
+        </div>
 
-  <div class="maintext">
-    <h2>How We Diagnose &amp; Repair</h2>
-    <ol style="margin-left:50px;">
-      {service.repairSteps.map((step) => <li style="margin:0 0 0 0; padding:10px 5px 10px 5px; color:#fff; font-size:1.1em;">{step}</li>)}
-    </ol>
-  </div>
+        <div class="prose-block">
+          <h2>Common causes on Samsung refrigerators</h2>
+          <ul>
+            {service.causes.map((c) => (
+              <li>
+                <strong>{c.title}.</strong> {c.explanation}
+              </li>
+            ))}
+          </ul>
+        </div>
 
-  {relatedCodes.length > 0 && (
-    <div class="maintext">
-      <h2>Related Samsung Error Codes</h2>
-      <ul>
-        {relatedCodes.map((code) => (
-          <li>
-            <a style="color:#fff; font-weight:700;" href={`/error-codes/${code.slug}/`}>{code.code}</a>
-            &nbsp;— {code.meaning}
-          </li>
-        ))}
-      </ul>
+        <div class="prose-block">
+          <h2>How we diagnose &amp; repair</h2>
+          <ol>
+            {service.repairSteps.map((step) => <li>{step}</li>)}
+          </ol>
+        </div>
+
+        {relatedCodes.length > 0 && (
+          <div class="prose-block">
+            <h2>Related Samsung error codes</h2>
+            <ul>
+              {relatedCodes.map((code) => (
+                <li>
+                  <a href={`/error-codes/${code.slug}/`}><strong>{code.code}</strong></a> — {code.meaning}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div class="prose-block">
+          <h2>When you should call vs DIY</h2>
+          <p>{service.diyVsCall}</p>
+        </div>
+
+        <div class="prose-block">
+          <h2>Available in all five counties</h2>
+          <ul>
+            {COUNTIES.map((county) => (
+              <li>
+                <a href={`/service-area/${county.slug}/`}>
+                  {service.title.replace('Samsung ', '').replace(' Repair', '')} in {county.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="prose-block">
+          <FAQ faqs={service.faq.map((f) => ({ question: f.q, answer: f.a }))} heading="Frequently asked questions" />
+        </div>
+      </div>
+
+      <aside class="page-sidebar">
+        <StickyCTACard context={`Call now for same-day ${service.title.replace('Samsung ', '').toLowerCase()}.`} />
+      </aside>
     </div>
-  )}
-
-  <div class="maintext">
-    <h2>When You Should Call vs DIY</h2>
-    <p>{service.diyVsCall}</p>
   </div>
 
-  <div class="maintext">
-    <h2>Available in All Five Counties</h2>
-    <ul>
-      {COUNTIES.map((county) => (
-        <li>
-          <a style="color:#fff; font-weight:700;" href={`/service-area/${county.slug}/`}>
-            {service.title.replace('Samsung ', '').replace(' Repair', '')} in {county.name}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
-
-  <FAQ faqs={service.faq.map((f) => ({ question: f.q, answer: f.a }))} />
-
-  <RelatedLinks excludeServiceSlug={service.slug} />
-
-  <div class="maintext">
-    <CallCTA />
-  </div>
+  <FinalCTA />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 </Layout>

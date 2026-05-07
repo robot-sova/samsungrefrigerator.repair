@@ -1,0 +1,38 @@
+---
+// TODO: replace with real Google reviews
+const reviews = [
+  {
+    quote:
+      "Our French Door ice maker had been frozen for months and two other companies just told us to replace the fridge. These guys swapped in the redesigned ice maker and it's been working perfectly for half a year now.",
+    author: 'Marcus R., Irvine',
+  },
+  {
+    quote:
+      "Showed up the same morning I called. Diagnosed a defrost-system fault in 20 minutes, quoted the fix, and was done by lunch. Honest pricing and no upsell.",
+    author: 'Jennifer L., Pasadena',
+  },
+  {
+    quote:
+      "Family Hub touchscreen died after a power outage. They replaced just the display board — didn't try to sell us a new fridge or pretend the cooling system was bad too. Refreshing.",
+    author: 'David T., Calabasas',
+  },
+];
+---
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="section-head">
+      <h2>What our customers say</h2>
+    </div>
+    <div class="reviews-grid">
+      <!-- TODO: replace with real Google reviews -->
+      {reviews.map((r) => (
+        <div class="card review-card">
+          <div class="review-card__stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p class="review-card__quote">{r.quote}</p>
+          <p class="review-card__author">— {r.author}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

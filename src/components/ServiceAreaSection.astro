@@ -1,0 +1,42 @@
+---
+import { COUNTIES } from '~/data/locations';
+
+export interface Props {
+  heading?: string;
+  intro?: string;
+  alt?: boolean;
+}
+
+const {
+  heading = 'Where we work',
+  intro = 'Same-day Samsung refrigerator service across five Southern California counties.',
+  alt = false,
+} = Astro.props;
+---
+
+<section class={`section ${alt ? 'section--alt' : ''}`}>
+  <div class="container">
+    <div class="section-head">
+      <h2>{heading}</h2>
+      {intro && <p>{intro}</p>}
+    </div>
+    <div class="area-grid">
+      {COUNTIES.map((county) => (
+        <div class="card area-card">
+          <h3>{county.name.replace(' County', ' Co.')}</h3>
+          <p class="area-card__count">{county.cities.length} cities served</p>
+          <ul class="area-card__list">
+            {county.cities.slice(0, 5).map((city) => (
+              <li>
+                <a href={`/service-area/${county.slug}/${city.slug}/`}>{city.name}</a>
+              </li>
+            ))}
+          </ul>
+          <a class="btn-ghost" href={`/service-area/${county.slug}/`}>
+            View all {county.name.replace(' County', '')} cities →
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
