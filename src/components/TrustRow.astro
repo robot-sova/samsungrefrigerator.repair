@@ -1,0 +1,16 @@
+---
+import { business, prices, usd, warranty } from '../data/business';
+---
+<ul class="trust">
+  <li><b>{usd(prices.diagnostic)}</b> diagnostic visit, credited to the repair</li>
+  <li><b>{warranty.days} days</b> warranty on parts and labor</li>
+  <li><b>Same-day</b> or next-day in 7 SoCal counties</li>
+  <li><b>{business.hours.display}</b></li>
+</ul>
+
+<style>
+  .trust { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 900px) { .trust { grid-template-columns: repeat(4, 1fr); } }
+  .trust li { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; font-size: .92rem; color: var(--muted); }
+  .trust b { display: block; color: var(--ink); font-size: 1.05rem; }
+</style>

@@ -1,94 +1,90 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import Hero from '~/components/Hero.astro';
-import StickyCTACard from '~/components/StickyCTACard.astro';
-import FAQ from '~/components/FAQ.astro';
-import FinalCTA from '~/components/FinalCTA.astro';
-import { MODELS } from '~/data/models';
-import { BUSINESS } from '~/data/business';
+import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import Faq from '../../components/Faq.astro';
+import { MODELS, type Model } from '../../data/models';
+import { modelPhoto } from '../../data/extras';
+import { business, fill, formTypes, prices, usd } from '../../data/business';
+import { faqSchema, serviceSchema, paras } from '../../data/schema';
 
-export async function getStaticPaths() {
-  return MODELS.map((m) => ({
-    params: { slug: m.slug },
-    props: { model: m },
-  }));
+export function getStaticPaths() {
+  return MODELS.map((m) => ({ params: { slug: m.slug }, props: { m } }));
 }
 
-const { model } = Astro.props;
-const description = `${model.description} Samsung repair across ${BUSINESS.areasServed.length} counties. Call ${BUSINESS.phoneDisplay}.`;
-const introParagraphs = model.longIntro.split('\n\n');
-
-const breadcrumbs = [
-  { label: 'Home', href: '/' },
-  { label: 'Models', href: '/models/' },
-  { label: model.title.replace('Samsung ', '').replace(' Refrigerator Repair', '').replace(' Repair', '') },
-];
-
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: breadcrumbs.map((c, i) => ({
-    '@type': 'ListItem',
-    position: i + 1,
-    name: c.label,
-    ...(c.href ? { item: new URL(c.href, BUSINESS.siteUrl).toString() } : {}),
-  })),
+const { m } = Astro.props as { m: Model };
+const path = `/models/${m.slug}/`;
+const short = m.title.replace(/^Samsung /, '').replace(/ (Refrigerator )?Repair$/, '');
+let description = `${m.title} in your home across Southern California: common failures, typical repairs and what they involve. ${usd(prices.diagnostic)} diagnostic visit.`;
+if (description.length > 160) description = `${m.title} in your home across Southern California: common failures and typical repairs. ${usd(prices.diagnostic)} diagnostic.`;
+const typeFor: Record<string, (typeof formTypes)[number]> = {
+  'family-hub': 'Family Hub (touchscreen)',
+  bespoke: 'Bespoke',
+  'french-door-4-door-flex': 'French Door (3 or 4 door)',
+  'side-by-side': 'Side-by-side',
+  'top-freezer': 'Top or bottom freezer',
 };
+const faq = m.faq.map((f) => ({ q: fill(f.q), a: fill(f.a) }));
+const others = MODELS.filter((o) => o.slug !== m.slug);
 ---
-
-<Layout
-  title={`${model.title} | ${BUSINESS.phoneDisplay}`}
-  description={description.slice(0, 160)}
-  noHero={true}
+<Base
+  title={`${m.title} | In-Home Service in SoCal`.length > 70 ? `${m.title} in SoCal` : `${m.title} | In-Home Service in SoCal`}
+  description={description}
+  ogPhoto={modelPhoto[m.slug]}
+  crumbs={[{ label: 'Models', href: '/models/' }, { label: short }]}
+  schema={[serviceSchema({ name: m.title, description, path }), faqSchema(faq)]}
 >
-  <Hero
-    variant="inner"
-    breadcrumbs={breadcrumbs}
-    title={model.title}
-    subtitle={model.description}
-  />
-
-  <div class="container section">
-    <div class="page-grid">
-      <div class="page-main">
-        <div class="prose-block">
-          {introParagraphs.map((p) => <p>{p}</p>)}
-        </div>
-
-        <div class="prose-block">
-          <h2>Common issues on this model</h2>
-          <ul>
-            {model.commonIssues.map((issue) => <li>{issue}</li>)}
-          </ul>
-        </div>
-
-        <div class="prose-block">
-          <h2>Typical repairs we perform</h2>
-          <ul>
-            {model.typicalRepairs.map((r) => <li>{r}</li>)}
-          </ul>
-        </div>
-
-        <div class="prose-block">
-          <h2>Available across {BUSINESS.areasServed.length} counties</h2>
-          <p>
-            {BUSINESS.areasServed.join(', ')} — same-day service when available. Call
-            <a href={BUSINESS.phoneTel}><strong>{BUSINESS.phoneDisplay}</strong></a>
-            to book.
-          </p>
-        </div>
-
-        <div class="prose-block">
-          <FAQ faqs={model.faq.map((f) => ({ question: f.q, answer: f.a }))} heading="Frequently asked questions" />
+  <section class="section top">
+    <div class="wrap split">
+      <div>
+        <div class="eyebrow">Samsung refrigerator models</div>
+        <h1>{m.title}</h1>
+        <p class="lede">{fill(m.description)}</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="#book">Book a technician</a>
+          <a class="btn" href={`tel:${business.phone.tel}`}>Call {business.phone.display}</a>
         </div>
       </div>
-
-      <aside class="page-sidebar">
-        <StickyCTACard context={`Need ${model.title.replace('Samsung ', '').toLowerCase()}? Same-day visits available.`} />
-      </aside>
+      <Photo id={modelPhoto[m.slug]} eager />
     </div>
-  </div>
+  </section>
 
-  <FinalCTA />
-  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
-</Layout>
+  <section class="section alt">
+    <div class="wrap prose">
+      {paras(fill(m.longIntro)).map((p) => <p>{p}</p>)}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid grid-2">
+      <div class="card">
+        <h2 class="h3">Common problems</h2>
+        <ul>{m.commonIssues.map((x) => <li>{fill(x)}</li>)}</ul>
+      </div>
+      <div class="card">
+        <h2 class="h3">Typical repairs</h2>
+        <ul>{m.typicalRepairs.map((x) => <li>{fill(x)}</li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faq} />
+
+  <section class="section alt">
+    <div class="wrap">
+      <h2>Other Samsung styles we repair</h2>
+      <ul class="chips">
+        {others.map((o) => <li><a href={`/models/${o.slug}/`}>{o.title.replace(/^Samsung /, '').replace(/ (Refrigerator )?Repair$/, '')}</a></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <LeadForm heading={`Book ${short} repair`} fridgeType={typeFor[m.slug]} />
+</Base>
+
+<style>
+  .top { padding-top: 24px; }
+  .h3 { font-size: 1.2rem; }
+  .card ul { padding-left: 1.1em; margin: 0; }
+  .card li { margin-bottom: .35em; }
+</style>

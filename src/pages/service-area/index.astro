@@ -1,31 +1,41 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import Hero from '~/components/Hero.astro';
-import ServiceAreaSection from '~/components/ServiceAreaSection.astro';
-import FinalCTA from '~/components/FinalCTA.astro';
-import { BUSINESS } from '~/data/business';
-
-const title = `Samsung Refrigerator Repair Service Area | ${BUSINESS.phoneDisplay}`;
-const description = `Samsung refrigerator repair across ${BUSINESS.areasServed.join(', ')}. Pick your county to see cities served. Call ${BUSINESS.phoneDisplay}.`;
-
-const breadcrumbs = [
-  { label: 'Home', href: '/' },
-  { label: 'Service Area' },
-];
+import Base from '../../layouts/Base.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { COUNTIES } from '../../data/locations';
 ---
+<Base
+  title="Samsung Refrigerator Repair Service Area | 7 SoCal Counties"
+  description="In-home Samsung refrigerator repair across Los Angeles, Orange, Riverside, San Bernardino, Ventura, San Diego and Santa Barbara counties."
+  crumbs={[{ label: 'Service area' }]}
+>
+  <section class="section">
+    <div class="wrap">
+      <h1>Where we repair Samsung refrigerators</h1>
+      <p class="lede">Seven Southern California counties. Same-day for most calls that reach us before noon, otherwise next-day.</p>
+      <div class="grid grid-2">
+        {COUNTIES.map((c) => (
+          <div class="card">
+            <h2 class="h3"><a href={`/service-area/${c.slug}/`}>{c.name}</a></h2>
+            <p class="note">{c.intro}</p>
+            <ul class="chips">
+              {c.cities.map((ct) =>
+                c.cityPages === false
+                  ? <li><span>{ct.name}</span></li>
+                  : <li><a href={`/service-area/${c.slug}/${ct.slug}/`}>{ct.name}</a></li>
+              )}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  <LeadForm />
+</Base>
 
-<Layout title={title} description={description} noHero={true}>
-  <Hero
-    variant="inner"
-    breadcrumbs={breadcrumbs}
-    title="Samsung Refrigerator Repair Service Area"
-    subtitle="Five Southern California counties — pick yours to see cities served."
-  />
-
-  <ServiceAreaSection
-    heading="Counties we serve"
-    intro={`We run service calls across ${BUSINESS.areasServed.length} Southern California counties: ${BUSINESS.areasServed.join(', ')}.`}
-  />
-
-  <FinalCTA />
-</Layout>
+<style>
+  .grid { margin-top: 20px; }
+  .h3 { font-size: 1.25rem; }
+  .h3 a { text-decoration: none; }
+  .chips { margin-top: 10px; }
+  .chips a, .chips span { font-size: .88rem; padding: 4px 10px; }
+</style>

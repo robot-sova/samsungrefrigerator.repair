@@ -1,0 +1,27 @@
+---
+import { Image } from 'astro:assets';
+import { photo, type PhotoId } from '../data/photos';
+
+interface Props {
+  id: PhotoId;
+  /** Layout width hint for srcset; the image never renders wider than its container. */
+  sizes?: string;
+  eager?: boolean;
+  class?: string;
+}
+const { id, sizes = '(min-width: 900px) 50vw, 100vw', eager = false, class: cls } = Astro.props;
+const p = photo(id);
+---
+<Image
+  src={p.src}
+  alt={p.alt}
+  widths={[480, 800, 1200, p.src.width].filter((w, i, a) => w <= p.src.width && a.indexOf(w) === i)}
+  sizes={sizes}
+  loading={eager ? 'eager' : 'lazy'}
+  fetchpriority={eager ? 'high' : 'auto'}
+  class:list={['photo', cls]}
+/>
+
+<style>
+  .photo { width: 100%; height: auto; border-radius: var(--radius); display: block; }
+</style>

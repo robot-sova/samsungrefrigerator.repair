@@ -30,7 +30,7 @@ export const SERVICES: Service[] = [
     title: 'Samsung Refrigerator Not Cooling Repair',
     h1: 'Samsung Refrigerator Not Cooling? Same-Day Repair',
     metaDescription:
-      'Samsung refrigerator not cooling repair across SoCal. Same-day service for fridges that are warm, lukewarm, or losing temperature. Call 424-407-1019.',
+      'Samsung refrigerator not cooling repair across SoCal. Same-day service for fridges that are warm, lukewarm, or losing temperature. Call {PHONE}.',
     shortDescription:
       'Diagnosis and repair when your Samsung fridge stops holding temperature, runs warm, or only the freezer cools.',
     longIntro:
@@ -117,7 +117,7 @@ export const SERVICES: Service[] = [
     title: 'Samsung Ice Maker Repair',
     h1: 'Samsung Ice Maker Repair: Stop the Freeze-Ups, Leaks, and No-Ice Days',
     metaDescription:
-      'Samsung ice maker repair for French Door, Family Hub, and side-by-side models. Fix freeze-ups, no ice, leaks, and 1E/8E errors. Call 424-407-1019.',
+      'Samsung ice maker repair for French Door, Family Hub, and side-by-side models. Fix freeze-ups, no ice, leaks, and 1E/8E errors. Call {PHONE}.',
     shortDescription:
       'Specialized repair for the troublesome Samsung French Door ice maker — freeze-ups, no ice production, leaks, and ice maker error codes.',
     longIntro:
@@ -205,7 +205,7 @@ export const SERVICES: Service[] = [
     title: 'Samsung Refrigerator Water Leak Repair',
     h1: 'Samsung Refrigerator Leaking Water? We Find the Source',
     metaDescription:
-      'Stop water leaks under or inside your Samsung refrigerator. We diagnose drain blockages, dispenser leaks, and ice maker leaks. Call 424-407-1019.',
+      'Stop water leaks under or inside your Samsung refrigerator. We diagnose drain blockages, dispenser leaks, and ice maker leaks. Call {PHONE}.',
     shortDescription:
       'Water on the floor, ice on the freezer floor, or puddles in the produce drawers — we trace the leak to its source.',
     longIntro:
@@ -288,7 +288,7 @@ export const SERVICES: Service[] = [
     title: 'Samsung Freezer Not Freezing Repair',
     h1: 'Samsung Freezer Not Freezing? Diagnosis and Repair',
     metaDescription:
-      'Fix Samsung freezers that are too warm, soft-freezing food, or letting ice cream melt. Same-day Samsung freezer repair. Call 424-407-1019.',
+      'Fix Samsung freezers that are too warm, soft-freezing food, or letting ice cream melt. Same-day Samsung freezer repair. Call {PHONE}.',
     shortDescription:
       'Repair for Samsung freezers that no longer hold zero degrees — soft ice cream, frost-free food, or rising freezer temperature.',
     longIntro:
@@ -371,7 +371,7 @@ export const SERVICES: Service[] = [
     title: 'Samsung Refrigerator Compressor Repair',
     h1: 'Samsung Linear & Inverter Compressor Repair',
     metaDescription:
-      'Samsung compressor repair and replacement, including digital inverter compressors. Diagnosis, parts, and labor. Call 424-407-1019.',
+      'Samsung compressor repair and replacement, including digital inverter compressors. Diagnosis, parts, and labor. Call {PHONE}.',
     shortDescription:
       'Diagnose compressor start failures, noisy compressors, and dead compressors on Samsung refrigerators — including digital inverter models.',
     longIntro:
@@ -458,7 +458,7 @@ export const SERVICES: Service[] = [
     title: 'Samsung Refrigerator Control Board Repair',
     h1: 'Samsung Refrigerator Control Board Repair & Replacement',
     metaDescription:
-      'Samsung main PCB and display board repair. Fix communication errors, dead displays, and erratic temperature behavior. Call 424-407-1019.',
+      'Samsung main PCB and display board repair. Fix communication errors, dead displays, and erratic temperature behavior. Call {PHONE}.',
     shortDescription:
       'Replace failed main control boards (PCBs) and display boards causing communication errors, dead panels, and erratic behavior.',
     longIntro:
@@ -541,7 +541,7 @@ export const SERVICES: Service[] = [
     title: 'Samsung Refrigerator Door Seal & Gasket Repair',
     h1: 'Samsung Refrigerator Door Seal Replacement',
     metaDescription:
-      'Replace torn, warped, or moldy Samsung refrigerator door gaskets. Stop frost buildup and energy waste. Call 424-407-1019.',
+      'Replace torn, warped, or moldy Samsung refrigerator door gaskets. Stop frost buildup and energy waste. Call {PHONE}.',
     shortDescription:
       'Replace damaged door gaskets that cause frost buildup, condensation, and forced compressor cycling.',
     longIntro:
@@ -624,7 +624,7 @@ export const SERVICES: Service[] = [
     title: 'Samsung Refrigerator Noise Repair',
     h1: 'Samsung Refrigerator Making Noise? Find the Source',
     metaDescription:
-      'Stop buzzing, knocking, clicking, and grinding noises from your Samsung refrigerator. Same-day diagnosis. Call 424-407-1019.',
+      'Stop buzzing, knocking, clicking, and grinding noises from your Samsung refrigerator. Same-day diagnosis. Call {PHONE}.',
     shortDescription:
       'Identify and silence the source of buzzing, clicking, grinding, or knocking from your Samsung refrigerator.',
     longIntro:
@@ -707,7 +707,7 @@ export const SERVICES: Service[] = [
     title: 'Samsung Refrigerator Error Code Repair',
     h1: 'Samsung Refrigerator Error Code Diagnosis & Repair',
     metaDescription:
-      'Samsung refrigerator error code diagnosis and repair: 1E, 5E, 8E, 21E, 22E, 41C, 84C, OF OF, PC ER. Call 424-407-1019.',
+      'Samsung refrigerator error code diagnosis and repair: 1E, 5E, 8E, 21E, 22E, 41C, 84C, OF OF, PC ER. Call {PHONE}.',
     shortDescription:
       'Decode the error code on your Samsung display panel and get the underlying fault repaired the same day.',
     longIntro:

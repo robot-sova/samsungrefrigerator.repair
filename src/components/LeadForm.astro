@@ -1,0 +1,191 @@
+---
+import { business, diagnosticText, formTypes, warranty } from '../data/business';
+
+interface Props {
+  heading?: string;
+  /** Pre-selects the refrigerator type on a model page. */
+  fridgeType?: (typeof formTypes)[number];
+  /** Pre-fills "what is it doing" — e.g. the error code on a code page. */
+  problem?: string;
+  /** Shown above the heading; a city page says the city. */
+  eyebrow?: string;
+}
+const { heading = 'Book a Samsung refrigerator repair', fridgeType, problem = '', eyebrow = 'Request a technician' } = Astro.props;
+---
+<section class="section lead" id="book">
+  <div class="wrap lead-grid">
+    <div>
+      <div class="eyebrow">{eyebrow}</div>
+      <h2>{heading}</h2>
+      <p class="lede">Two minutes. A dispatcher calls you back to confirm the arrival window — usually within the hour during business hours.</p>
+      <ul class="checks">
+        <li>{diagnosticText}</li>
+        <li>Price agreed before any work starts</li>
+        <li>{warranty.short}</li>
+        <li>Same-day or next-day in most of Southern California</li>
+      </ul>
+      <p class="note">In a hurry? Call <a href={`tel:${business.phone.tel}`}>{business.phone.display}</a> — {business.hours.display}.</p>
+    </div>
+
+    <form class="card form" method="post" action="/api/lead" data-lead novalidate>
+      <div class="row-2">
+        <label>Your name
+          <input name="name" autocomplete="name" maxlength="100" required />
+        </label>
+        <label>Phone
+          <input name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" required placeholder="(555) 123-4567" />
+        </label>
+      </div>
+      <div class="row-2">
+        <label>ZIP code
+          <input name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="10" required placeholder="90025" />
+        </label>
+        <label>Refrigerator type
+          <select name="fridge_type">
+            <option value="">Choose…</option>
+            {formTypes.map((t) => <option value={t} selected={t === fridgeType}>{t}</option>)}
+          </select>
+        </label>
+      </div>
+      <label>What is it doing?
+        <textarea name="problem" rows="3" maxlength="1500" required placeholder="e.g. fridge is warm, freezer still cold, 22E on the panel">{problem}</textarea>
+      </label>
+      <div class="row-2">
+        <label><span>Model number <span class="opt">(if handy)</span></span>
+          <input name="model" maxlength="60" placeholder="e.g. RF28R7351SR" />
+        </label>
+        <label><span>Best time <span class="opt">(optional)</span></span>
+          <select name="when">
+            <option value="">Any time</option>
+            <option>Today if possible</option>
+            <option>Tomorrow morning</option>
+            <option>Tomorrow afternoon</option>
+            <option>This week, flexible</option>
+          </select>
+        </label>
+      </div>
+      <div class="upload">
+        <label class="upload-btn">
+          <input type="file" accept="image/jpeg,image/png,image/webp" data-photo hidden />
+          <span>+ Add a photo <span class="opt">(model sticker or the problem, optional)</span></span>
+        </label>
+        <ul class="thumbs" data-thumbs></ul>
+      </div>
+      <input type="hidden" name="photos" value="" />
+      <input class="hp" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <button class="btn btn-primary" type="submit">Request a technician</button>
+      <p class="form-msg" role="status" aria-live="polite"></p>
+      <p class="note small">We use your number only to schedule this repair. No spam, no reselling.</p>
+    </form>
+  </div>
+</section>
+
+<script>
+  const forms = document.querySelectorAll<HTMLFormElement>('form[data-lead]');
+  forms.forEach((form) => {
+    const msg = form.querySelector<HTMLElement>('.form-msg')!;
+    const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const photoInput = form.querySelector<HTMLInputElement>('input[data-photo]')!;
+    const photosField = form.querySelector<HTMLInputElement>('input[name=photos]')!;
+    const thumbs = form.querySelector<HTMLUListElement>('[data-thumbs]')!;
+    const urls: string[] = [];
+    let uploading = 0;
+    const say = (text: string, ok = false) => {
+      msg.textContent = text;
+      msg.dataset.ok = ok ? '1' : '';
+    };
+
+    photoInput.addEventListener('change', async () => {
+      const file = photoInput.files?.[0];
+      photoInput.value = '';
+      if (!file) return;
+      if (urls.length >= 3) return say('Three photos is plenty — the technician will ask for more if needed.');
+      const li = document.createElement('li');
+      li.textContent = 'Uploading…';
+      thumbs.appendChild(li);
+      uploading++;
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch('/api/plate-photo', { method: 'POST', body: fd });
+        const body = await res.json().catch(() => ({}));
+        if (!res.ok || !body.url) throw new Error(body.error || 'The photo did not upload. Send the request without it.');
+        urls.push(body.url);
+        photosField.value = urls.join(' ');
+        li.textContent = '';
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.alt = 'Attached photo';
+        li.appendChild(img);
+        say('');
+      } catch (err) {
+        li.remove();
+        say(err instanceof Error ? err.message : 'The photo did not upload.');
+      } finally {
+        uploading--;
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (uploading) return say('One moment — the photo is still uploading.');
+      const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+      // Same rule as the Function: a North American number a dispatcher can call back.
+      const digits = (data.phone || '').split(/x|ext/i)[0].replace(/\D/g, '');
+      const ten = digits.length === 11 && digits.startsWith('1') ? digits.slice(1) : digits;
+      if (!data.name?.trim()) return say('Please add your name.');
+      if (!(ten.length === 10 && /^[2-9]/.test(ten))) return say('A US phone number has 10 digits — check it so we can call you back.');
+      if (!/^\d{5}/.test(data.zip || '')) return say('Please add a 5-digit ZIP code.');
+      if (!data.problem?.trim()) return say('Tell us in a few words what the refrigerator is doing.');
+
+      btn.disabled = true;
+      say('Sending…');
+      try {
+        const res = await fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ ...data, page: location.href }),
+        });
+        const body = await res.json().catch(() => ({}));
+        if (res.ok) {
+          // GA4 key event; gtag is a no-op stub off the production host.
+          (window as unknown as { gtag?: (...a: unknown[]) => void }).gtag?.('event', 'generate_lead', { form_page: location.pathname });
+          form.reset();
+          urls.length = 0;
+          thumbs.innerHTML = '';
+          say('Got it. A dispatcher will call you shortly to confirm the arrival window.', true);
+        } else {
+          say(body.error || 'Something went wrong. Please call us instead.');
+        }
+      } catch {
+        say('No connection. Please try again, or call us.');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  });
+</script>
+
+<style>
+  .lead { background: var(--cool-soft); scroll-margin-top: 72px; }
+  .lead-grid { display: grid; gap: 28px; }
+  @media (min-width: 900px) { .lead-grid { grid-template-columns: 1fr 1.2fr; align-items: start; } }
+  .form { display: grid; gap: 14px; }
+  .row-2 { display: grid; gap: 14px; }
+  @media (min-width: 560px) { .row-2 { grid-template-columns: 1fr 1fr; align-items: end; } }
+  label { display: grid; gap: 6px; align-content: end; font-weight: 600; font-size: .95rem; }
+  .opt { font-weight: 400; color: var(--muted); font-size: .85rem; }
+  input, select, textarea {
+    font: 400 1rem/1.4 var(--font-body); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 8px; padding: 11px 12px; background: #fff; width: 100%;
+  }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--cool); outline-offset: 1px; border-color: transparent; }
+  .upload { display: grid; gap: 8px; }
+  .upload-btn { display: inline-block; cursor: pointer; color: var(--cool); font-weight: 600; }
+  .thumbs { list-style: none; padding: 0; margin: 0; display: flex; gap: 8px; flex-wrap: wrap; font-size: .9rem; color: var(--muted); }
+  .thumbs :global(img) { width: 64px; height: 64px; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .form-msg { margin: 0; min-height: 1.4em; font-size: .95rem; color: #c92a2a; }
+  .form-msg[data-ok='1'] { color: var(--ok); font-weight: 600; }
+  .small { font-size: .8rem; margin: 0; }
+</style>

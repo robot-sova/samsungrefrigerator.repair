@@ -1,178 +1,102 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import Hero from '~/components/Hero.astro';
-import StickyCTACard from '~/components/StickyCTACard.astro';
-import ServicesGrid from '~/components/ServicesGrid.astro';
-import FAQ from '~/components/FAQ.astro';
-import FinalCTA from '~/components/FinalCTA.astro';
-import { COUNTIES } from '~/data/locations';
-import { CITY_CONTENT } from '~/data/cityContent';
-import { BUSINESS } from '~/data/business';
+import Base from '../../../layouts/Base.astro';
+import Photo from '../../../components/Photo.astro';
+import LeadForm from '../../../components/LeadForm.astro';
+import TrustRow from '../../../components/TrustRow.astro';
+import Faq from '../../../components/Faq.astro';
+import { COUNTIES, type County, type City } from '../../../data/locations';
+import { CITY_CONTENT } from '../../../data/cityContent';
+import { SERVICES } from '../../../data/services';
+import { serviceLabel } from '../../../data/extras';
+import { business, fill, prices, usd } from '../../../data/business';
+import { faqSchema, serviceSchema } from '../../../data/schema';
+import type { PhotoId } from '../../../data/photos';
 
-export async function getStaticPaths() {
-  return COUNTIES.flatMap((county) =>
-    county.cities.map((city) => ({
-      params: { county: county.slug, city: city.slug },
-      props: { county, city },
-    }))
+export function getStaticPaths() {
+  // Only counties with real city content get city pages (see locations.ts, cityPages).
+  return COUNTIES.filter((c) => c.cityPages !== false).flatMap((county) =>
+    county.cities.map((city) => ({ params: { county: county.slug, city: city.slug }, props: { county, city } })),
   );
 }
 
-const { county, city } = Astro.props;
+const { county, city } = Astro.props as { county: County; city: City };
+const key = `${county.slug}/${city.slug}`;
+const content = CITY_CONTENT[key];
+if (!content) throw new Error(`no city content for ${key} — write it before adding the city`);
 
-const contentKey = `${county.slug}/${city.slug}`;
-const content = CITY_CONTENT[contentKey];
-
-const fallbackParagraphs = [
-  `Samsung refrigerator repair in ${city.name} is what we do every day. Most ${city.name} calls book same-day, and we carry the most-failed Samsung parts on the truck.`,
-  `Common Samsung issues we fix in ${city.name} include warm-fridge / cold-freezer splits, ice makers that build a frost block in the ice room, water leaks tracing back to a clogged defrost drain, and 84C / 41C / PC ER errors on the panel.`,
-  `Booking is open 24/7. Service hours run ${BUSINESS.hoursDisplay}.`,
-];
-
-const paragraphs = content?.paragraphs ?? fallbackParagraphs;
-
-const cityIdx = county.cities.findIndex((c) => c.slug === city.slug);
-let nearbyCities = content?.nearbySlugs
-  ? content.nearbySlugs
-      .map((slug) => county.cities.find((c) => c.slug === slug))
-      .filter((c): c is NonNullable<typeof c> => Boolean(c))
-  : [];
-
-if (nearbyCities.length === 0) {
-  const before = county.cities.slice(Math.max(0, cityIdx - 2), cityIdx);
-  const after = county.cities.slice(cityIdx + 1, cityIdx + 4);
-  nearbyCities = [...before, ...after].slice(0, 4);
-}
-
-const description =
-  content?.metaDescription ??
-  `Samsung refrigerator repair in ${city.name}, ${county.name}, CA. Same-day Samsung service. Call ${BUSINESS.phoneDisplay}.`;
-
-const titleTag =
-  content?.titleTag ??
-  `Samsung Refrigerator Repair in ${city.name}, CA | ${BUSINESS.phoneDisplay}`;
-
-const breadcrumbs = [
-  { label: 'Home', href: '/' },
-  { label: 'Service Area', href: '/service-area/' },
-  { label: county.name, href: `/service-area/${county.slug}/` },
-  { label: city.name },
-];
-
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: breadcrumbs.map((c, i) => ({
-    '@type': 'ListItem',
-    position: i + 1,
-    name: c.label,
-    ...(c.href ? { item: new URL(c.href, BUSINESS.siteUrl).toString() } : {}),
-  })),
-};
-
-const faqs = [
+const path = `/service-area/${key}/`;
+const description = fill(content.metaDescription);
+const nearby = (content.nearbySlugs ?? [])
+  .map((slug) => county.cities.find((c) => c.slug === slug))
+  .filter((c): c is City => Boolean(c));
+// Rotate the side photo so neighbouring city pages do not all look the same.
+const sidePhotos: PhotoId[] = ['evaporator-01', 'icemaker-01', 'compressor-01', 'gasket-01', 'board-01', 'drain-01'];
+const side = sidePhotos[[...city.slug].reduce((n, ch) => n + ch.charCodeAt(0), 0) % sidePhotos.length];
+const faq = [
   {
-    question: `Do you offer same-day Samsung refrigerator repair in ${city.name}?`,
-    answer: `Yes — calls received before noon in ${city.name} usually receive same-day service. Service hours are ${BUSINESS.hoursDisplay}.`,
+    q: `Do you offer same-day Samsung refrigerator repair in ${city.name}?`,
+    a: `Yes, for most calls that reach us before noon; otherwise next-day. We work ${business.hours.display}.`,
   },
   {
-    question: `What is the most common Samsung refrigerator issue in ${city.name}?`,
-    answer: `The Samsung French Door ice maker freeze-up is the single most common Samsung call we run in ${city.name} and across ${county.name}. The fridge-side warming-up issue (defrost system fault) is a close second.`,
+    q: `How much is the service call in ${city.name}?`,
+    a: `${usd(prices.diagnostic)} for the diagnostic visit, credited toward the repair if you go ahead. You get one price for the repair before any work starts.`,
   },
   {
-    question: `Do you service all Samsung refrigerator models in ${city.name}?`,
-    answer: `Yes — Family Hub, Bespoke, French Door, 4-Door FlexZone, side-by-side, and top-freezer Samsung refrigerators. Have your model number ready when you call so we can confirm parts.`,
+    q: `Which Samsung refrigerators do you service in ${city.name}?`,
+    a: 'Family Hub, Bespoke, French Door and 4-Door Flex, side-by-side and top-freezer models. Have the model number from the sticker inside the fridge ready when you call so we can check parts.',
   },
 ];
-
-const localBusinessSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  serviceType: 'Samsung Refrigerator Repair',
-  provider: {
-    '@type': 'LocalBusiness',
-    name: BUSINESS.name,
-    telephone: BUSINESS.phoneDisplay,
-    email: BUSINESS.email,
-    url: BUSINESS.siteUrl,
-  },
-  areaServed: {
-    '@type': 'City',
-    name: city.name,
-    containedInPlace: {
-      '@type': 'AdministrativeArea',
-      name: county.name,
-      containedInPlace: { '@type': 'State', name: 'California' },
-    },
-  },
-  name: `Samsung Refrigerator Repair in ${city.name}, CA`,
-  description,
-};
 ---
-
-<Layout title={titleTag} description={description} noHero={true}>
-  <Hero
-    variant="inner"
-    breadcrumbs={breadcrumbs}
-    title={`Samsung Refrigerator Repair in ${city.name}, CA`}
-    subtitle={`Same-day Samsung service in ${city.name}, ${county.name}.`}
-  />
-
-  <div class="container section">
-    <div class="page-grid">
-      <div class="page-main">
-        <div class="prose-block">
-          {paragraphs.map((p) => <p>{p}</p>)}
-        </div>
-
-        <div class="prose-block">
-          <h2>Common Samsung refrigerator issues in {city.name}</h2>
-          <ul>
-            <li>Samsung French Door ice maker freeze-ups</li>
-            <li>Fridge section warming while freezer stays cold (defrost system)</li>
-            <li>Water leaks from the dispenser line or defrost drain</li>
-            <li>Inverter / compressor failures (84C error)</li>
-            <li>Display board communication errors (41C, PC ER)</li>
-            <li>Door gasket failure causing frost buildup</li>
-          </ul>
-        </div>
-
-        <div class="prose-block">
-          <FAQ faqs={faqs} heading={`Samsung refrigerator repair FAQ — ${city.name}`} />
-        </div>
-
-        {nearbyCities.length > 0 && (
-          <div class="prose-block">
-            <h2>Nearby cities we also serve</h2>
-            <ul>
-              {nearbyCities.map((nc) => (
-                <li>
-                  <a href={`/service-area/${county.slug}/${nc.slug}/`}>
-                    Samsung refrigerator repair in {nc.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <p>
-              See <a href={`/service-area/${county.slug}/`}><strong>all {county.name} cities</strong></a>.
-            </p>
-          </div>
-        )}
+<Base
+  title={fill(content.titleTag)}
+  description={description}
+  crumbs={[{ label: 'Service area', href: '/service-area/' }, { label: county.name, href: `/service-area/${county.slug}/` }, { label: city.name }]}
+  schema={[serviceSchema({ name: `Samsung refrigerator repair in ${city.name}, CA`, description, path, area: `${city.name}, CA` }), faqSchema(faq)]}
+>
+  <section class="section top">
+    <div class="wrap">
+      <div class="eyebrow">{county.name}</div>
+      <h1>Samsung Refrigerator Repair in {city.name}, CA</h1>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="#book">Book a technician</a>
+        <a class="btn" href={`tel:${business.phone.tel}`}>Call {business.phone.display}</a>
       </div>
-
-      <aside class="page-sidebar">
-        <StickyCTACard context={`Same-day Samsung service in ${city.name}.`} />
-      </aside>
+      <div class="trust"><TrustRow /></div>
     </div>
-  </div>
+  </section>
 
-  <ServicesGrid
-    heading={`Samsung repair services available in ${city.name}`}
-    intro="All 9 of our Samsung refrigerator repair services are available across this city."
-  />
+  <section class="section alt">
+    <div class="wrap split">
+      <div class="prose">
+        {content.paragraphs.map((p) => <p>{fill(p)}</p>)}
+      </div>
+      <Photo id={side} />
+    </div>
+  </section>
 
-  <FinalCTA />
+  <section class="section">
+    <div class="wrap">
+      <h2>Samsung repairs we do in {city.name}</h2>
+      <ul class="chips">
+        {SERVICES.map((s) => <li><a href={`/services/${s.slug}/`}>{serviceLabel(s.slug)}</a></li>)}
+      </ul>
+      {nearby.length > 0 && (
+        <>
+          <h2 class="mt">Nearby cities</h2>
+          <ul class="chips">
+            {nearby.map((n) => <li><a href={`/service-area/${county.slug}/${n.slug}/`}>{n.name}</a></li>)}
+          </ul>
+        </>
+      )}
+    </div>
+  </section>
 
-  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
-</Layout>
+  <Faq items={faq} />
+  <LeadForm eyebrow={`${city.name}, CA`} heading={`Book a technician in ${city.name}`} />
+</Base>
+
+<style>
+  .top { padding-top: 24px; }
+  .trust { margin-top: 28px; }
+  .mt { margin-top: 1.4em; }
+</style>

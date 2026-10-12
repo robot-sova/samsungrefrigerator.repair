@@ -1,0 +1,139 @@
+---
+import { Font, getImage } from 'astro:assets';
+import { photo, type PhotoId } from '../data/photos';
+import '../styles/global.css';
+import { business, analytics, prices } from '../data/business';
+import { COUNTIES } from '../data/locations';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+
+export interface Crumb { label: string; href?: string }
+
+interface Props {
+  title: string;
+  description: string;
+  /** Extra JSON-LD nodes for this page; the business node is always included. */
+  schema?: Record<string, unknown>[];
+  /** Breadcrumbs: rendered on the page AND as BreadcrumbList. Home is added automatically. */
+  crumbs?: Crumb[];
+  noindex?: boolean;
+  ogPhoto?: PhotoId;
+}
+
+const { title, description, schema = [], crumbs = [], noindex = false, ogPhoto = 'home-hero' } = Astro.props;
+const og = await getImage({ src: photo(ogPhoto).src, width: 1200, format: 'jpg' });
+const ogUrl = new URL(og.src, business.url).href;
+const canonical = new URL(Astro.url.pathname, business.url).href;
+
+/*
+ * ONE business node for the whole site; pages point at it by @id. Service-area business:
+ * there is no storefront, so the address names the region only — never a street.
+ */
+const org = {
+  '@type': 'HomeAndConstructionBusiness',
+  '@id': `${business.url}/#business`,
+  name: business.brand,
+  url: business.url,
+  telephone: business.phone.tel,
+  image: ogUrl,
+  logo: `${business.url}/apple-touch-icon.png`,
+  priceRange: `Diagnostic $${prices.diagnostic}`,
+  address: { '@type': 'PostalAddress', addressLocality: 'Los Angeles', addressRegion: 'CA', addressCountry: 'US' },
+  areaServed: COUNTIES.map((c) => ({ '@type': 'AdministrativeArea', name: `${c.name}, CA` })),
+  openingHoursSpecification: [
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: business.hours.days, opens: business.hours.opens, closes: business.hours.closes },
+  ],
+};
+const allCrumbs: Crumb[] = crumbs.length ? [{ label: 'Home', href: '/' }, ...crumbs] : [];
+const breadcrumbList = allCrumbs.length
+  ? [{
+      '@type': 'BreadcrumbList',
+      itemListElement: allCrumbs.map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: c.label,
+        item: new URL(c.href ?? Astro.url.pathname, business.url).href,
+      })),
+    }]
+  : [];
+const graph = { '@context': 'https://schema.org', '@graph': [org, ...breadcrumbList, ...schema] };
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {noindex && <meta name="robots" content="noindex" />}
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={business.brand} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogUrl} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content={String(Math.round((1200 * og.attributes.height) / og.attributes.width) || 675)} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogUrl} />
+  <meta name="google-site-verification" content="az0vfIYzdWThop57VbZ6qfZ085oMnRRZUsz7JSchKsU" />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#0f1b2d" />
+  <Font cssVariable="--font-body" preload />
+  <Font cssVariable="--font-mono" />
+  <script type="application/ld+json" set:html={JSON.stringify(graph)} />
+  {/* GA4: stub always (page code may call gtag safely), the real tag only on the production host. */}
+  <script is:inline define:vars={{ GA_ID: analytics.ga4, HOST: analytics.host }}>
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function gtag(){ window.dataLayer.push(arguments); };
+    var h = location.hostname.replace(/^www\./, '');
+    if (h === HOST) {
+      window.gtag('js', new Date());
+      window.gtag('config', GA_ID);
+      var load = function () {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+        document.head.appendChild(s);
+      };
+      if ('requestIdleCallback' in window) window.requestIdleCallback(load, { timeout: 4000 });
+      else window.setTimeout(load, 2000);
+      document.addEventListener('click', function (e) {
+        var a = e.target && e.target.closest ? e.target.closest('a[href^="tel:"]') : null;
+        if (a) window.gtag('event', 'click_phone', { link_location: location.pathname });
+      });
+    }
+  </script>
+</head>
+<body>
+  <Nav />
+  {allCrumbs.length > 0 && (
+    <nav class="crumbs wrap" aria-label="Breadcrumb">
+      <ol>
+        {allCrumbs.map((c, i) => (
+          <li>{c.href && i < allCrumbs.length - 1 ? <a href={c.href}>{c.label}</a> : <span aria-current="page">{c.label}</span>}</li>
+        ))}
+      </ol>
+    </nav>
+  )}
+  <main>
+    <slot />
+  </main>
+  <Footer />
+  <MobileBar />
+</body>
+</html>
+
+<style>
+  .crumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 0 0; margin: 0; font-size: .88rem; color: var(--muted); }
+  .crumbs li + li::before { content: '/'; margin-right: 6px; color: var(--line); }
+  .crumbs a { text-decoration: none; }
+  .crumbs a:hover { text-decoration: underline; }
+</style>

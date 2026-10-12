@@ -10,6 +10,12 @@ export interface County {
   state: 'CA';
   intro: string;
   cities: City[];
+  /**
+   * false = the county page lists its cities as plain text, with no city pages. Added
+   * 12.10.2026 for San Diego and Santa Barbara: a city page goes up only with real local
+   * content (thin city pages hurt the whole site — see washeranddryer.repair).
+   */
+  cityPages?: boolean;
 }
 
 const slugify = (s: string): string =>
@@ -123,6 +129,39 @@ export const COUNTIES: County[] = [
       c('Camarillo'),
       c('Moorpark'),
       c('Ojai'),
+    ],
+  },
+  {
+    slug: 'san-diego-county',
+    name: 'San Diego County',
+    state: 'CA',
+    cityPages: false,
+    intro:
+      'San Diego County coverage runs up the I-15 and I-5 corridors — Escondido, San Marcos, Oceanside, Carlsbad and Vista in North County, down through Poway and the city of San Diego. Same-day service depends on where the technician is that day; call in the morning and we will give you a straight answer on timing.',
+    cities: [
+      c('San Diego'),
+      c('Escondido'),
+      c('Oceanside'),
+      c('Carlsbad'),
+      c('San Marcos'),
+      c('Vista'),
+      c('Poway'),
+      c('Chula Vista'),
+      c('Encinitas'),
+    ],
+  },
+  {
+    slug: 'santa-barbara-county',
+    name: 'Santa Barbara County',
+    state: 'CA',
+    cityPages: false,
+    intro:
+      'Santa Barbara County coverage follows the 101 from Carpinteria through Santa Barbara and Goleta. These calls are scheduled together with our Ventura County route, so most book same-day or next-day.',
+    cities: [
+      c('Santa Barbara'),
+      c('Goleta'),
+      c('Carpinteria'),
+      c('Montecito'),
     ],
   },
 ];

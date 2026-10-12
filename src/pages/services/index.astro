@@ -1,31 +1,38 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import Hero from '~/components/Hero.astro';
-import ServicesGrid from '~/components/ServicesGrid.astro';
-import FinalCTA from '~/components/FinalCTA.astro';
-import { BUSINESS } from '~/data/business';
-
-const title = `Samsung Refrigerator Repair Services | ${BUSINESS.phoneDisplay}`;
-const description = `All Samsung refrigerator repair services we offer — not cooling, ice maker, leaks, compressor, control board, error codes. Call ${BUSINESS.phoneDisplay}.`;
-
-const breadcrumbs = [
-  { label: 'Home', href: '/' },
-  { label: 'Services' },
-];
+import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { SERVICES } from '../../data/services';
+import { serviceExtra, serviceLabel } from '../../data/extras';
+import { fill, prices, usd } from '../../data/business';
 ---
+<Base
+  title="Samsung Refrigerator Repair Services | Southern California"
+  description={`In-home Samsung refrigerator repairs: not cooling, ice maker, leaks, freezer, compressor, control board, door seals, noise, error codes. ${usd(prices.diagnostic)} diagnostic.`}
+  crumbs={[{ label: 'Repairs' }]}
+>
+  <section class="section">
+    <div class="wrap">
+      <h1>Samsung refrigerator repairs</h1>
+      <p class="lede">Pick the symptom. Each page covers what usually fails on Samsung units, what you can check yourself, and how we repair it.</p>
+      <div class="grid grid-3">
+        {SERVICES.map((s) => (
+          <a class="card pcard" href={`/services/${s.slug}/`}>
+            <Photo id={serviceExtra[s.slug].photos[0]} sizes="(min-width: 900px) 33vw, 100vw" />
+            <h2 class="h3">{serviceLabel(s.slug)}</h2>
+            <p class="note">{fill(s.shortDescription)}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  <LeadForm />
+</Base>
 
-<Layout title={title} description={description} noHero={true}>
-  <Hero
-    variant="inner"
-    breadcrumbs={breadcrumbs}
-    title="Samsung Refrigerator Repair Services"
-    subtitle="Same-day service across all 5 Southern California counties we cover."
-  />
-
-  <ServicesGrid
-    heading="What we fix"
-    intro="Pick the symptom that matches what you're seeing — every Samsung refrigerator repair we run falls into one of these categories."
-  />
-
-  <FinalCTA />
-</Layout>
+<style>
+  .pcard { padding: 0; overflow: hidden; }
+  .pcard :global(img) { border-radius: 0; aspect-ratio: 4 / 3; object-fit: cover; }
+  .pcard .h3 { font-size: 1.15rem; padding: 14px 16px 0; margin: 0 0 .3em; }
+  .pcard p { padding: 0 16px 16px; }
+  .grid { margin-top: 20px; }
+</style>

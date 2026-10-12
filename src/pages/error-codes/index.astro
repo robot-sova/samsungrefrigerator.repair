@@ -1,46 +1,35 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import Hero from '~/components/Hero.astro';
-import FinalCTA from '~/components/FinalCTA.astro';
-import { ERROR_CODES } from '~/data/errorCodes';
-import { BUSINESS } from '~/data/business';
-
-const title = `Samsung Refrigerator Error Codes | ${BUSINESS.phoneDisplay}`;
-const description = `Samsung refrigerator error code reference: 1E, 5E, 8E, 21E, 22E, 41C, 84C, OF OF, PC ER. What each means and when to call. ${BUSINESS.phoneDisplay}.`;
-
-const breadcrumbs = [
-  { label: 'Home', href: '/' },
-  { label: 'Error Codes' },
-];
-
-const shortMeaning = (full: string): string => {
-  const firstSentence = full.split('.')[0];
-  if (!firstSentence) return full;
-  return firstSentence.length > 130 ? firstSentence.slice(0, 130) + '…' : firstSentence + '.';
-};
+import Base from '../../layouts/Base.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { ERROR_CODES } from '../../data/errorCodes';
+import { fill } from '../../data/business';
 ---
-
-<Layout title={title} description={description} noHero={true}>
-  <Hero
-    variant="inner"
-    breadcrumbs={breadcrumbs}
-    title="Samsung Refrigerator Error Codes"
-    subtitle="What each Samsung refrigerator error code means, what's safe to try, and when to call a tech."
-  />
-
+<Base
+  title="Samsung Refrigerator Error Codes: 84C, 22E, 21E, 5E, 41C and More"
+  description="What each Samsung refrigerator error code means — 1E, 5E, 8E, 21E, 22E, 41C, 84C, PC ER, OF OF — what to try yourself and when it needs a repair."
+  crumbs={[{ label: 'Error codes' }]}
+>
   <section class="section">
-    <div class="container">
-      <div class="codes-grid">
+    <div class="wrap">
+      <h1>Samsung refrigerator error codes</h1>
+      <p class="lede">The code on the panel tells a technician where to start testing. Here is what each common code means and what you can safely try before calling.</p>
+      <div class="grid grid-3">
         {ERROR_CODES.map((c) => (
-          <a class="card card-link" href={`/error-codes/${c.slug}/`}>
-            <div class="code-card__code">{c.code}</div>
-            <p class="code-card__meaning">{shortMeaning(c.meaning)}</p>
-            <span class="btn-ghost">Read more →</span>
+          <a class="card" href={`/error-codes/${c.slug}/`}>
+            <span class="code">{c.code}</span>
+            <h2 class="h3">{c.title.split('—')[1]?.trim()}</h2>
+            <p class="note">{fill(c.meaning).split('. ')[0]}.</p>
           </a>
         ))}
       </div>
+      <p class="note tip">Codes that blink on two panels at once (for example "22" in the fridge and "E" in the freezer) are read together as one code: 22E.</p>
     </div>
   </section>
+  <LeadForm />
+</Base>
 
-  <FinalCTA />
-</Layout>
+<style>
+  .grid { margin-top: 20px; }
+  .h3 { font-size: 1.1rem; }
+  .tip { margin-top: 20px; }
+</style>

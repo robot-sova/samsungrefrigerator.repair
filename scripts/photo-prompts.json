@@ -1,0 +1,101 @@
+{
+  "_common": "Photorealistic documentary photograph of in-home refrigerator repair in a real Southern California home. Natural daylight from a kitchen window mixed with warm ceiling light. Realistic texture, ordinary lived-in kitchen, slight wear, NOT AI-glossy, NOT staged, NOT overlit, no lens flare. The refrigerator is a modern stainless-steel Samsung-style unit with recessed or bar handles and flat doors. No text, no logos, no brand names and no lettering anywhere in the frame — not on the refrigerator, not on clothing, tools, parts, boxes, vans, walls or paper. Any display shows only plain colored light or simple icons with no readable characters. No 'authorized', 'certified' or service seals of any kind. No watermarks.",
+  "_object": "NO PEOPLE, no hands, no human presence. The main subject is completely inside the frame with clear margin on every side. Even light across the whole frame, no dark band.",
+  "_hands": "Close shot. ONLY hands and forearms visible — no torso, no shoulders, no head, no face. Plain navy-blue work shirt sleeves rolled up, no logo, no jewelry. Hands look like a real working technician's: clean but not manicured, anatomically correct with five fingers each. The appliance part is large in frame.",
+  "_person": "One technician, seen from behind or from the side so the face is NOT visible. Plain navy-blue work shirt and dark work pants with no logo, no name patch, no lettering. Natural working posture, not posing.",
+  "home-hero": {
+    "aspect": "16:9",
+    "frame": "person",
+    "prompt": "WIDE horizontal shot of a bright, modern Southern California kitchen with light wood cabinets and a quartz countertop. A large stainless-steel 4-door French door refrigerator stands built into the cabinets; its lower freezer drawer is pulled open. The technician kneels on a gray drop cloth in front of it, looking into the freezer, a black canvas tool bag and a small digital multimeter beside him on the cloth. Afternoon daylight, calm, orderly. Plenty of empty space on the left third of the frame (kitchen wall and window) for text overlay."
+  },
+  "arrival-01": {
+    "aspect": "4:3",
+    "frame": "object",
+    "prompt": "A plain white cargo van with no lettering and no logo parked at the curb in front of a single-story stucco house on a sunny Southern California residential street, a palm tree and a jacaranda in the yard, green lawn. The van's rear doors are open and show tidy shelves with parts bins. Morning light. No people. No readable license plate."
+  },
+  "doorstep-01": {
+    "aspect": "4:3",
+    "frame": "hands",
+    "prompt": "View from the knees down at a home's front door threshold: a technician's feet in dark work boots covered with light-blue disposable shoe covers stepping onto a light wood floor, one hand carrying a black canvas tool bag. Only lower legs, one hand and the bag are visible."
+  },
+  "evaporator-01": {
+    "aspect": "4:3",
+    "frame": "object",
+    "prompt": "Inside a bottom-freezer French door refrigerator: the freezer drawer and the inner rear plastic panel have been removed, exposing the aluminum-fin evaporator coil, which is completely encased in a thick white block of frost and ice. A small evaporator fan is visible at the top, half buried in frost. Realistic close-up, slightly cold blue light from the freezer, the open stainless drawer edge at the bottom of the frame."
+  },
+  "defrost-01": {
+    "aspect": "4:3",
+    "frame": "hands",
+    "prompt": "Freezer compartment with the rear panel removed and the evaporator coil now clear of frost and wet. The technician's hands hold the two probes of a yellow digital multimeter against the terminals of the defrost heater (a metal-sheathed heating element running along the bottom of the coil). The multimeter display shows only a small blurred number."
+  },
+  "icemaker-01": {
+    "aspect": "4:3",
+    "frame": "hands",
+    "prompt": "The upper left door of a stainless French door refrigerator is open, showing the white plastic ice compartment built into the door liner. The technician's hands are sliding out a white plastic ice maker assembly whose ice tray and sensor area are coated with a thick crust of frost. Ice bucket set aside on the fridge shelf."
+  },
+  "icemaker-02": {
+    "aspect": "4:3",
+    "frame": "object",
+    "prompt": "On a folded gray drop cloth on a kitchen floor: an old white refrigerator ice maker assembly covered in frost and dripping water, next to a new identical ice maker assembly still in clear plastic, a small Phillips screwdriver and a hair-dryer-sized heat gun. Close-up, shallow depth of field."
+  },
+  "compressor-01": {
+    "aspect": "4:3",
+    "frame": "hands",
+    "prompt": "The back of a refrigerator pulled out from the wall; the lower rear cardboard access cover is removed, showing a black rotary-style inverter compressor, copper tubing, a condenser fan and a small electronics box. The technician's hands hold multimeter probes against a connector on the compressor. Work light from a headlamp, slight dust."
+  },
+  "board-01": {
+    "aspect": "4:3",
+    "frame": "hands",
+    "prompt": "The technician's hands hold a refrigerator main control board: a green printed circuit board with relays, white connectors and wire harness plugs, just removed from its plastic housing at the back of the fridge. One harness connector hangs loose. Close-up, the stainless back of the fridge blurred behind."
+  },
+  "fan-01": {
+    "aspect": "4:3",
+    "frame": "hands",
+    "prompt": "The technician's hands hold a small black evaporator fan motor with a gray plastic blade and a short wire harness, removed from a freezer; behind it, the open freezer with the rear panel off. Close-up."
+  },
+  "gasket-01": {
+    "aspect": "4:3",
+    "frame": "hands",
+    "prompt": "A stainless refrigerator door open at a right angle. The technician's hands press a new soft gray magnetic door gasket into the channel around the inner door liner, working along one edge; the old torn gasket lies on the counter in the background."
+  },
+  "leak-01": {
+    "aspect": "4:3",
+    "frame": "object",
+    "prompt": "Kitchen floor of large porcelain tiles in front of the bottom drawer of a stainless refrigerator, with a shallow puddle of clear water spreading from under the fridge and a folded white towel at its edge. Low camera angle, daylight reflecting on the water."
+  },
+  "drain-01": {
+    "aspect": "4:3",
+    "frame": "hands",
+    "prompt": "Freezer compartment with the rear panel removed. The technician's hands use a large plastic turkey baster to flush warm water into the small defrost drain opening below the evaporator coil; a towel catches drips. Close-up."
+  },
+  "parts-01": {
+    "aspect": "4:3",
+    "frame": "object",
+    "prompt": "An open gray plastic parts organizer on a drop cloth on a kitchen floor in front of a stainless refrigerator, holding common refrigerator repair parts: a small fan motor, a coiled defrost heater, a thermistor sensor with wire leads, a water inlet valve, a door gasket roll, wire connectors. A digital multimeter and a nut driver lie beside it. Nothing has any lettering."
+  },
+  "family-hub-01": {
+    "aspect": "4:3",
+    "frame": "object",
+    "prompt": "A modern stainless 4-door French door refrigerator in a kitchen with a large vertical touchscreen built into the upper right door. The screen shows only soft abstract colored tiles with no readable text. Three-quarter view, the whole refrigerator visible."
+  },
+  "bespoke-01": {
+    "aspect": "4:3",
+    "frame": "object",
+    "prompt": "A modern 4-door French door refrigerator with flat matte glass door panels in two colors — soft sage green upper doors and white lower drawers — built flush into white kitchen cabinets. Three-quarter view, whole refrigerator visible, clean modern kitchen."
+  },
+  "french-door-01": {
+    "aspect": "4:3",
+    "frame": "object",
+    "prompt": "A stainless-steel French door refrigerator with two upper doors, a middle convertible drawer and a bottom freezer drawer, with an external water and ice dispenser on the left door, standing in a family kitchen. Three-quarter view, whole refrigerator visible."
+  },
+  "side-by-side-01": {
+    "aspect": "4:3",
+    "frame": "object",
+    "prompt": "A stainless-steel side-by-side refrigerator (two tall full-height doors, freezer on the left with an ice and water dispenser) standing in a kitchen alcove. Front three-quarter view, whole refrigerator visible."
+  },
+  "top-freezer-01": {
+    "aspect": "4:3",
+    "frame": "object",
+    "prompt": "A stainless-steel top-freezer refrigerator (small freezer door on top, larger fridge door below) in a modest apartment kitchen with white cabinets. Front three-quarter view, whole refrigerator visible."
+  }
+}

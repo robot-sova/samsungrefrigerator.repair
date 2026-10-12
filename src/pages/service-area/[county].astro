@@ -1,109 +1,84 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import Hero from '~/components/Hero.astro';
-import StickyCTACard from '~/components/StickyCTACard.astro';
-import ServicesGrid from '~/components/ServicesGrid.astro';
-import FAQ from '~/components/FAQ.astro';
-import FinalCTA from '~/components/FinalCTA.astro';
-import { COUNTIES } from '~/data/locations';
-import { BUSINESS } from '~/data/business';
+import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import TrustRow from '../../components/TrustRow.astro';
+import Faq from '../../components/Faq.astro';
+import { COUNTIES, type County } from '../../data/locations';
+import { SERVICES } from '../../data/services';
+import { serviceLabel } from '../../data/extras';
+import { business, prices, usd, warranty } from '../../data/business';
+import { faqSchema, serviceSchema } from '../../data/schema';
 
-export async function getStaticPaths() {
-  return COUNTIES.map((county) => ({
-    params: { county: county.slug },
-    props: { county },
-  }));
+export function getStaticPaths() {
+  return COUNTIES.map((county) => ({ params: { county: county.slug }, props: { county } }));
 }
 
-const { county } = Astro.props;
-
-const description = `Samsung refrigerator repair in ${county.name}, CA. Same-day service across ${county.cities.length} cities. Call ${BUSINESS.phoneDisplay}.`;
-
-const breadcrumbs = [
-  { label: 'Home', href: '/' },
-  { label: 'Service Area', href: '/service-area/' },
-  { label: county.name },
-];
-
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: breadcrumbs.map((c, i) => ({
-    '@type': 'ListItem',
-    position: i + 1,
-    name: c.label,
-    ...(c.href ? { item: new URL(c.href, BUSINESS.siteUrl).toString() } : {}),
-  })),
-};
-
-const faqs = [
+const { county } = Astro.props as { county: County };
+const path = `/service-area/${county.slug}/`;
+const description = `Samsung refrigerator repair in ${county.name}, CA — in your home, same-day for most morning calls. ${usd(prices.diagnostic)} diagnostic, ${warranty.days}-day warranty.`;
+const faq = [
   {
-    question: `How fast can you get to me in ${county.name}?`,
-    answer: `Same-day service is available across ${county.name} when calls land before noon. Calls after noon usually book the next morning.`,
+    q: `Do you charge extra to come to ${county.name}?`,
+    a: `No. The diagnostic visit is ${usd(prices.diagnostic)} anywhere in ${county.name}, and it is credited toward the repair if you go ahead.`,
   },
   {
-    question: `Do you charge a trip fee in ${county.name}?`,
-    answer: `Our diagnostic visit fee covers travel anywhere in ${county.name}. The visit fee is waived if you proceed with the recommended repair.`,
-  },
-  {
-    question: `Which Samsung refrigerator issues do you fix in ${county.name}?`,
-    answer: `Every Samsung refrigerator service we offer — not cooling, ice maker, water leaks, freezer issues, compressor, control board, door seals, error codes — is available in all ${county.cities.length} cities we cover in ${county.name}.`,
+    q: `How soon can a technician come in ${county.name}?`,
+    a: `Same-day for most calls that reach us before noon, otherwise next-day. We work ${business.hours.display}.`,
   },
 ];
 ---
-
-<Layout
-  title={`Samsung Refrigerator Repair in ${county.name}, CA | ${BUSINESS.phoneDisplay}`}
+<Base
+  title={`Samsung Refrigerator Repair in ${county.name}, CA`}
   description={description}
-  noHero={true}
+  crumbs={[{ label: 'Service area', href: '/service-area/' }, { label: county.name }]}
+  schema={[serviceSchema({ name: `Samsung refrigerator repair in ${county.name}`, description, path, area: `${county.name}, CA` }), faqSchema(faq)]}
 >
-  <Hero
-    variant="inner"
-    breadcrumbs={breadcrumbs}
-    title={`Samsung Refrigerator Repair in ${county.name}, CA`}
-    subtitle={`Same-day service across ${county.cities.length} cities in ${county.name}.`}
-  />
-
-  <div class="container section">
-    <div class="page-grid">
-      <div class="page-main">
-        <div class="prose-block">
-          <p>{county.intro}</p>
-          <p>
-            All {county.cities.length} cities below get the same dispatch priority and the same
-            truck-stocked Samsung parts inventory.
-          </p>
-        </div>
-
-        <div class="prose-block">
-          <h2>Cities we serve in {county.name}</h2>
-          <ul>
-            {county.cities.map((city) => (
-              <li>
-                <a href={`/service-area/${county.slug}/${city.slug}/`}>
-                  Samsung refrigerator repair in {city.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div class="prose-block">
-          <FAQ faqs={faqs} heading={`${county.name} FAQ`} />
+  <section class="section top">
+    <div class="wrap split">
+      <div>
+        <div class="eyebrow">Service area</div>
+        <h1>Samsung Refrigerator Repair in {county.name}</h1>
+        <p class="lede">{county.intro}</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="#book">Book a technician</a>
+          <a class="btn" href={`tel:${business.phone.tel}`}>Call {business.phone.display}</a>
         </div>
       </div>
-
-      <aside class="page-sidebar">
-        <StickyCTACard context={`Same-day Samsung service across ${county.name}.`} />
-      </aside>
+      <Photo id="arrival-01" eager />
     </div>
-  </div>
+    <div class="wrap trust"><TrustRow /></div>
+  </section>
 
-  <ServicesGrid
-    heading="Samsung repair services across this county"
-    intro="All 9 services available in every city we cover."
-  />
+  <section class="section alt">
+    <div class="wrap">
+      <h2>Cities in {county.name}</h2>
+      <ul class="chips">
+        {county.cities.map((ct) =>
+          county.cityPages === false
+            ? <li><span>{ct.name}</span></li>
+            : <li><a href={`/service-area/${county.slug}/${ct.slug}/`}>{ct.name}</a></li>
+        )}
+      </ul>
+      {county.cityPages === false && <p class="note more">Not on the list? Call — if you are in {county.name}, we most likely cover you.</p>}
+    </div>
+  </section>
 
-  <FinalCTA />
-  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
-</Layout>
+  <section class="section">
+    <div class="wrap">
+      <h2>What we fix in {county.name}</h2>
+      <ul class="chips">
+        {SERVICES.map((s) => <li><a href={`/services/${s.slug}/`}>{serviceLabel(s.slug)}</a></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <Faq items={faq} />
+  <LeadForm eyebrow={county.name} heading={`Book a technician in ${county.name}`} />
+</Base>
+
+<style>
+  .top { padding-top: 24px; }
+  .trust { margin-top: 28px; }
+  .more { margin-top: 14px; }
+</style>

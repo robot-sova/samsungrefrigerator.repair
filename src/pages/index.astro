@@ -1,107 +1,177 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import Hero from '~/components/Hero.astro';
-import TrustStrip from '~/components/TrustStrip.astro';
-import ServicesGrid from '~/components/ServicesGrid.astro';
-import ServiceAreaSection from '~/components/ServiceAreaSection.astro';
-import ErrorCodesPreview from '~/components/ErrorCodesPreview.astro';
-import WhyChooseUs from '~/components/WhyChooseUs.astro';
-import Reviews from '~/components/Reviews.astro';
-import FAQ from '~/components/FAQ.astro';
-import FinalCTA from '~/components/FinalCTA.astro';
-import { BUSINESS } from '~/data/business';
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import LeadForm from '../components/LeadForm.astro';
+import TrustRow from '../components/TrustRow.astro';
+import Faq from '../components/Faq.astro';
+import { business, prices, usd, warranty } from '../data/business';
+import { SERVICES } from '../data/services';
+import { ERROR_CODES } from '../data/errorCodes';
+import { MODELS } from '../data/models';
+import { COUNTIES } from '../data/locations';
+import { serviceExtra, modelPhoto } from '../data/extras';
+import { faqSchema } from '../data/schema';
 
-const title = `Samsung Refrigerator Repair | Same-Day Service | ${BUSINESS.phoneDisplay}`;
-const description = `Same-day Samsung refrigerator repair across ${BUSINESS.areasServed.join(', ')}. Family Hub, Bespoke, French Door, side-by-side. Call ${BUSINESS.phoneDisplay}.`;
-
-const homeFaqs = [
+const faq = [
   {
-    question: 'Do you offer same-day Samsung refrigerator repair?',
-    answer:
-      'Yes — most calls received before noon can be scheduled the same day across our five service counties. Booking is open 24/7 and our service hours are Mon–Sun 8:00 AM – 8:00 PM.',
+    q: 'How much does Samsung refrigerator repair cost?',
+    a: `The diagnostic visit is ${usd(prices.diagnostic)}, and it is credited toward the repair if you go ahead. After testing, the technician gives you one price for the whole repair — parts and labor — before any work starts. Sensor, fan and defrost repairs are the inexpensive end; sealed-system and compressor work is the expensive end, and we tell you plainly when a repair is not worth it on an older unit.`,
   },
   {
-    question: 'Which Samsung refrigerator models do you service?',
-    answer:
-      'All current Samsung refrigerator lines: Family Hub, Bespoke, French Door, 4-Door FlexZone, side-by-side, and top-freezer models. We also service older Samsung models still under common parts availability.',
+    q: 'Do you come to my home?',
+    a: 'Yes. Every repair is done in your kitchen. The technician carries the most common Samsung parts — fan motors, defrost heaters and sensors, ice makers, water valves — so many repairs finish on the first visit.',
   },
   {
-    question: 'How much does a Samsung refrigerator repair cost?',
-    answer:
-      'A diagnostic visit covers travel, inspection, and a written quote. Repair pricing depends on the part — common ice-maker and sensor failures fall in a different range than compressor or sealed-system work. We always quote before any repair.',
+    q: 'How fast can a technician come?',
+    a: `Same-day for most calls that reach us before noon, otherwise next-day. We work ${business.hours.display}. You can send the request form any time and a dispatcher calls you back during business hours.`,
   },
   {
-    question: 'Do you fix Samsung ice makers?',
-    answer:
-      'Yes — Samsung ice makers (especially the French Door ice room) are one of the most common calls we run. We carry the most-failed parts on the truck.',
+    q: 'What warranty do I get?',
+    a: `${warranty.covers} If the same problem comes back in that time, we come back at no charge.`,
   },
   {
-    question: 'What areas do you cover?',
-    answer: `${BUSINESS.areasServed.join(', ')}. We do not currently serve outside these five counties.`,
+    q: 'Are you Samsung?',
+    a: 'No. We are an independent repair service that works on Samsung refrigerators every day. If your unit is still under the Samsung factory warranty, call Samsung first — the repair may be free through them.',
   },
   {
-    question: 'Are you Samsung-certified?',
-    answer:
-      'We work exclusively on Samsung refrigerators, install genuine OEM parts, and follow Samsung-published service procedures. Our techs are factory-trained on the platforms we service.',
+    q: 'My fridge is warm but the freezer is cold. Is it the compressor?',
+    a: 'Almost never. On Samsung French door refrigerators that pattern usually means the evaporator coil in the freezer has iced over from a defrost-system fault, or the fridge fan has stopped. Both are far cheaper than a compressor.',
   },
 ];
+
+const topCodes = ['84c', '22e', '21e', '5e', '41c', '1e', '8e', 'pc-er'];
 ---
-
-<Layout title={title} description={description} noHero={true}>
-  <Hero
-    variant="home"
-    kicker="Samsung-certified specialists"
-    title="Samsung Refrigerator Repair Across Southern California"
-    subtitle="Same-day service in Los Angeles, Orange, Riverside, San Bernardino, and Ventura counties. Factory-trained techs, OEM parts, honest pricing."
-    showCTAs={true}
-    showTrust={true}
-  />
-
-  <TrustStrip />
-
-  <ServicesGrid
-    heading="What we fix"
-    intro="From ice maker freeze-ups to compressor failures — we handle every Samsung refrigerator problem."
-  />
-
-  <section class="section section--alt">
-    <div class="container">
-      <div class="section-head">
-        <h2>Samsung specialists since 2010</h2>
+<Base
+  title="Samsung Refrigerator Repair in Southern California | Same-Day"
+  description={`In-home Samsung refrigerator repair in LA, Orange, Riverside, San Bernardino, Ventura, San Diego and Santa Barbara counties. ${usd(prices.diagnostic)} diagnostic, ${warranty.days}-day warranty.`}
+  schema={[faqSchema(faq)]}
+>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">Samsung refrigerators only · in your home</div>
+        <h1>Samsung Refrigerator Repair in Southern California</h1>
+        <p class="lede">Fridge warm, freezer iced over, ice maker frozen, an error code on the panel? A technician comes to your kitchen, finds the actual failed part and fixes it — usually the same day.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="#book">Book a technician</a>
+          <a class="btn" href={`tel:${business.phone.tel}`}>Call {business.phone.display}</a>
+        </div>
       </div>
-      <div style="max-width: 760px; margin: 0 auto;">
-        <p style="font-size: 1.05rem; margin-bottom: 12px;">
-          We're a mobile Samsung refrigerator repair service running same-day calls across five
-          Southern California counties — Los Angeles, Orange, Riverside, San Bernardino, and Ventura.
-          Samsung is our specialty, not a side line. Our trucks carry the parts that fail most on
-          Samsung French Door, 4-Door FlexZone, Family Hub, Bespoke, side-by-side, and top-freezer
-          models, so most repairs finish on the first visit.
-        </p>
-        <p style="font-size: 1.05rem; margin-bottom: 12px;">
-          Samsung refrigerators have well-documented failure modes — the French Door ice maker
-          freeze-up, the defrost-system fault that warms the fridge while the freezer stays cold,
-          the inverter board that throws an 84C code and looks like a dead compressor. Knowing
-          those patterns is the difference between a single-visit fix and a misdiagnosis. We won't
-          replace a $400 main board when the actual failure is a $40 sensor.
-        </p>
-        <p style="font-size: 1.05rem;">
-          Booking is open 24/7. Service hours run Mon–Sun 8:00 AM – 8:00 PM. Calls received before
-          noon generally get a same-day arrival window. Diagnostics include a written quote, and
-          no work starts until you approve the price.
-        </p>
+      <Photo id="home-hero" eager sizes="(min-width: 900px) 55vw, 100vw" />
+    </div>
+    <div class="wrap trust-wrap"><TrustRow /></div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="eyebrow">What we fix</div>
+      <h2>Common Samsung refrigerator problems</h2>
+      <p class="lede">Each page explains what usually causes the problem on Samsung units, what you can check yourself, and what the repair involves.</p>
+      <div class="grid grid-3 cards">
+        {SERVICES.map((s) => (
+          <a class="card pcard" href={`/services/${s.slug}/`}>
+            <Photo id={serviceExtra[s.slug].photos[0]} sizes="(min-width: 900px) 33vw, 100vw" />
+            <h3>{s.title.replace(/^Samsung (Refrigerator )?/, '').replace(/ Repair$/, '') || s.title}</h3>
+            <p class="note">{s.shortDescription}</p>
+          </a>
+        ))}
       </div>
     </div>
   </section>
 
-  <ServiceAreaSection />
+  <section class="section alt">
+    <div class="wrap split">
+      <Photo id="evaporator-01" />
+      <div class="prose">
+        <div class="eyebrow">Why repairs go wrong</div>
+        <h2>On a Samsung, the obvious diagnosis is usually wrong</h2>
+        <p>The most common Samsung call is a fridge that is warm while the freezer is still cold. It looks like a dying compressor. Behind the freezer's rear panel, it is almost always a coil buried in frost: a defrost heater, sensor or fuse stopped the defrost cycle, and the frost choked off the air that feeds the fridge.</p>
+        <p>Replacing a compressor for a frosted coil is a four-figure mistake. Our technicians test the defrost circuit, the fans and the inverter board first, and only then talk about the sealed system.</p>
+        <a class="btn" href="/services/not-cooling/">Fridge not cooling — read more</a>
+      </div>
+    </div>
+  </section>
 
-  <ErrorCodesPreview />
+  <section class="section">
+    <div class="wrap">
+      <div class="eyebrow">How it works</div>
+      <h2>From your call to a cold refrigerator</h2>
+      <ol class="steps">
+        <li><h3>Request</h3><p>Call or send the form. Tell us what the fridge is doing and the code on the panel, if any.</p></li>
+        <li><h3>Arrival window</h3><p>A dispatcher calls back and gives you a window — same-day for most morning calls.</p></li>
+        <li><h3>Diagnosis</h3><p>The technician tests the parts, not guesses. You get one price for the repair before any work.</p></li>
+        <li><h3>Repair</h3><p>Most common parts are on the van. {warranty.short}; the {usd(prices.diagnostic)} visit is credited.</p></li>
+      </ol>
+      <div class="grid grid-2 howphotos">
+        <Photo id="arrival-01" sizes="(min-width: 720px) 50vw, 100vw" />
+        <Photo id="parts-01" sizes="(min-width: 720px) 50vw, 100vw" />
+      </div>
+    </div>
+  </section>
 
-  <WhyChooseUs />
+  <section class="section alt">
+    <div class="wrap">
+      <div class="eyebrow">Error codes</div>
+      <h2>A code on the display?</h2>
+      <p class="lede">What the most common Samsung refrigerator codes mean, what to try first and when a code needs a technician.</p>
+      <div class="grid grid-4">
+        {topCodes.map((slug) => {
+          const c = ERROR_CODES.find((e) => e.slug === slug)!;
+          return (
+            <a class="card" href={`/error-codes/${c.slug}/`}>
+              <span class="code">{c.code}</span>
+              <span class="note">{c.title.split('—')[1]?.trim() ?? c.title}</span>
+            </a>
+          );
+        })}
+      </div>
+      <p><a href="/error-codes/">All Samsung refrigerator error codes →</a></p>
+    </div>
+  </section>
 
-  <Reviews />
+  <section class="section">
+    <div class="wrap">
+      <div class="eyebrow">Models</div>
+      <h2>Every Samsung refrigerator style</h2>
+      <div class="grid grid-3 cards models">
+        {MODELS.map((m) => (
+          <a class="card pcard" href={`/models/${m.slug}/`}>
+            <Photo id={modelPhoto[m.slug]} sizes="(min-width: 900px) 20vw, 50vw" />
+            <h3>{m.title.replace(/^Samsung /, '').replace(/ (Refrigerator )?Repair$/, '')}</h3>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
 
-  <FAQ faqs={homeFaqs} asSection={true} />
+  <section class="section alt">
+    <div class="wrap">
+      <div class="eyebrow">Service area</div>
+      <h2>Seven Southern California counties</h2>
+      <p class="lede">Technicians are based across the region, so most of the area gets same-day or next-day service.</p>
+      <ul class="chips">
+        {COUNTIES.map((c) => <li><a href={`/service-area/${c.slug}/`}>{c.name}</a></li>)}
+      </ul>
+    </div>
+  </section>
 
-  <FinalCTA />
-</Layout>
+  <Faq items={faq} />
+  <LeadForm />
+</Base>
+
+<style>
+  .hero { padding: 40px 0 32px; background: linear-gradient(180deg, #fff 0%, var(--paper) 100%); }
+  .hero-grid { display: grid; gap: 28px; align-items: center; }
+  @media (min-width: 900px) { .hero-grid { grid-template-columns: 1fr 1.15fr; } }
+  .hero h1 { margin-bottom: .4em; }
+  .trust-wrap { margin-top: 28px; }
+  .pcard { padding: 0; overflow: hidden; }
+  .pcard :global(img) { border-radius: 0; aspect-ratio: 4 / 3; object-fit: cover; }
+  .pcard h3, .pcard p { padding: 0 16px; }
+  .pcard h3 { margin-top: 14px; }
+  .pcard p { padding-bottom: 16px; }
+  .cards { margin-top: 20px; }
+  @media (min-width: 720px) { .models { grid-template-columns: repeat(5, 1fr); } }
+  @media (max-width: 719px) { .cards { grid-template-columns: 1fr 1fr; gap: 10px; } .cards .note { display: none; } .pcard h3 { font-size: .98rem; padding-bottom: 12px; } }
+  .howphotos { margin-top: 20px; }
+</style>

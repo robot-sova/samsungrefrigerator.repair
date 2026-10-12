@@ -1,123 +1,93 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import Hero from '~/components/Hero.astro';
-import StickyCTACard from '~/components/StickyCTACard.astro';
-import FAQ from '~/components/FAQ.astro';
-import FinalCTA from '~/components/FinalCTA.astro';
-import { ERROR_CODES } from '~/data/errorCodes';
-import { SERVICES } from '~/data/services';
-import { COUNTIES } from '~/data/locations';
-import { BUSINESS } from '~/data/business';
+import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import Faq from '../../components/Faq.astro';
+import { ERROR_CODES, type ErrorCode } from '../../data/errorCodes';
+import { SERVICES } from '../../data/services';
+import { codePhoto, serviceLabel } from '../../data/extras';
+import { business, fill, prices, usd } from '../../data/business';
+import { faqSchema, articleSchema, paras } from '../../data/schema';
 
-export async function getStaticPaths() {
-  return ERROR_CODES.map((code) => ({
-    params: { slug: code.slug },
-    props: { code },
-  }));
+export function getStaticPaths() {
+  return ERROR_CODES.map((c) => ({ params: { slug: c.slug }, props: { c } }));
 }
 
-const { code } = Astro.props;
-const description = `Samsung ${code.code} error: what it means, what to try, and when to call. ${BUSINESS.phoneDisplay}.`;
-const relatedService = code.relatedServiceSlug
-  ? SERVICES.find((s) => s.slug === code.relatedServiceSlug)
-  : undefined;
-
-const breadcrumbs = [
-  { label: 'Home', href: '/' },
-  { label: 'Error Codes', href: '/error-codes/' },
-  { label: code.code },
-];
-
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: breadcrumbs.map((c, i) => ({
-    '@type': 'ListItem',
-    position: i + 1,
-    name: c.label,
-    ...(c.href ? { item: new URL(c.href, BUSINESS.siteUrl).toString() } : {}),
-  })),
-};
+const { c } = Astro.props as { c: ErrorCode };
+const path = `/error-codes/${c.slug}/`;
+const what = c.title.split('—')[1]?.trim() ?? '';
+let title = `Samsung Fridge ${c.code} Error: ${what} — What to Do`;
+if (title.length > 70) title = `Samsung Fridge ${c.code} Error: What It Means and How to Fix It`;
+// Meta: what the code means + the promise of the page. Kept under 160 (check-site enforces it).
+let description = `Samsung refrigerator ${c.code} error means ${what.toLowerCase()} trouble. What to try first, what usually fails, and when it needs a technician.`;
+if (description.length > 160) description = `Samsung ${c.code} error (${what.toLowerCase()}): what to try first, what usually fails, and when to call a technician.`;
+const related = SERVICES.find((s) => s.slug === c.relatedServiceSlug);
+const others = ERROR_CODES.filter((o) => o.slug !== c.slug);
+const faq = c.faq.map((f) => ({ q: fill(f.q), a: fill(f.a) }));
 ---
-
-<Layout
-  title={`${code.title} | ${BUSINESS.phoneDisplay}`}
-  description={description.slice(0, 160)}
-  noHero={true}
+<Base
+  title={title}
+  description={description}
+  ogPhoto={codePhoto[c.slug]}
+  crumbs={[{ label: 'Error codes', href: '/error-codes/' }, { label: c.code }]}
+  schema={[articleSchema({ headline: title, description, path }), faqSchema(faq)]}
 >
-  <Hero
-    variant="inner"
-    breadcrumbs={breadcrumbs}
-    title={code.title}
-    subtitle={`Samsung ${code.code} — diagnosis, what to try, and when to call.`}
-  />
-
-  <div class="container section">
-    <div class="page-grid">
-      <div class="page-main">
-        <div class="prose-block">
-          <h2>What "{code.code}" means</h2>
-          <p>{code.meaning}</p>
-        </div>
-
-        <div class="prose-block">
-          <h2>Common root causes</h2>
-          <ul>
-            {code.rootCauses.map((c) => <li>{c}</li>)}
-          </ul>
-        </div>
-
-        <div class="prose-block">
-          <h2>What you can try first</h2>
-          <ul>
-            {code.whatToTry.map((step) => <li>{step}</li>)}
-          </ul>
-        </div>
-
-        <div class="prose-block">
-          <h2>When to call a pro</h2>
-          <p>{code.whenToCallPro}</p>
-        </div>
-
-        <div class="prose-block">
-          <h2>How we fix it</h2>
-          <p>{code.howWeFix}</p>
-        </div>
-
-        {relatedService && (
-          <div class="prose-block">
-            <h2>Related repair service</h2>
-            <p>
-              <a href={`/services/${relatedService.slug}/`}><strong>{relatedService.title}</strong></a>
-              &nbsp;— {relatedService.shortDescription}
-            </p>
-          </div>
-        )}
-
-        <div class="prose-block">
-          <h2>Available across all 5 counties</h2>
-          <ul>
-            {COUNTIES.map((county) => (
-              <li>
-                <a href={`/service-area/${county.slug}/`}>
-                  Samsung {code.code} repair in {county.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div class="prose-block">
-          <FAQ faqs={code.faq.map((f) => ({ question: f.q, answer: f.a }))} heading="Frequently asked questions" />
+  <section class="section top">
+    <div class="wrap split">
+      <div>
+        <div class="eyebrow">Samsung refrigerator error code</div>
+        <h1><span class="code">{c.code}</span> {what}</h1>
+        {paras(fill(c.meaning)).map((p) => <p class="lede">{p}</p>)}
+        <div class="btn-row">
+          <a class="btn btn-primary" href="#book">Book a technician</a>
+          <a class="btn" href={`tel:${business.phone.tel}`}>Call {business.phone.display}</a>
         </div>
       </div>
-
-      <aside class="page-sidebar">
-        <StickyCTACard context={`Stuck on ${code.code}? Call now for same-day diagnosis.`} />
-      </aside>
+      <Photo id={codePhoto[c.slug]} eager />
     </div>
-  </div>
+  </section>
 
-  <FinalCTA />
-  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
-</Layout>
+  <section class="section alt">
+    <div class="wrap grid grid-2">
+      <div class="prose">
+        <h2>Try this first</h2>
+        <ol>{c.whatToTry.map((x) => <li>{fill(x)}</li>)}</ol>
+      </div>
+      <div class="prose">
+        <h2>What usually causes {c.code}</h2>
+        <ul>{c.rootCauses.map((x) => <li>{fill(x)}</li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap prose">
+      <h2>When {c.code} needs a technician</h2>
+      {paras(fill(c.whenToCallPro)).map((p) => <p>{p}</p>)}
+      <h2>How we fix it</h2>
+      {paras(fill(c.howWeFix)).map((p) => <p>{p}</p>)}
+      <div class="callout">
+        <p><b>{usd(prices.diagnostic)} diagnostic visit</b>, credited toward the repair. The technician tests the part the code points at and gives you one price before any work.</p>
+        {related && <p>More on this repair: <a href={`/services/${related.slug}/`}>Samsung {serviceLabel(related.slug).toLowerCase()} repair</a>.</p>}
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faq} heading={`${c.code} questions`} />
+
+  <section class="section alt">
+    <div class="wrap">
+      <h2>Other Samsung refrigerator codes</h2>
+      <ul class="chips">
+        {others.map((o) => <li><a href={`/error-codes/${o.slug}/`}>{o.code}</a></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <LeadForm heading={`Get the ${c.code} error fixed`} problem={`${c.code} on the display`} />
+</Base>
+
+<style>
+  .top { padding-top: 24px; }
+  h1 .code { font-family: var(--font-mono); color: var(--cool); }
+</style>

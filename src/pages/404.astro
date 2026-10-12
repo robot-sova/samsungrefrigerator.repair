@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import { business } from '../data/business';
+---
+<Base title="Page not found | Samsung Refrigerator Repair" description="This page does not exist. Find a Samsung refrigerator repair, an error code or your city from here." noindex>
+  <section class="section">
+    <div class="wrap prose">
+      <h1>That page does not exist</h1>
+      <p class="lede">The link may be old. Here is where most people are headed:</p>
+      <ul>
+        <li><a href="/services/">Samsung refrigerator repairs</a></li>
+        <li><a href="/error-codes/">Error codes</a></li>
+        <li><a href="/service-area/">Service area</a></li>
+        <li><a href="/book/">Book a repair</a> or call <a href={`tel:${business.phone.tel}`}>{business.phone.display}</a></li>
+      </ul>
+    </div>
+  </section>
+</Base>

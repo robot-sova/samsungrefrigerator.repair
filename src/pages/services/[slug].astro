@@ -1,134 +1,116 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import Hero from '~/components/Hero.astro';
-import StickyCTACard from '~/components/StickyCTACard.astro';
-import FAQ from '~/components/FAQ.astro';
-import FinalCTA from '~/components/FinalCTA.astro';
-import { SERVICES } from '~/data/services';
-import { ERROR_CODES } from '~/data/errorCodes';
-import { COUNTIES } from '~/data/locations';
-import { BUSINESS } from '~/data/business';
+import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import TrustRow from '../../components/TrustRow.astro';
+import Faq from '../../components/Faq.astro';
+import { SERVICES, type Service } from '../../data/services';
+import { ERROR_CODES } from '../../data/errorCodes';
+import { serviceExtra, serviceLabel } from '../../data/extras';
+import { business, fill, prices, usd } from '../../data/business';
+import { faqSchema, serviceSchema, paras } from '../../data/schema';
 
-export async function getStaticPaths() {
-  return SERVICES.map((service) => ({
-    params: { slug: service.slug },
-    props: { service },
-  }));
+export function getStaticPaths() {
+  return SERVICES.map((s) => ({ params: { slug: s.slug }, props: { s } }));
 }
 
-const { service } = Astro.props;
-
-const explicitlyRelated = ERROR_CODES.filter((c) => service.relatedErrorCodes.includes(c.code));
-const fallbackCodes = ERROR_CODES.filter((c) => !service.relatedErrorCodes.includes(c.code)).slice(0, 4);
-const relatedCodes =
-  explicitlyRelated.length >= 3 ? explicitlyRelated : [...explicitlyRelated, ...fallbackCodes].slice(0, 4);
-
-const introParagraphs = service.longIntro.split('\n\n');
-
-const breadcrumbs = [
-  { label: 'Home', href: '/' },
-  { label: 'Services', href: '/services/' },
-  { label: service.title.replace('Samsung ', '').replace(' Repair', '') },
-];
-
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: breadcrumbs.map((c, i) => ({
-    '@type': 'ListItem',
-    position: i + 1,
-    name: c.label,
-    ...(c.href ? { item: new URL(c.href, BUSINESS.siteUrl).toString() } : {}),
-  })),
-};
+const { s } = Astro.props as { s: Service };
+const path = `/services/${s.slug}/`;
+const description = fill(s.metaDescription);
+const [p1, p2] = serviceExtra[s.slug].photos;
+const intro = paras(fill(s.longIntro));
+const codes = s.relatedErrorCodes
+  .map((c) => ERROR_CODES.find((e) => e.code.toLowerCase() === c.toLowerCase()))
+  .filter((e): e is NonNullable<typeof e> => Boolean(e));
+const others = SERVICES.filter((o) => o.slug !== s.slug);
+const faq = s.faq.map((f) => ({ q: fill(f.q), a: fill(f.a) }));
 ---
-
-<Layout
-  title={`${service.title} | ${BUSINESS.phoneDisplay}`}
-  description={service.metaDescription}
-  noHero={true}
+<Base
+  title={`${s.title} | Same-Day in SoCal`}
+  description={description}
+  ogPhoto={p1}
+  crumbs={[{ label: 'Repairs', href: '/services/' }, { label: serviceLabel(s.slug) }]}
+  schema={[serviceSchema({ name: s.title, description, path }), faqSchema(faq)]}
 >
-  <Hero
-    variant="inner"
-    breadcrumbs={breadcrumbs}
-    title={service.h1}
-    subtitle={service.shortDescription}
-  />
-
-  <div class="container section">
-    <div class="page-grid">
-      <div class="page-main">
-        <div class="prose-block">
-          {introParagraphs.map((p) => <p>{p}</p>)}
-        </div>
-
-        <div class="prose-block">
-          <h2>Symptoms we hear most often</h2>
-          <ul>
-            {service.symptoms.map((s) => <li>{s}</li>)}
-          </ul>
-        </div>
-
-        <div class="prose-block">
-          <h2>Common causes on Samsung refrigerators</h2>
-          <ul>
-            {service.causes.map((c) => (
-              <li>
-                <strong>{c.title}.</strong> {c.explanation}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div class="prose-block">
-          <h2>How we diagnose &amp; repair</h2>
-          <ol>
-            {service.repairSteps.map((step) => <li>{step}</li>)}
-          </ol>
-        </div>
-
-        {relatedCodes.length > 0 && (
-          <div class="prose-block">
-            <h2>Related Samsung error codes</h2>
-            <ul>
-              {relatedCodes.map((code) => (
-                <li>
-                  <a href={`/error-codes/${code.slug}/`}><strong>{code.code}</strong></a> — {code.meaning}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        <div class="prose-block">
-          <h2>When you should call vs DIY</h2>
-          <p>{service.diyVsCall}</p>
-        </div>
-
-        <div class="prose-block">
-          <h2>Available in all five counties</h2>
-          <ul>
-            {COUNTIES.map((county) => (
-              <li>
-                <a href={`/service-area/${county.slug}/`}>
-                  {service.title.replace('Samsung ', '').replace(' Repair', '')} in {county.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div class="prose-block">
-          <FAQ faqs={service.faq.map((f) => ({ question: f.q, answer: f.a }))} heading="Frequently asked questions" />
+  <section class="section top">
+    <div class="wrap split">
+      <div>
+        <div class="eyebrow">Samsung refrigerator repair</div>
+        <h1>{s.h1}</h1>
+        <p class="lede">{fill(s.shortDescription)}</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="#book">Book a technician</a>
+          <a class="btn" href={`tel:${business.phone.tel}`}>Call {business.phone.display}</a>
         </div>
       </div>
-
-      <aside class="page-sidebar">
-        <StickyCTACard context={`Call now for same-day ${service.title.replace('Samsung ', '').toLowerCase()}.`} />
-      </aside>
+      <Photo id={p1} eager />
     </div>
-  </div>
+    <div class="wrap trust"><TrustRow /></div>
+  </section>
 
-  <FinalCTA />
-  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
-</Layout>
+  <section class="section alt">
+    <div class="wrap prose">
+      {intro.map((p) => <p>{p}</p>)}
+      <h2>Symptoms</h2>
+      <ul>{s.symptoms.map((x) => <li>{fill(x)}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>What usually causes it on a Samsung</h2>
+      <div class="grid grid-2">
+        {s.causes.map((c) => (
+          <div class="card">
+            <h3>{fill(c.title)}</h3>
+            <p>{fill(c.explanation)}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap split rev">
+      <Photo id={p2} />
+      <div class="prose">
+        <h2>How the repair goes</h2>
+        <ol>{s.repairSteps.map((x) => <li>{fill(x)}</li>)}</ol>
+        <p class="note">The {usd(prices.diagnostic)} diagnostic visit is credited toward the repair. You approve the price before any work starts.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap prose">
+      <h2>Can you fix it yourself?</h2>
+      {paras(fill(s.diyVsCall)).map((p) => <p>{p}</p>)}
+      {codes.length > 0 && (
+        <>
+          <h2>Error codes that point here</h2>
+          <ul class="chips">
+            {codes.map((c) => <li><a href={`/error-codes/${c.slug}/`}>{c.code} — {c.title.split('—')[1]?.trim()}</a></li>)}
+          </ul>
+        </>
+      )}
+    </div>
+  </section>
+
+  <Faq items={faq} />
+
+  <section class="section alt">
+    <div class="wrap">
+      <h2>Other Samsung repairs</h2>
+      <ul class="chips">
+        {others.map((o) => <li><a href={`/services/${o.slug}/`}>{serviceLabel(o.slug)}</a></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <LeadForm heading={`Book ${serviceLabel(s.slug).toLowerCase()} repair`} />
+</Base>
+
+<style>
+  .top { padding-top: 24px; }
+  .trust { margin-top: 28px; }
+</style>

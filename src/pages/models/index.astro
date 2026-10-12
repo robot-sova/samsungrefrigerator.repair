@@ -1,50 +1,38 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import Hero from '~/components/Hero.astro';
-import FinalCTA from '~/components/FinalCTA.astro';
-import Icon from '~/components/Icon.astro';
-import { MODELS } from '~/data/models';
-import { BUSINESS } from '~/data/business';
-
-const title = `Samsung Refrigerator Models We Repair | ${BUSINESS.phoneDisplay}`;
-const description = `Samsung Family Hub, Bespoke, French Door, 4-Door FlexZone, side-by-side, and top-freezer repair. Call ${BUSINESS.phoneDisplay}.`;
-
-const breadcrumbs = [
-  { label: 'Home', href: '/' },
-  { label: 'Models' },
-];
-
-const ICONS: Record<string, Parameters<typeof Icon>[0]['name']> = {
-  'family-hub': 'cpu',
-  bespoke: 'tag',
-  'french-door-4-door-flex': 'snowflake',
-  'side-by-side': 'fan',
-  'top-freezer': 'thermometer',
-};
+import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { MODELS } from '../../data/models';
+import { modelPhoto } from '../../data/extras';
+import { fill } from '../../data/business';
 ---
-
-<Layout title={title} description={description} noHero={true}>
-  <Hero
-    variant="inner"
-    breadcrumbs={breadcrumbs}
-    title="Samsung Refrigerator Models We Repair"
-    subtitle="Family Hub, Bespoke, French Door, 4-Door FlexZone, side-by-side, and top-freezer."
-  />
-
+<Base
+  title="Samsung Fridge Models We Repair: Family Hub, Bespoke, French Door"
+  description="In-home repair for every Samsung refrigerator style: Family Hub, Bespoke, French Door and 4-Door Flex, side-by-side and top-freezer models."
+  crumbs={[{ label: 'Models' }]}
+>
   <section class="section">
-    <div class="container">
-      <div class="services-grid">
+    <div class="wrap">
+      <h1>Samsung refrigerator models we repair</h1>
+      <p class="lede">Different styles fail in different places. Find yours to see what usually goes wrong and how it is fixed.</p>
+      <div class="grid grid-3">
         {MODELS.map((m) => (
-          <a class="card service-card card-link" href={`/models/${m.slug}/`}>
-            <span class="icon-circle"><Icon name={ICONS[m.slug] ?? 'snowflake'} /></span>
-            <h3>{m.title.replace('Samsung ', '').replace(' Refrigerator Repair', '').replace(' Repair', '')}</h3>
-            <p>{m.description}</p>
-            <span class="btn-ghost">Learn more →</span>
+          <a class="card pcard" href={`/models/${m.slug}/`}>
+            <Photo id={modelPhoto[m.slug]} sizes="(min-width: 900px) 33vw, 100vw" />
+            <h2 class="h3">{m.title.replace(/^Samsung /, '').replace(/ (Refrigerator )?Repair$/, '')}</h2>
+            <p class="note">{fill(m.description)}</p>
           </a>
         ))}
       </div>
     </div>
   </section>
+  <LeadForm />
+</Base>
 
-  <FinalCTA />
-</Layout>
+<style>
+  .grid { margin-top: 20px; }
+  .pcard { padding: 0; overflow: hidden; }
+  .pcard :global(img) { border-radius: 0; aspect-ratio: 4 / 3; object-fit: cover; }
+  .pcard .h3 { font-size: 1.15rem; padding: 14px 16px 0; }
+  .pcard p { padding: 0 16px 16px; }
+</style>
