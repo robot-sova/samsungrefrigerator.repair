@@ -1,0 +1,37 @@
+# Cloudflare Pages config — source of truth for bindings (dashboard bindings are read-only
+# while this file exists). Secrets (WEB_LEAD_TOKEN) are NOT here: set them with
+#   npx wrangler pages secret put WEB_LEAD_TOKEN --project-name samsungrefrigerator-repair
+# Production only, on purpose: previews get 403 from ЦУП and never become cards.
+name = "samsungrefrigerator-repair"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-05-07"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+NODE_VERSION = "22"
+
+# Customer photos from the lead form (functions/api/plate-photo*). Private: read only through
+# /api/plate-photo/<48-hex key>, no public bucket domain.
+[[r2_buckets]]
+binding = "PLATE_PHOTOS"
+bucket_name = "samsungrefrigerator-lead-photos"
+
+# Rate limit counters for leads and photo uploads.
+[[kv_namespaces]]
+binding = "LEAD_RL"
+id = "f584537b2a404841a3f31f08aebe0597"
+
+# Environments do not inherit bindings — repeat them.
+[env.production]
+compatibility_flags = ["nodejs_compat"]
+
+[env.production.vars]
+NODE_VERSION = "22"
+
+[[env.production.r2_buckets]]
+binding = "PLATE_PHOTOS"
+bucket_name = "samsungrefrigerator-lead-photos"
+
+[[env.production.kv_namespaces]]
+binding = "LEAD_RL"
+id = "f584537b2a404841a3f31f08aebe0597"
