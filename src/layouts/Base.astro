@@ -2,7 +2,8 @@
 import { Font, getImage } from 'astro:assets';
 import { photo, type PhotoId } from '../data/photos';
 import '../styles/global.css';
-import { business, analytics, prices } from '../data/business';
+import { business, analytics, prices, warranty } from '../data/business';
+import { ORG_ID, articleSchema } from '../data/schema';
 import { COUNTIES } from '../data/locations';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -17,11 +18,13 @@ interface Props {
   schema?: Record<string, unknown>[];
   /** Breadcrumbs: rendered on the page AND as BreadcrumbList. Home is added automatically. */
   crumbs?: Crumb[];
+  /** Article pages (error-code guides): Base builds the Article node with the og image + canonical. */
+  article?: { headline: string; description: string };
   noindex?: boolean;
   ogPhoto?: PhotoId;
 }
 
-const { title, description, schema = [], crumbs = [], noindex = false, ogPhoto = 'home-hero' } = Astro.props;
+const { title, description, schema = [], crumbs = [], article, noindex = false, ogPhoto = 'home-hero' } = Astro.props;
 const og = await getImage({ src: photo(ogPhoto).src, width: 1200, format: 'jpg' });
 const ogUrl = new URL(og.src, business.url).href;
 const canonical = new URL(Astro.url.pathname, business.url).href;
@@ -30,15 +33,18 @@ const canonical = new URL(Astro.url.pathname, business.url).href;
  * ONE business node for the whole site; pages point at it by @id. Service-area business:
  * there is no storefront, so the address names the region only — never a street.
  */
+const homeImg = await getImage({ src: photo('home-hero').src, width: 1200, format: 'jpg' });
 const org = {
   '@type': 'HomeAndConstructionBusiness',
-  '@id': `${business.url}/#business`,
+  '@id': ORG_ID,
   name: business.brand,
-  url: business.url,
+  url: `${business.url}/`,
+  description: `Independent in-home Samsung refrigerator repair in seven Southern California counties. $${prices.diagnostic} diagnostic visit, credited toward the repair; ${warranty.short}.`,
   telephone: business.phone.tel,
-  image: ogUrl,
-  logo: `${business.url}/apple-touch-icon.png`,
+  image: new URL(homeImg.src, business.url).href,
+  logo: { '@type': 'ImageObject', '@id': `${business.url}/#logo`, url: `${business.url}/icon-512.png`, contentUrl: `${business.url}/icon-512.png`, width: 512, height: 512, caption: business.brand },
   priceRange: `Diagnostic $${prices.diagnostic}`,
+  contactPoint: { '@type': 'ContactPoint', telephone: business.phone.tel, contactType: 'customer service', areaServed: 'US-CA', availableLanguage: 'English' },
   address: { '@type': 'PostalAddress', addressLocality: 'Los Angeles', addressRegion: 'CA', addressCountry: 'US' },
   areaServed: COUNTIES.map((c) => ({ '@type': 'AdministrativeArea', name: `${c.name}, CA` })),
   openingHoursSpecification: [
@@ -57,7 +63,9 @@ const breadcrumbList = allCrumbs.length
       })),
     }]
   : [];
-const graph = { '@context': 'https://schema.org', '@graph': [org, ...breadcrumbList, ...schema] };
+const articleNode = article ? [articleSchema({ ...article, url: canonical, image: ogUrl })] : [];
+const website = { '@type': 'WebSite', '@id': `${business.url}/#website`, url: `${business.url}/`, name: business.brand, publisher: { '@id': ORG_ID }, inLanguage: 'en-US' };
+const graph = { '@context': 'https://schema.org', '@graph': [org, website, ...breadcrumbList, ...articleNode, ...schema] };
 ---
 <!DOCTYPE html>
 <html lang="en">

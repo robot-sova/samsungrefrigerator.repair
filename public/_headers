@@ -1,2 +1,10 @@
+# HTML: browsers always revalidate (max-age=0); shared caches (Cloudflare, when a Cache Rule makes
+# HTML eligible) may keep a page 10 min and serve it stale for a day while refetching — so a bot
+# never waits on a cold Pages fetch. Short s-maxage: a deploy shows up within 10 minutes.
+/*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+# Hashed build assets never change.
 /_astro/*
+  ! Cache-Control
   Cache-Control: public, max-age=31536000, immutable

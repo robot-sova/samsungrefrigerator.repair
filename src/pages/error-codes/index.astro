@@ -2,12 +2,18 @@
 import Base from '../../layouts/Base.astro';
 import LeadForm from '../../components/LeadForm.astro';
 import { ERROR_CODES } from '../../data/errorCodes';
-import { fill } from '../../data/business';
+import { business, fill } from '../../data/business';
 ---
 <Base
   title="Samsung Refrigerator Error Codes: 84C, 22E, 21E, 5E, 41C and More"
   description="What each Samsung refrigerator error code means — 1E, 5E, 8E, 21E, 22E, 41C, 84C, PC ER, OF OF — what to try yourself and when it needs a repair."
   crumbs={[{ label: 'Error codes' }]}
+  article={{ headline: 'Samsung refrigerator error codes', description: 'What each Samsung refrigerator error code means — 1E, 5E, 8E, 21E, 22E, 41C, 84C, PC ER, OF OF — what to try yourself and when it needs a repair.' }}
+  schema={[{
+    '@type': 'ItemList',
+    name: 'Samsung refrigerator error codes',
+    itemListElement: ERROR_CODES.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.code, url: `${business.url}/error-codes/${c.slug}/` })),
+  }]}
 >
   <section class="section">
     <div class="wrap">

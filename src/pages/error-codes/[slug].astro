@@ -7,14 +7,13 @@ import { ERROR_CODES, type ErrorCode } from '../../data/errorCodes';
 import { SERVICES } from '../../data/services';
 import { codePhoto, serviceLabel } from '../../data/extras';
 import { business, fill, prices, usd } from '../../data/business';
-import { faqSchema, articleSchema, paras } from '../../data/schema';
+import { faqSchema, paras } from '../../data/schema';
 
 export function getStaticPaths() {
   return ERROR_CODES.map((c) => ({ params: { slug: c.slug }, props: { c } }));
 }
 
 const { c } = Astro.props as { c: ErrorCode };
-const path = `/error-codes/${c.slug}/`;
 const what = c.title.split('—')[1]?.trim() ?? '';
 let title = `Samsung Fridge ${c.code} Error: ${what} — What to Do`;
 if (title.length > 70) title = `Samsung Fridge ${c.code} Error: What It Means and How to Fix It`;
@@ -30,7 +29,8 @@ const faq = c.faq.map((f) => ({ q: fill(f.q), a: fill(f.a) }));
   description={description}
   ogPhoto={codePhoto[c.slug]}
   crumbs={[{ label: 'Error codes', href: '/error-codes/' }, { label: c.code }]}
-  schema={[articleSchema({ headline: title, description, path }), faqSchema(faq)]}
+  article={{ headline: title, description }}
+  schema={[faqSchema(faq)]}
 >
   <section class="section top">
     <div class="wrap split">

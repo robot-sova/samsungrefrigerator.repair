@@ -2,7 +2,8 @@ import { business } from './business';
 
 /** JSON-LD helpers. Every node points at the ONE business node in Base.astro by @id. */
 
-const provider = { '@id': `${business.url}/#business` };
+export const ORG_ID = `${business.url}/#organization`;
+const provider = { '@id': ORG_ID };
 
 export const faqSchema = (items: { q: string; a: string }[]) => ({
   '@type': 'FAQPage',
@@ -24,14 +25,30 @@ export const serviceSchema = (o: { name: string; description: string; path: stri
   brand: { '@type': 'Brand', name: 'Samsung' },
 });
 
-export const articleSchema = (o: { headline: string; description: string; path: string }) => ({
-  '@type': 'TechArticle',
+/**
+ * Error-code guides are the site's articles. Dates are real: the guides were first published
+ * 2026-05-06 (commit e7db356) and rewritten in the 12.10.2026 rebuild. Bump `modified` when
+ * the guide text changes. image / url come from Base.astro (og image, canonical) — pages pass
+ * Base's `article` prop, not a node in `schema`.
+ */
+export const ARTICLE_DATES = { published: '2026-05-06', modified: '2026-10-12' } as const;
+
+/** Site owner, author of the guides (owner, 16.11.2026). */
+export const AUTHOR = { '@type': 'Person', name: 'Roman Abysov', url: `${business.url}/about/` } as const;
+
+export const articleSchema = (o: { headline: string; description: string; url: string; image: string }) => ({
+  '@type': 'Article',
+  '@id': `${o.url}#article`,
   headline: o.headline,
   description: o.description,
-  url: new URL(o.path, business.url).href,
-  author: provider,
+  image: o.image,
+  url: o.url,
+  mainEntityOfPage: { '@id': o.url },
+  datePublished: ARTICLE_DATES.published,
+  dateModified: ARTICLE_DATES.modified,
+  author: AUTHOR,
   publisher: provider,
-  dateModified: '2026-10-12',
+  inLanguage: 'en-US',
 });
 
 /** Text with blank lines → paragraphs. Content files keep long intros as one string. */
